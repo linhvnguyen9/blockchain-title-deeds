@@ -1,6 +1,7 @@
 package com.linh.titledeed.data.di
 
 import android.app.Application
+import com.linh.titledeed.data.contract.WalletService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,6 +25,12 @@ object DataModule {
     @Provides
     fun provideWeb3j() : Web3j {
         return Web3j.build(HttpService("http://192.168.1.109:8545"))
+    }
+
+    @Singleton
+    @Provides
+    fun provideTokenContractService(application: Application): WalletService {
+        return WalletService(application)
     }
 
     @Singleton

@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">VTD</string>
+    <string name="all_welcome">Welcome</string>
     <string name="all_wallet">Wallet</string>
+    <string name="all_continue">Continue</string>
+    <string name="wallet_input">Input</string>
+    <string name="wallet_create">Create</string>
+    <string name="wallet_screen_title">Input or Create Wallet</string>
+    <string name="wallet_screen_description">To use the app, you must input or create a wallet</string>
+    <string name="wallet_password">Password</string>
+    <string name="wallet_mnemonic">Mnemonic</string>
+    <string name="all_submit">Submit</string>
+    <string name="all_password">Password</string>
+    <string name="all_confirm_password">Confirm password</string>
 </resources>
