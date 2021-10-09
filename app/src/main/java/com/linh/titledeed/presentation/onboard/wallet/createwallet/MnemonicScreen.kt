@@ -8,6 +8,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.linh.titledeed.R
 import com.linh.titledeed.presentation.ui.composable.ScreenTitle
 import com.linh.titledeed.presentation.ui.composable.Text
+import com.linh.titledeed.presentation.ui.theme.BlockchainTitleDeedsTheme
 import com.linh.titledeed.presentation.ui.theme.screenModifier
 
 @Composable
@@ -23,7 +24,19 @@ fun MnemonicScreen(onClickConfirm: () -> Unit) {
 @Preview
 @Composable
 fun MnemonicScreenPreview() {
-    MnemonicScreen() {
+    BlockchainTitleDeedsTheme(darkTheme = false) {
+        MnemonicScreen() {
 
+        }
+    }
+}
+
+@Preview
+@Composable
+fun MnemonicScreenDarkPreview() {
+    BlockchainTitleDeedsTheme(darkTheme = true) {
+        MnemonicScreen() {
+
+        }
     }
 }

@@ -5,9 +5,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.linh.titledeed.R
 
 @Composable
 fun ScreenTitle(title: String, subtitle: String = "") {

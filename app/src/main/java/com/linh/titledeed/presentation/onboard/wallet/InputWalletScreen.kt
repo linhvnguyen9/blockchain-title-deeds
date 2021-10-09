@@ -10,6 +10,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.linh.titledeed.R
+import com.linh.titledeed.presentation.ui.composable.PasswordTextField
 import com.linh.titledeed.presentation.ui.composable.ScreenTitle
 import com.linh.titledeed.presentation.ui.composable.Text
 import com.linh.titledeed.presentation.ui.theme.screenPadding
@@ -29,12 +30,12 @@ fun InputWalletScreen(
         )
 
         Text(stringResource(R.string.wallet_password))
-        TextField(value = password, onValueChange = onPasswordChange, Modifier.fillMaxWidth())
+        PasswordTextField(value = password, onValueChange = onPasswordChange, Modifier.fillMaxWidth())
 
         Spacer(Modifier.height(8.dp))
 
         Text(stringResource(R.string.wallet_mnemonic))
-        TextField(value = mnemonic, onValueChange = onMnemonicChange, Modifier.fillMaxWidth())
+        PasswordTextField(value = mnemonic, onValueChange = onMnemonicChange, Modifier.fillMaxWidth())
         Text("Mnemonic is a set of words generated when you create a wallet (e.g: ripple scissors kick mammal...)")
 
         Spacer(Modifier.height(32.dp))
