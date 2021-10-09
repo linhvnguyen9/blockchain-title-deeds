@@ -3,7 +3,7 @@ package com.linh.titledeed
 import androidx.navigation.NamedNavArgument
 
 object NavigationDirections {
-    val welcome = object : NavigationCommand {
+    val welcome = object : NavigationCommand() {
         override val arguments: List<NamedNavArgument>
             get() = emptyList()
 
@@ -14,9 +14,13 @@ object NavigationDirections {
 
         override val screenNameRes: Int
             get() = R.string.all_welcome
+
+        override fun equals(other: Any?): Boolean {
+            return false
+        }
     }
 
-    val wallet = object : NavigationCommand {
+    val wallet = object : NavigationCommand() {
         override val arguments: List<NamedNavArgument>
             get() = emptyList()
 
@@ -27,9 +31,13 @@ object NavigationDirections {
 
         override val screenNameRes: Int
             get() = R.string.all_wallet
+
+        override fun equals(other: Any?): Boolean {
+            return false
+        }
     }
 
-    val createWallet = object : NavigationCommand {
+    val createWallet = object : NavigationCommand() {
         override val arguments: List<NamedNavArgument>
             get() = emptyList()
 
@@ -40,9 +48,13 @@ object NavigationDirections {
 
         override val screenNameRes: Int
             get() = R.string.all_wallet
+
+        override fun equals(other: Any?): Boolean {
+            return false
+        }
     }
 
-    val enterWalletPassword = object : NavigationCommand {
+    val enterWalletPassword = object : NavigationCommand() {
         override val arguments: List<NamedNavArgument>
             get() = emptyList()
 
@@ -53,9 +65,13 @@ object NavigationDirections {
 
         override val screenNameRes: Int
             get() = R.string.all_wallet
+
+        override fun equals(other: Any?): Boolean {
+            return false
+        }
     }
 
-    val inputWallet = object : NavigationCommand {
+    val inputWallet = object : NavigationCommand() {
         override val arguments: List<NamedNavArgument>
             get() = emptyList()
 
@@ -66,9 +82,13 @@ object NavigationDirections {
 
         override val screenNameRes: Int
             get() = R.string.all_wallet
+
+        override fun equals(other: Any?): Boolean {
+            return false
+        }
     }
 
-    val walletMnemonic = object : NavigationCommand {
+    val walletMnemonic = object : NavigationCommand() {
         override val arguments: List<NamedNavArgument>
             get() = emptyList()
 
@@ -79,9 +99,13 @@ object NavigationDirections {
 
         override val screenNameRes: Int
             get() = R.string.all_wallet
+
+        override fun equals(other: Any?): Boolean {
+            return false
+        }
     }
 
-    val confirmMnemonic = object : NavigationCommand {
+    val confirmMnemonic = object : NavigationCommand() {
         override val arguments: List<NamedNavArgument>
             get() = emptyList()
 
@@ -92,9 +116,13 @@ object NavigationDirections {
 
         override val screenNameRes: Int
             get() = R.string.all_wallet
+
+        override fun equals(other: Any?): Boolean {
+            return false
+        }
     }
 
-    val home = object : NavigationCommand {
+    val home = object : NavigationCommand() {
         override val arguments: List<NamedNavArgument>
             get() = emptyList()
 
@@ -110,9 +138,16 @@ object NavigationDirections {
     val default = welcome
 }
 
-interface NavigationCommand {
-    val arguments: List<NamedNavArgument>
-    val destination: String
-    val isBottomNavigationItem: Boolean
-    val screenNameRes: Int
+@Suppress("EqualsOrHashCode")
+abstract class NavigationCommand {
+    abstract val arguments: List<NamedNavArgument>
+    abstract val destination: String
+    abstract val isBottomNavigationItem: Boolean
+    abstract val screenNameRes: Int
+
+    //Support navigating back
+    //Fix issue with StateFlow won't emitting same value twice
+    override fun equals(other: Any?): Boolean {
+        return false
+    }
 }
