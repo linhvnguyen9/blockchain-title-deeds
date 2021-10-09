@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.linh.titledeed.R
 import com.linh.titledeed.presentation.ui.composable.ScreenTitle
-import com.linh.titledeed.presentation.ui.composable.Text
+import androidx.compose.material.Text
 import com.linh.titledeed.presentation.ui.theme.screenModifier
 
 @Composable

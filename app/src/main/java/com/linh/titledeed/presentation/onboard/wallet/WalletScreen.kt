@@ -10,7 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.linh.titledeed.R
 import com.linh.titledeed.presentation.ui.composable.ScreenTitle
-import com.linh.titledeed.presentation.ui.composable.Text
+import androidx.compose.material.Text
 
 @Composable
 fun WalletScreen(
