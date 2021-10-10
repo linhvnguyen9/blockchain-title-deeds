@@ -21,27 +21,20 @@ import com.linh.titledeed.presentation.ui.theme.screenModifier
 fun CreateWalletScreen(
     password: String,
     onPasswordChange: (String) -> Unit,
-    confirmPassword: String,
-    onConfirmPasswordChange: (String) -> Unit,
+    passwordError: String,
     onClickSubmit: () -> Unit
 ) {
     Column(screenModifier) {
         ScreenTitle(title = "Create wallet", subtitle = "")
 
-        Text(stringResource(R.string.all_password))
         PasswordTextField(
             value = password,
             onValueChange = onPasswordChange,
-            Modifier.fillMaxWidth()
-        )
-
-        Spacer(Modifier.height(8.dp))
-
-        Text(stringResource(R.string.all_confirm_password))
-        PasswordTextField(
-            value = confirmPassword,
-            onValueChange = onConfirmPasswordChange,
-            Modifier.fillMaxWidth()
+            Modifier.fillMaxWidth(),
+            errorText = passwordError,
+            label = {
+                Text(stringResource(R.string.all_password))
+            },
         )
 
         Spacer(Modifier.height(16.dp))
@@ -55,7 +48,11 @@ fun CreateWalletScreen(
 @Preview
 @Composable
 fun CreateWalletScreenPreview() {
-    CreateWalletScreen(password = "", onPasswordChange = {}, "", onConfirmPasswordChange = {}) {
+    CreateWalletScreen(
+        password = "",
+        onPasswordChange = {},
+        ""
+    ) {
 
     }
 }

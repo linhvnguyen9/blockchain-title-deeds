@@ -12,4 +12,9 @@
     <string name="all_submit">Submit</string>
     <string name="all_password">Password</string>
     <string name="all_confirm_password">Confirm password</string>
+
+<!--    Errors-->
+    <string name="error_password_blank">Password must not be blank</string>
+    <string name="error_confirm_password_blank">Confirm password must not be blank</string>
+    <string name="error_confirm_password_mismatch">Passwords does not match</string>
 </resources>

@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
@@ -62,13 +63,12 @@ class MainActivity : ComponentActivity() {
                             )
 
                             val password = createWalletViewModel.password.collectAsState()
-                            val confirmPassword = createWalletViewModel.confirmPassword.collectAsState()
+                            val passwordError = createWalletViewModel.passwordError.collectAsState()
 
                             CreateWalletScreen(
                                 password.value,
                                 onPasswordChange = { createWalletViewModel.onPasswordChange(it) },
-                                confirmPassword.value,
-                                onConfirmPasswordChange = { createWalletViewModel.onConfirmPasswordChange(it) }
+                                if (passwordError.value != 0) stringResource(passwordError.value) else "",
                             ) {
                                 createWalletViewModel.onSubmitPassword()
                             }
@@ -79,7 +79,9 @@ class MainActivity : ComponentActivity() {
                                 parentRoute = NavigationDirections.createWallet.destination
                             )
 
-                            MnemonicScreen {
+                            val mnemonicWords = createWalletViewModel.mnemonic
+
+                            MnemonicScreen(mnemonicWords.value) {
                                 createWalletViewModel.onConfirmViewedMnemonic()
                             }
                         }
@@ -89,7 +91,9 @@ class MainActivity : ComponentActivity() {
                                 parentRoute = NavigationDirections.createWallet.destination
                             )
 
-                            ConfirmMnemonicScreen {
+                            val mnemonicWords = createWalletViewModel.mnemonic
+
+                            ConfirmMnemonicScreen(mnemonicWords.value) {
                                 createWalletViewModel.onConfirmMnemonic()
                             }
                         }
