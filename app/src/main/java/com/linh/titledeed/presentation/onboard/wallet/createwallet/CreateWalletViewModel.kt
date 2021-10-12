@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.linh.titledeed.NavigationDirections
 import com.linh.titledeed.R
 import com.linh.titledeed.domain.usecase.CreateWalletUseCase
+import com.linh.titledeed.presentation.NavigationCommand
 import com.linh.titledeed.presentation.NavigationManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -72,7 +73,8 @@ class CreateWalletViewModel @Inject constructor(private val createWalletUseCase:
 
     fun onConfirmMnemonic() {
         if (confirmMnemonicSelected.value == mnemonic.value) {
-            navigationManager.navigate(NavigationDirections.home)
+            val navCommand = NavigationCommand(NavigationDirections.home, NavigationDirections.default, true)
+            navigationManager.navigate(navCommand)
         } else {
             _confirmMnemonicError.value = R.string.error_mnemonic_mismatch
         }
