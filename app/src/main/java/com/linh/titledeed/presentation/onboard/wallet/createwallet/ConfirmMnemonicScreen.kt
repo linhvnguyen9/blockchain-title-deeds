@@ -3,6 +3,7 @@ package com.linh.titledeed.presentation.onboard.wallet.createwallet
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
@@ -19,11 +20,22 @@ import com.linh.titledeed.presentation.ui.composable.MnemonicList
 import com.linh.titledeed.presentation.ui.theme.screenModifier
 
 @Composable
-fun ConfirmMnemonicScreen(mnemonicWords: List<String>, onClickSubmit: () -> Unit) {
+fun ConfirmMnemonicScreen(
+    mnemonicWords: List<String>,
+    selectedMnemonicWords: List<String>,
+    mnemonicError: String,
+    onAddWord: (String) -> Unit,
+    onRemoveWord: (String) -> Unit,
+    onClickSubmit: () -> Unit
+) {
     Column(screenModifier) {
-        ScreenTitle(title = "Confirm mnemonic", "Reenter your mnemonic")
+        ScreenTitle(title = "Confirm Secret Recovery Phrase", "Reenter your mnemonic")
+        MnemonicList(Modifier.fillMaxWidth(), selectedMnemonicWords, onSelect = {
+            onRemoveWord(it)
+        })
+        Text(mnemonicError, color = MaterialTheme.colors.error)
         MnemonicList(Modifier.fillMaxWidth(), mnemonicWords, onSelect = {
-
+            onAddWord(it)
         })
 
         Spacer(Modifier.height(16.dp))
@@ -51,7 +63,24 @@ fun ConfirmMnemonicScreenPreview() {
             "test",
             "test",
             "test"
-        )
+        ),
+        listOf(
+            "test",
+            "test",
+            "test",
+            "test",
+            "test",
+            "test",
+            "test",
+            "test",
+            "test",
+            "test",
+            "test",
+            "test"
+        ),
+        "",
+        {},
+        {}
     ) {
 
     }

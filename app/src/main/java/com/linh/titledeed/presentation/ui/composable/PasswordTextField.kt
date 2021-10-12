@@ -86,5 +86,6 @@ fun ColumnScope.PasswordTextField(
 fun PasswordTextFieldErrorPreview() {
     Column {
         PasswordTextField("", {}, errorText = "Password does not match!")
+        PasswordTextField("", {})
     }
 }
