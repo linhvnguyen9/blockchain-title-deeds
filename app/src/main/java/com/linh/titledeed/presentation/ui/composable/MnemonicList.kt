@@ -23,11 +23,11 @@ fun MnemonicItem(word: String, selected: Boolean, onClick: () -> Unit) {
 }
 
 @Composable
-fun MnemonicList(modifier: Modifier = Modifier, mnemonicWords: List<String>, onSelect: (Int) -> Unit) {
+fun MnemonicList(modifier: Modifier = Modifier, mnemonicWords: List<String>, onSelect: (String) -> Unit) {
     FlowRow(modifier, mainAxisSpacing = 8.dp, crossAxisSpacing = 8.dp) {
-        mnemonicWords.forEachIndexed { index: Int, word: String ->
+        mnemonicWords.forEachIndexed { _: Int, word: String ->
             MnemonicItem(word, true) {
-                onSelect(index)
+                onSelect(word)
             }
         }
     }

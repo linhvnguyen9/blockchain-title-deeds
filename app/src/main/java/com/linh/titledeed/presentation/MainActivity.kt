@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.linh.titledeed.NavigationDirections
+import com.linh.titledeed.R
 import com.linh.titledeed.presentation.onboard.wallet.*
 import com.linh.titledeed.presentation.onboard.wallet.createwallet.ConfirmMnemonicScreen
 import com.linh.titledeed.presentation.onboard.wallet.createwallet.CreateWalletScreen
@@ -69,6 +70,7 @@ class MainActivity : ComponentActivity() {
                                 password.value,
                                 onPasswordChange = { createWalletViewModel.onPasswordChange(it) },
                                 if (passwordError.value != 0) stringResource(passwordError.value) else "",
+                                true
                             ) {
                                 createWalletViewModel.onSubmitPassword()
                             }
@@ -91,9 +93,26 @@ class MainActivity : ComponentActivity() {
                                 parentRoute = NavigationDirections.createWallet.destination
                             )
 
-                            val mnemonicWords = createWalletViewModel.mnemonic
+                            val selectedMnemonicWords =
+                                createWalletViewModel.confirmMnemonicSelected.collectAsState()
+                            val remainingMnemonicWords =
+                                createWalletViewModel.confirmMnemonicRemaining.collectAsState()
+                            val mnemonicError =
+                                createWalletViewModel.confirmMnemonicError.collectAsState()
 
-                            ConfirmMnemonicScreen(mnemonicWords.value) {
+                            ConfirmMnemonicScreen(
+                                remainingMnemonicWords.value,
+                                selectedMnemonicWords.value,
+                                mnemonicError = if (mnemonicError.value != 0) stringResource(mnemonicError.value) else "",
+                                onAddWord = {
+                                    createWalletViewModel.onAddConfirmMnemonicWord(it)
+                                },
+                                onRemoveWord = {
+                                    createWalletViewModel.onRemoveConfirmMnemonicWord(
+                                        it
+                                    )
+                                },
+                            ) {
                                 createWalletViewModel.onConfirmMnemonic()
                             }
                         }

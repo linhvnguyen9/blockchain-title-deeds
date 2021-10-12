@@ -22,6 +22,7 @@ fun CreateWalletScreen(
     password: String,
     onPasswordChange: (String) -> Unit,
     passwordError: String,
+    submitButtonEnabled: Boolean,
     onClickSubmit: () -> Unit
 ) {
     Column(screenModifier) {
@@ -36,10 +37,11 @@ fun CreateWalletScreen(
                 Text(stringResource(R.string.all_password))
             },
         )
+        Text("Passwords must contain at least 8 characters")
 
         Spacer(Modifier.height(16.dp))
 
-        Button(onClickSubmit, Modifier.align(Alignment.CenterHorizontally)) {
+        Button(onClickSubmit, Modifier.align(Alignment.CenterHorizontally), enabled = submitButtonEnabled) {
             Text(stringResource(R.string.all_submit))
         }
     }
@@ -51,7 +53,8 @@ fun CreateWalletScreenPreview() {
     CreateWalletScreen(
         password = "",
         onPasswordChange = {},
-        ""
+        "",
+        true
     ) {
 
     }
