@@ -139,8 +139,16 @@ class MainActivity : ComponentActivity() {
             }
 
             navigationManager.commands.collectAsState().value.also { command ->
-                if (command.destination.isNotEmpty() && !command.isBottomNavigationItem) {
-                    navController.navigate(command.destination)
+                command?.let {
+                    if (command.direction.destination.isNotEmpty() && !command.direction.isBottomNavigationItem) {
+                        navController.navigate(command.direction.destination) {
+                            if (command.popUpTo != null) {
+                                popUpTo(command.popUpTo.destination) {
+                                    inclusive = command.inclusive
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

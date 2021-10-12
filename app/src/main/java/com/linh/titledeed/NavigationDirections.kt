@@ -3,7 +3,7 @@ package com.linh.titledeed
 import androidx.navigation.NamedNavArgument
 
 object NavigationDirections {
-    val welcome = object : NavigationCommand() {
+    val welcome = object : NavigationDirection() {
         override val arguments: List<NamedNavArgument>
             get() = emptyList()
 
@@ -20,7 +20,7 @@ object NavigationDirections {
         }
     }
 
-    val wallet = object : NavigationCommand() {
+    val wallet = object : NavigationDirection() {
         override val arguments: List<NamedNavArgument>
             get() = emptyList()
 
@@ -37,7 +37,7 @@ object NavigationDirections {
         }
     }
 
-    val createWallet = object : NavigationCommand() {
+    val createWallet = object : NavigationDirection() {
         override val arguments: List<NamedNavArgument>
             get() = emptyList()
 
@@ -54,7 +54,7 @@ object NavigationDirections {
         }
     }
 
-    val enterWalletPassword = object : NavigationCommand() {
+    val enterWalletPassword = object : NavigationDirection() {
         override val arguments: List<NamedNavArgument>
             get() = emptyList()
 
@@ -71,7 +71,7 @@ object NavigationDirections {
         }
     }
 
-    val inputWallet = object : NavigationCommand() {
+    val inputWallet = object : NavigationDirection() {
         override val arguments: List<NamedNavArgument>
             get() = emptyList()
 
@@ -88,7 +88,7 @@ object NavigationDirections {
         }
     }
 
-    val walletMnemonic = object : NavigationCommand() {
+    val walletMnemonic = object : NavigationDirection() {
         override val arguments: List<NamedNavArgument>
             get() = emptyList()
 
@@ -105,7 +105,7 @@ object NavigationDirections {
         }
     }
 
-    val confirmMnemonic = object : NavigationCommand() {
+    val confirmMnemonic = object : NavigationDirection() {
         override val arguments: List<NamedNavArgument>
             get() = emptyList()
 
@@ -122,7 +122,7 @@ object NavigationDirections {
         }
     }
 
-    val home = object : NavigationCommand() {
+    val home = object : NavigationDirection() {
         override val arguments: List<NamedNavArgument>
             get() = emptyList()
 
@@ -139,7 +139,7 @@ object NavigationDirections {
 }
 
 @Suppress("EqualsOrHashCode")
-abstract class NavigationCommand {
+abstract class NavigationDirection {
     abstract val arguments: List<NamedNavArgument>
     abstract val destination: String
     abstract val isBottomNavigationItem: Boolean
