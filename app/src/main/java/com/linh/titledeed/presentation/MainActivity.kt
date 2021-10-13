@@ -2,7 +2,6 @@ package com.linh.titledeed.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -15,7 +14,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.linh.titledeed.NavigationDirections
-import com.linh.titledeed.R
 import com.linh.titledeed.presentation.onboard.wallet.*
 import com.linh.titledeed.presentation.onboard.wallet.createwallet.ConfirmMnemonicScreen
 import com.linh.titledeed.presentation.onboard.wallet.createwallet.CreateWalletScreen
@@ -24,8 +22,10 @@ import com.linh.titledeed.presentation.onboard.wallet.createwallet.MnemonicScree
 import com.linh.titledeed.presentation.onboard.welcome.WelcomeScreen
 import com.linh.titledeed.presentation.ui.theme.BlockchainTitleDeedsTheme
 import com.linh.titledeed.presentation.onboard.welcome.WelcomeScreenViewModel
+import com.linh.titledeed.presentation.utils.getErrorStringResource
 import com.linh.titledeed.presentation.utils.parentViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -103,7 +103,7 @@ class MainActivity : ComponentActivity() {
                             ConfirmMnemonicScreen(
                                 remainingMnemonicWords.value,
                                 selectedMnemonicWords.value,
-                                mnemonicError = if (mnemonicError.value != 0) stringResource(mnemonicError.value) else "",
+                                mnemonicError = getErrorStringResource(mnemonicError.value),
                                 onAddWord = {
                                     createWalletViewModel.onAddConfirmMnemonicWord(it)
                                 },
@@ -118,22 +118,30 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                     composable(NavigationDirections.inputWallet.destination) {
-                        val inputWalletViewModel: InputWalletViewModel = hiltViewModel()
+                        val inputWalletViewModel: RecoverWalletViewModel = hiltViewModel()
 
-                        val mnemonic = inputWalletViewModel.mnemonic.collectAsState()
                         val password = inputWalletViewModel.password.collectAsState()
+                        val passwordError = inputWalletViewModel.passwordError.collectAsState()
+                        val mnemonic = inputWalletViewModel.mnemonic.collectAsState()
+                        val mnemonicError = inputWalletViewModel.mnemonicError.collectAsState()
 
                         InputWalletScreen(
                             password.value,
+                            getErrorStringResource(passwordError.value),
                             onPasswordChange = { inputWalletViewModel.onPasswordChange(it) },
                             mnemonic.value,
+                            getErrorStringResource(mnemonicError.value),
                             onMnemonicChange = { inputWalletViewModel.onMnemonicChange(it) }
                         ) {
                             inputWalletViewModel.onClickSubmit()
                         }
                     }
                     composable(NavigationDirections.home.destination) {
-                        HomeScreen()
+                        val homeViewModel: HomeViewModel = hiltViewModel()
+
+                        val wallet = homeViewModel.wallet.collectAsState()
+
+                        HomeScreen(wallet.value)
                     }
                 }
             }

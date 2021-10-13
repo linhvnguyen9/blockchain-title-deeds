@@ -1,6 +1,7 @@
 package com.linh.titledeed
 
 import android.app.Application
+import com.orhanobut.hawk.Hawk
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -10,9 +11,14 @@ class BlockchainTitleDeedsApplication: Application() {
         super.onCreate()
 
         initTimber()
+        initHawk()
     }
 
     private fun initTimber() {
         Timber.plant(Timber.DebugTree())
+    }
+
+    private fun initHawk() {
+        Hawk.init(this).build()
     }
 }
