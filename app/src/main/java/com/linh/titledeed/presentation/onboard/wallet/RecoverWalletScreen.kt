@@ -2,6 +2,7 @@ package com.linh.titledeed.presentation.onboard.wallet
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,25 +19,30 @@ import com.linh.titledeed.presentation.ui.theme.screenPadding
 @Composable
 fun InputWalletScreen(
     password: String,
+    passwordError: String,
     onPasswordChange: (String) -> Unit,
     mnemonic: String,
+    mnemonicError: String,
     onMnemonicChange: (String) -> Unit,
     onClickSubmit: () -> Unit
 ) {
     Column(Modifier.fillMaxSize().padding(screenPadding)) {
         ScreenTitle(
-            title = "Input wallet",
+            title = "Recover wallet",
             subtitle = stringResource(R.string.wallet_screen_description)
         )
 
-        Text(stringResource(R.string.wallet_password))
-        PasswordTextField(value = password, onValueChange = onPasswordChange, Modifier.fillMaxWidth())
+        Text(stringResource(R.string.wallet_mnemonic))
+        TextField(value = mnemonic, onValueChange = onMnemonicChange, Modifier.fillMaxWidth())
+        if (mnemonicError.isNotBlank()) {
+            Text(mnemonicError, color = MaterialTheme.colors.error)
+        }
+        Text("Mnemonic is a set of words generated when you create a wallet (e.g: ripple scissors kick mammal...)")
 
         Spacer(Modifier.height(8.dp))
 
-        Text(stringResource(R.string.wallet_mnemonic))
-        PasswordTextField(value = mnemonic, onValueChange = onMnemonicChange, Modifier.fillMaxWidth())
-        Text("Mnemonic is a set of words generated when you create a wallet (e.g: ripple scissors kick mammal...)")
+        Text(stringResource(R.string.wallet_password))
+        PasswordTextField(value = password, onValueChange = onPasswordChange, Modifier.fillMaxWidth(), errorText = passwordError)
 
         Spacer(Modifier.height(32.dp))
 
@@ -49,7 +55,7 @@ fun InputWalletScreen(
 @Preview
 @Composable
 fun InputWalletScreenPreview() {
-    InputWalletScreen("", {}, "", {}) {
+    InputWalletScreen("", "", {}, "", "", {}) {
 
     }
 }
