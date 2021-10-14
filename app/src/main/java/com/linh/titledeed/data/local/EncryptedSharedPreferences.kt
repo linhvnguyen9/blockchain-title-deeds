@@ -8,7 +8,7 @@ object EncryptedSharedPreference {
     }
 
     fun getWalletAddress(): String {
-        return Hawk.get(KEY_WALLET_ADDRESS)
+        return Hawk.get(KEY_WALLET_ADDRESS, "")
     }
 
     fun saveWalletPrivateKey(privateKey: String) {
@@ -16,7 +16,7 @@ object EncryptedSharedPreference {
     }
 
     fun getWalletPrivateKey(): String {
-        return Hawk.get(KEY_WALLET_PRIVATE_KEY)
+        return Hawk.get(KEY_WALLET_PRIVATE_KEY, "")
     }
 
     fun saveWalletPassword(password: String) {
@@ -24,7 +24,7 @@ object EncryptedSharedPreference {
     }
 
     fun getWalletPassword(): String {
-        return Hawk.get(KEY_WALLET_PASSWORD)
+        return Hawk.get(KEY_WALLET_PASSWORD, "")
     }
 
     fun saveWalletMnemonic(mnemonic: String) {
@@ -32,7 +32,7 @@ object EncryptedSharedPreference {
     }
 
     fun getWalletMnemonic(): String {
-        return Hawk.get(KEY_WALLET_MNEMONIC)
+        return Hawk.get(KEY_WALLET_MNEMONIC, "")
     }
 
     private const val KEY_WALLET_ADDRESS = "KEY_WALLET_ADDRESS"
