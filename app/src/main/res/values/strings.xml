@@ -2,6 +2,7 @@
     <string name="app_name">VTD</string>
     <string name="all_welcome">Welcome</string>
     <string name="all_wallet">Wallet</string>
+    <string name="all_home">Home</string>
     <string name="all_continue">Continue</string>
     <string name="wallet_input">Input</string>
     <string name="wallet_create">Create</string>

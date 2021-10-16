@@ -9,11 +9,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.linh.titledeed.NavigationDirections
+import com.linh.titledeed.presentation.home.HomeViewModel
 import com.linh.titledeed.presentation.onboard.wallet.*
 import com.linh.titledeed.presentation.onboard.wallet.createwallet.ConfirmMnemonicScreen
 import com.linh.titledeed.presentation.onboard.wallet.createwallet.CreateWalletScreen
@@ -25,7 +28,6 @@ import com.linh.titledeed.presentation.onboard.welcome.WelcomeScreenViewModel
 import com.linh.titledeed.presentation.utils.getErrorStringResource
 import com.linh.titledeed.presentation.utils.parentViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -49,74 +51,14 @@ class MainActivity : ComponentActivity() {
                             welcomeScreenViewModel.onClickContinue()
                         }
                     }
-                    composable(NavigationDirections.wallet.destination) {
+                    composable(NavigationDirections.onboardWallet.destination) {
                         val walletViewModel: WalletViewModel = hiltViewModel()
                         WalletScreen(
                             onClickCreate = { walletViewModel.onClickCreateWallet() },
                             onClickInput = { walletViewModel.onClickInputWallet() }
                         )
                     }
-                    navigation(startDestination = NavigationDirections.enterWalletPassword.destination, NavigationDirections.createWallet.destination) {
-                        composable(NavigationDirections.enterWalletPassword.destination) {
-                            val createWalletViewModel: CreateWalletViewModel = parentViewModel(
-                                navController = navController,
-                                parentRoute = NavigationDirections.createWallet.destination
-                            )
-
-                            val password = createWalletViewModel.password.collectAsState()
-                            val passwordError = createWalletViewModel.passwordError.collectAsState()
-
-                            CreateWalletScreen(
-                                password.value,
-                                onPasswordChange = { createWalletViewModel.onPasswordChange(it) },
-                                if (passwordError.value != 0) stringResource(passwordError.value) else "",
-                                true
-                            ) {
-                                createWalletViewModel.onSubmitPassword()
-                            }
-                        }
-                        composable(NavigationDirections.walletMnemonic.destination) {
-                            val createWalletViewModel: CreateWalletViewModel = parentViewModel(
-                                navController = navController,
-                                parentRoute = NavigationDirections.createWallet.destination
-                            )
-
-                            val mnemonicWords = createWalletViewModel.mnemonic
-
-                            MnemonicScreen(mnemonicWords.value) {
-                                createWalletViewModel.onConfirmViewedMnemonic()
-                            }
-                        }
-                        composable(NavigationDirections.confirmMnemonic.destination) {
-                            val createWalletViewModel: CreateWalletViewModel = parentViewModel(
-                                navController = navController,
-                                parentRoute = NavigationDirections.createWallet.destination
-                            )
-
-                            val selectedMnemonicWords =
-                                createWalletViewModel.confirmMnemonicSelected.collectAsState()
-                            val remainingMnemonicWords =
-                                createWalletViewModel.confirmMnemonicRemaining.collectAsState()
-                            val mnemonicError =
-                                createWalletViewModel.confirmMnemonicError.collectAsState()
-
-                            ConfirmMnemonicScreen(
-                                remainingMnemonicWords.value,
-                                selectedMnemonicWords.value,
-                                mnemonicError = getErrorStringResource(mnemonicError.value),
-                                onAddWord = {
-                                    createWalletViewModel.onAddConfirmMnemonicWord(it)
-                                },
-                                onRemoveWord = {
-                                    createWalletViewModel.onRemoveConfirmMnemonicWord(
-                                        it
-                                    )
-                                },
-                            ) {
-                                createWalletViewModel.onConfirmMnemonic()
-                            }
-                        }
-                    }
+                    createWallet(navController)
                     composable(NavigationDirections.inputWallet.destination) {
                         val inputWalletViewModel: RecoverWalletViewModel = hiltViewModel()
 
@@ -143,6 +85,15 @@ class MainActivity : ComponentActivity() {
 
                         HomeScreen(wallet.value)
                     }
+                    composable(NavigationDirections.main.destination) {
+                        val mainViewModel: MainViewModel = hiltViewModel()
+
+                        MainScreen(
+                            navigationManager,
+                            onNavigateHome = { mainViewModel.onClickBottomNavigationHome() },
+                            onNavigateWallet = { mainViewModel.onClickBottomNavigationWallet() }
+                        )
+                    }
                 }
             }
 
@@ -157,6 +108,73 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+
+    private fun NavGraphBuilder.createWallet(navController: NavHostController) {
+        navigation(
+            startDestination = NavigationDirections.enterWalletPassword.destination,
+            NavigationDirections.createWallet.destination
+        ) {
+            composable(NavigationDirections.enterWalletPassword.destination) {
+                val createWalletViewModel: CreateWalletViewModel = parentViewModel(
+                    navController = navController,
+                    parentRoute = NavigationDirections.createWallet.destination
+                )
+
+                val password = createWalletViewModel.password.collectAsState()
+                val passwordError = createWalletViewModel.passwordError.collectAsState()
+
+                CreateWalletScreen(
+                    password.value,
+                    onPasswordChange = { createWalletViewModel.onPasswordChange(it) },
+                    if (passwordError.value != 0) stringResource(passwordError.value) else "",
+                    true
+                ) {
+                    createWalletViewModel.onSubmitPassword()
+                }
+            }
+            composable(NavigationDirections.walletMnemonic.destination) {
+                val createWalletViewModel: CreateWalletViewModel = parentViewModel(
+                    navController = navController,
+                    parentRoute = NavigationDirections.createWallet.destination
+                )
+
+                val mnemonicWords = createWalletViewModel.mnemonic
+
+                MnemonicScreen(mnemonicWords.value) {
+                    createWalletViewModel.onConfirmViewedMnemonic()
+                }
+            }
+            composable(NavigationDirections.confirmMnemonic.destination) {
+                val createWalletViewModel: CreateWalletViewModel = parentViewModel(
+                    navController = navController,
+                    parentRoute = NavigationDirections.createWallet.destination
+                )
+
+                val selectedMnemonicWords =
+                    createWalletViewModel.confirmMnemonicSelected.collectAsState()
+                val remainingMnemonicWords =
+                    createWalletViewModel.confirmMnemonicRemaining.collectAsState()
+                val mnemonicError =
+                    createWalletViewModel.confirmMnemonicError.collectAsState()
+
+                ConfirmMnemonicScreen(
+                    remainingMnemonicWords.value,
+                    selectedMnemonicWords.value,
+                    mnemonicError = getErrorStringResource(mnemonicError.value),
+                    onAddWord = {
+                        createWalletViewModel.onAddConfirmMnemonicWord(it)
+                    },
+                    onRemoveWord = {
+                        createWalletViewModel.onRemoveConfirmMnemonicWord(
+                            it
+                        )
+                    },
+                ) {
+                    createWalletViewModel.onConfirmMnemonic()
                 }
             }
         }

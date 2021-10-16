@@ -1,6 +1,7 @@
 package com.linh.titledeed
 
 import androidx.navigation.NamedNavArgument
+import timber.log.Timber
 
 object NavigationDirections {
     val welcome = object : NavigationDirection() {
@@ -20,12 +21,12 @@ object NavigationDirections {
         }
     }
 
-    val wallet = object : NavigationDirection() {
+    val onboardWallet = object : NavigationDirection() {
         override val arguments: List<NamedNavArgument>
             get() = emptyList()
 
         override val destination: String
-            get() = "wallet"
+            get() = "onboard_wallet"
 
         override val isBottomNavigationItem: Boolean = false
 
@@ -122,6 +123,19 @@ object NavigationDirections {
         }
     }
 
+    val main = object : NavigationDirection() {
+        override val arguments: List<NamedNavArgument>
+            get() = emptyList()
+
+        override val destination: String
+            get() = "main"
+
+        override val isBottomNavigationItem: Boolean = false
+
+        override val screenNameRes: Int
+            get() = R.string.all_wallet
+    }
+
     val home = object : NavigationDirection() {
         override val arguments: List<NamedNavArgument>
             get() = emptyList()
@@ -129,7 +143,20 @@ object NavigationDirections {
         override val destination: String
             get() = "home"
 
-        override val isBottomNavigationItem: Boolean = false
+        override val isBottomNavigationItem: Boolean = true
+
+        override val screenNameRes: Int
+            get() = R.string.all_home
+    }
+
+    val wallet = object : NavigationDirection() {
+        override val arguments: List<NamedNavArgument>
+            get() = emptyList()
+
+        override val destination: String
+            get() = "wallet"
+
+        override val isBottomNavigationItem: Boolean = true
 
         override val screenNameRes: Int
             get() = R.string.all_wallet
@@ -145,9 +172,7 @@ abstract class NavigationDirection {
     abstract val isBottomNavigationItem: Boolean
     abstract val screenNameRes: Int
 
-    //Support navigating back
-    //Fix issue with StateFlow won't emitting same value twice
     override fun equals(other: Any?): Boolean {
-        return false
+        return this.hashCode() == other.hashCode()
     }
 }

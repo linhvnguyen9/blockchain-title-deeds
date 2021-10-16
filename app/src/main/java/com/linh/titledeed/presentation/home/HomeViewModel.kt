@@ -1,4 +1,4 @@
-package com.linh.titledeed.presentation
+package com.linh.titledeed.presentation.home
 
 import androidx.lifecycle.ViewModel
 import com.linh.titledeed.domain.entity.Wallet

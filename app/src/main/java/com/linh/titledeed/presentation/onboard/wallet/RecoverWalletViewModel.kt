@@ -51,7 +51,7 @@ class RecoverWalletViewModel @Inject constructor(private val restoreWalletUseCas
 
             if (!hasError) {
                 restoreWalletUseCase(password.value, mnemonic.value)
-                navigationManager.navigate(NavigationDirections.home)
+                navigationManager.navigate(NavigationDirections.main)
             }
         }
     }
