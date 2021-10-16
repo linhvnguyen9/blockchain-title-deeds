@@ -29,8 +29,8 @@ object DataModule {
 
     @Singleton
     @Provides
-    fun provideTokenContractService(application: Application): WalletService {
-        return WalletService(application)
+    fun provideTokenContractService(web3j: Web3j, application: Application): WalletService {
+        return WalletService(web3j, application)
     }
 
     @Singleton

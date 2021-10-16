@@ -35,6 +35,13 @@ object EncryptedSharedPreference {
         return Hawk.get(KEY_WALLET_MNEMONIC, "")
     }
 
+    fun clearWalletData() {
+        Hawk.delete(KEY_WALLET_ADDRESS)
+        Hawk.delete(KEY_WALLET_PRIVATE_KEY)
+        Hawk.delete(KEY_WALLET_PASSWORD)
+        Hawk.delete(KEY_WALLET_MNEMONIC)
+    }
+
     private const val KEY_WALLET_ADDRESS = "KEY_WALLET_ADDRESS"
     private const val KEY_WALLET_PRIVATE_KEY = "KEY_WALLET_PRIVATE_KEY"
     private const val KEY_WALLET_PASSWORD = "KEY_WALLET_PASSWORD"
