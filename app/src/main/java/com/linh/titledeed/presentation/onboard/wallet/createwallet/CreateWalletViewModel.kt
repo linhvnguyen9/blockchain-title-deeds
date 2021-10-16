@@ -82,7 +82,7 @@ class CreateWalletViewModel @Inject constructor(
     fun onConfirmMnemonic() {
         if (confirmMnemonicSelected.value == mnemonic.value) {
             viewModelScope.launch {
-                val navCommand = NavigationCommand(NavigationDirections.home, NavigationDirections.default, true)
+                val navCommand = NavigationCommand(NavigationDirections.main, NavigationDirections.default, true)
                 saveWalletUseCase(wallet.value)
                 navigationManager.navigate(navCommand)
             }
