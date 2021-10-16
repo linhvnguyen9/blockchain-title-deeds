@@ -18,10 +18,12 @@ import androidx.navigation.compose.rememberNavController
 import com.linh.titledeed.NavigationDirections
 import com.linh.titledeed.R
 import com.linh.titledeed.presentation.home.HomeViewModel
+import com.linh.titledeed.presentation.utils.convertToBalanceString
 import com.linh.titledeed.presentation.wallet.WalletScreen
 import com.linh.titledeed.presentation.wallet.WalletViewModel
 import timber.log.Timber
 
+@ExperimentalMaterialApi
 @Composable
 fun MainScreen(
     navigationManager: NavigationManager,
@@ -78,9 +80,13 @@ fun MainScreen(
                 composable(NavigationDirections.wallet.destination) {
                     val walletViewModel: WalletViewModel = hiltViewModel()
 
-                    val wallet = walletViewModel.wallet.collectAsState()
+                    val wallet = walletViewModel.wallet.collectAsState().value
+                    val ethBalance = wallet.balance.convertToBalanceString()
 
-                    WalletScreen(wallet.value)
+                    WalletScreen(
+                        wallet,
+                        ethBalance,
+                        onClickLogout = { walletViewModel.onClickLogout() })
                 }
             }
         }

@@ -3,6 +3,7 @@ package com.linh.titledeed.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -30,6 +31,7 @@ import com.linh.titledeed.presentation.utils.parentViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@ExperimentalMaterialApi
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @Inject
@@ -102,8 +104,18 @@ class MainActivity : ComponentActivity() {
                     if (command.direction.destination.isNotEmpty() && !command.direction.isBottomNavigationItem) {
                         navController.navigate(command.direction.destination) {
                             if (command.popUpTo != null) {
-                                popUpTo(command.popUpTo.destination) {
-                                    inclusive = command.inclusive
+                                if (command.popUpTo == NavigationDirections.current) {
+                                    val currentRoute =
+                                        navController.currentBackStackEntry?.destination?.route
+                                    currentRoute?.let { route ->
+                                        popUpTo(route) {
+                                            inclusive = command.inclusive
+                                        }
+                                    }
+                                } else {
+                                    popUpTo(command.popUpTo.destination) {
+                                        inclusive = command.inclusive
+                                    }
                                 }
                             }
                         }

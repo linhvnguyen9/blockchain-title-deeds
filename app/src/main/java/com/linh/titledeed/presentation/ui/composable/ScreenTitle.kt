@@ -20,5 +20,5 @@ fun ScreenTitle(title: String, subtitle: String = "") {
             style = MaterialTheme.typography.subtitle1
         )
     }
-    Spacer(Modifier.height(32.dp))
+    Spacer(Modifier.height(40.dp))
 }

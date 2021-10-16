@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="all_wallet_address">Địa chỉ ví</string>
+    <string name="all_password">Mật khẩu</string>
+    <string name="all_confirm_password">Xác nhận mật khẩu</string>
+    <string name="all_logout">Đăng xuất</string>
+</resources>

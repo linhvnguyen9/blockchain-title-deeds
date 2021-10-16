@@ -162,6 +162,20 @@ object NavigationDirections {
             get() = R.string.all_wallet
     }
 
+    //Special direction for navigate back inclusive
+    val current = object : NavigationDirection() {
+        override val arguments: List<NamedNavArgument>
+            get() = emptyList()
+
+        override val destination: String
+            get() = ""
+
+        override val isBottomNavigationItem: Boolean = false
+
+        override val screenNameRes: Int
+            get() = R.string.all_wallet
+    }
+
     val default = welcome
 }
 

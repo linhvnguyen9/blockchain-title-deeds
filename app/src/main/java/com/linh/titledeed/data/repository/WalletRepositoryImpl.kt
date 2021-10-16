@@ -1,11 +1,13 @@
 package com.linh.titledeed.data.repository
 
+import com.linh.titledeed.NavigationDirections.wallet
 import com.linh.titledeed.data.contract.WalletService
 import com.linh.titledeed.data.local.EncryptedSharedPreference
 import com.linh.titledeed.domain.entity.Wallet
 import com.linh.titledeed.domain.repository.WalletRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.math.BigInteger
 import javax.inject.Inject
 
 class WalletRepositoryImpl @Inject constructor(private val walletService: WalletService): WalletRepository {
@@ -35,5 +37,13 @@ class WalletRepositoryImpl @Inject constructor(private val walletService: Wallet
         val password = EncryptedSharedPreference.getWalletPassword()
 
         return Wallet(password, mnemonic, privateKey, address)
+    }
+
+    override fun logoutWallet() {
+        EncryptedSharedPreference.clearWalletData()
+    }
+
+    override suspend fun getWalletBalance(address: String): BigInteger {
+        return walletService.getEthBalance(address)
     }
 }
