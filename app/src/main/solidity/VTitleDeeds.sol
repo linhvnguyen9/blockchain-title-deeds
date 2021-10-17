@@ -8,6 +8,20 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 
 contract VTitleDeeds is ERC721, ERC721Enumerable, Pausable, Ownable, ERC721Burnable {
+    event DeedOffered(uint indexed itemId, uint price);
+    event DeedBought(uint indexed itemId, uint value, address indexed fromAddress, address indexed toAddress);
+    event DeedNoLongerForSale(uint indexed itemId);
+
+    struct Offer {
+        address seller;
+        uint256 itemId;
+        uint256 price;
+        bool isForSale;
+    }
+
+    mapping(uint => Offer) public deedsOfferedForSale;
+    mapping(address => uint) public pendingWithdrawals;
+
     constructor() ERC721("VTitleDeeds", "VTD") {}
 
     function _baseURI() internal pure override returns (string memory) {
@@ -24,6 +38,37 @@ contract VTitleDeeds is ERC721, ERC721Enumerable, Pausable, Ownable, ERC721Burna
 
     function safeMint(address to, uint256 tokenId) public onlyOwner {
         _safeMint(to, tokenId);
+    }
+
+    function offerForSale(uint itemId, uint salePriceInWei) public {
+        require(ownerOf(itemId) == msg.sender, "You're not the owner of this token");
+        deedsOfferedForSale[itemId] = Offer(msg.sender, itemId, salePriceInWei, true);
+        emit DeedOffered(itemId, salePriceInWei);
+    }
+
+    function closeSaleOffer(uint itemId) public {
+        require(ownerOf(itemId) == msg.sender, "You're not the owner of this token");
+        deedsOfferedForSale[itemId] = Offer(msg.sender, itemId, 0, false);
+        emit DeedNoLongerForSale(itemId);
+    }
+
+    function buyDeed(uint itemId) payable public {
+        Offer memory offer = deedsOfferedForSale[itemId];
+        require(offer.isForSale, "This token is not offered for sale");
+        require(msg.value >= offer.price, "Didn't send enough ETH");
+        require(offer.seller == ownerOf(itemId), "Seller no longer owner of token");
+
+        address seller = offer.seller;
+
+        safeTransferFrom(seller, msg.sender, itemId);
+
+        closeSaleOffer(itemId);
+        pendingWithdrawals[seller] += msg.value;
+        emit DeedBought(itemId, msg.value, seller, msg.sender);
+
+        if (msg.value > offer.price) {
+            pendingWithdrawals[msg.sender] += msg.value - offer.price;
+        }
     }
 
     function _beforeTokenTransfer(address from, address to, uint256 tokenId)
@@ -43,5 +88,17 @@ contract VTitleDeeds is ERC721, ERC721Enumerable, Pausable, Ownable, ERC721Burna
     returns (bool)
     {
         return super.supportsInterface(interfaceId);
+    }
+
+    // Override transfer, cancel trade when transfer deed
+    function _transfer(address from,
+        address to,
+        uint256 tokenId
+    ) override internal virtual {
+        super._transfer(from, to, tokenId);
+
+        if (deedsOfferedForSale[tokenId].isForSale) {
+            closeSaleOffer(tokenId);
+        }
     }
 }
