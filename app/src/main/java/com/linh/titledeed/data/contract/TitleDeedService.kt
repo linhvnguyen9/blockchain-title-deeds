@@ -53,7 +53,7 @@ class TitleDeedService(wallet: Wallet) {
 
     companion object {
         private const val ERC721_SMART_CONTRACT_ADDRESS =
-            "0x6aec55c34fcd7f874237becb83e2a2671caa06b9"
+            "0x920c82F4F0F9fECa8055eBC94C04eBdE62aeF616"
 
         private val ETH_DECIMALS = BigInteger("1000000000000000000")
     }
