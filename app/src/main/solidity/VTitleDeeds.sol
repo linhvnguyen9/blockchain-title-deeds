@@ -6,8 +6,9 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
-contract VTitleDeeds is ERC721, ERC721Enumerable, Pausable, Ownable, ERC721Burnable {
+contract VTitleDeeds is ERC721, ERC721Enumerable, Pausable, Ownable, ERC721Burnable, ERC721URIStorage {
     event DeedOffered(uint indexed itemId, uint price);
     event DeedBought(uint indexed itemId, uint value, address indexed fromAddress, address indexed toAddress);
     event DeedNoLongerForSale(uint indexed itemId);
@@ -36,8 +37,9 @@ contract VTitleDeeds is ERC721, ERC721Enumerable, Pausable, Ownable, ERC721Burna
         _unpause();
     }
 
-    function safeMint(address to, uint256 tokenId) public onlyOwner {
+    function safeMint(address to, uint256 tokenId, string memory _tokenURI) public onlyOwner {
         _safeMint(to, tokenId);
+        _setTokenURI(tokenId, _tokenURI);
     }
 
     function offerForSale(uint itemId, uint salePriceInWei) public {
@@ -88,6 +90,19 @@ contract VTitleDeeds is ERC721, ERC721Enumerable, Pausable, Ownable, ERC721Burna
     returns (bool)
     {
         return super.supportsInterface(interfaceId);
+    }
+
+    function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
+        super._burn(tokenId);
+    }
+
+    function tokenURI(uint256 tokenId)
+    public
+    view
+    override(ERC721, ERC721URIStorage)
+    returns (string memory)
+    {
+        return super.tokenURI(tokenId);
     }
 
     // Override transfer, cancel trade when transfer deed
