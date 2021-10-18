@@ -19,6 +19,12 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+
+        def apikeyPropertiesFile = rootProject.file("pinata.properties")
+        def apikeyProperties = new Properties()
+        apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
+
+        buildConfigField("String", "PINATA_JWT", apikeyProperties['PINATA_JWT'])
     }
 
     buildTypes {
