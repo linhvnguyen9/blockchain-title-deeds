@@ -2,6 +2,7 @@ package com.linh.titledeed.data.di
 
 import android.app.Application
 import com.linh.titledeed.data.contract.WalletService
+import com.linh.titledeed.data.remote.AuthInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -73,9 +74,16 @@ object DataModule {
 
     @Singleton
     @Provides
-    fun provideOkhttp(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+    fun provideAuthInterceptor(): AuthInterceptor {
+        return AuthInterceptor()
+    }
+
+    @Singleton
+    @Provides
+    fun provideOkhttp(loggingInterceptor: HttpLoggingInterceptor, authInterceptor: AuthInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
+            .addInterceptor(authInterceptor)
             .build()
     }
 
@@ -83,7 +91,7 @@ object DataModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://my-json-server.typicode.com/")
+            .baseUrl("https://api.pinata.cloud/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
