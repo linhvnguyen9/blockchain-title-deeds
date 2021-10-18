@@ -73,6 +73,15 @@ contract VTitleDeeds is ERC721, ERC721Enumerable, Pausable, Ownable, ERC721Burna
         }
     }
 
+    function withdraw() public {
+        require(pendingWithdrawals[msg.sender] != 0, "There's no funds to withdraw");
+        uint amount = pendingWithdrawals[msg.sender];
+        // Remember to zero the pending refund before
+        // sending to prevent re-entrancy attacks
+        pendingWithdrawals[msg.sender] = 0;
+        payable(msg.sender).transfer(amount);
+    }
+
     function _beforeTokenTransfer(address from, address to, uint256 tokenId)
     internal
     whenNotPaused
