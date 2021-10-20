@@ -27,7 +27,7 @@ import com.linh.titledeed.presentation.utils.getTruncatedAddress
 
 @ExperimentalMaterialApi
 @Composable
-fun WalletScreen(wallet: Wallet, ethBalance: String, onClickLogout: () -> Unit) {
+fun WalletScreen(wallet: Wallet, ethBalance: String, onClickLogout: () -> Unit, onClickViewOwnedDeeds: () -> Unit) {
     Column(
         screenModifier
             .then(Modifier.verticalScroll(rememberScrollState()))
@@ -37,6 +37,9 @@ fun WalletScreen(wallet: Wallet, ethBalance: String, onClickLogout: () -> Unit) 
         WalletInfo(ethBalance, wallet)
 
         Spacer(Modifier.height(16.dp))
+        TextButton(onClick = { onClickViewOwnedDeeds() }) {
+            Text("Owned deeds")
+        }
         TextButton(onClick = { onClickLogout() }) {
             Text(stringResource(R.string.all_logout))
         }

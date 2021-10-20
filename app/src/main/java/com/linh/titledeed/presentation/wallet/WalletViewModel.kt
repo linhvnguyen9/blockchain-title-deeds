@@ -3,6 +3,7 @@ package com.linh.titledeed.presentation.wallet
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
+import com.linh.titledeed.NavigationDirection
 import com.linh.titledeed.NavigationDirections
 import com.linh.titledeed.domain.entity.Wallet
 import com.linh.titledeed.domain.usecase.GetEthBalanceUseCase
@@ -33,16 +34,20 @@ class WalletViewModel @Inject constructor(
         getWallet()
     }
 
-    fun onClickLogout() {
-        navigationManager.navigate(NavigationCommand(NavigationDirections.onboardWallet, NavigationDirections.main, true))
-        logoutWalletUseCase()
-    }
-
     private fun getWallet() {
         viewModelScope.launch {
             val wallet = getWalletInfoUseCase()
             val balance = getEthBalanceUseCase(wallet.address)
             _wallet.value = wallet.copy(balance = balance)
         }
+    }
+
+    fun onClickLogout() {
+        logoutWalletUseCase()
+        navigationManager.navigate(NavigationCommand(NavigationDirections.onboardWallet, NavigationDirections.main, true))
+    }
+
+    fun onClickViewOwnedDeeds() {
+        navigationManager.navigate(NavigationDirections.ownedDeeds)
     }
 }

@@ -1,4 +1,11 @@
 {
-  "title": "Giấy chứng nhận quyền sử dụng đất",
-  "image": "ipfs://QmV3MZUZKtt8eA5YkRnNLXzHrCPbuXGRsSkSvGaoHMEwhj"
+  "landNo": 3,
+  "mapNo": 4,
+  "isShared": false,
+  "purpose": "residential",
+  "image": "ipfs://QmV3MZUZKtt8eA5YkRnNLXzHrCPbuXGRsSkSvGaoHMEwhj",
+  "address": "123 Nguyễn Trãi, Hà Đông, Hà Nội",
+  "issueDate": "2012-04-23T18:25:43.511Z",
+  "areaInSquareMeters": 34.3,
+  "note": ""
 }
