@@ -3,6 +3,7 @@ package com.linh.titledeed.data.di
 import android.app.Application
 import com.linh.titledeed.data.contract.WalletService
 import com.linh.titledeed.data.remote.AuthInterceptor
+import com.linh.titledeed.data.remote.IpfsService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,6 +17,7 @@ import org.web3j.protocol.http.HttpService
 import org.web3j.tx.gas.ContractGasProvider
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import java.math.BigInteger
 import javax.inject.Singleton
 
@@ -95,5 +97,11 @@ object DataModule {
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideIpfsService(retrofit: Retrofit): IpfsService {
+        return retrofit.create(IpfsService::class.java)
     }
 }

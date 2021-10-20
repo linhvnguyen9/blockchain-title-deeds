@@ -19,6 +19,8 @@ import com.linh.titledeed.NavigationDirections
 import com.linh.titledeed.R
 import com.linh.titledeed.presentation.home.HomeViewModel
 import com.linh.titledeed.presentation.utils.convertToBalanceString
+import com.linh.titledeed.presentation.wallet.OwnedDeedsScreen
+import com.linh.titledeed.presentation.wallet.OwnedDeedsViewModel
 import com.linh.titledeed.presentation.wallet.WalletScreen
 import com.linh.titledeed.presentation.wallet.WalletViewModel
 import timber.log.Timber
@@ -86,7 +88,16 @@ fun MainScreen(
                     WalletScreen(
                         wallet,
                         ethBalance,
-                        onClickLogout = { walletViewModel.onClickLogout() })
+                        onClickLogout = { walletViewModel.onClickLogout() },
+                        onClickViewOwnedDeeds = { walletViewModel.onClickViewOwnedDeeds() }
+                    )
+                }
+                composable(NavigationDirections.ownedDeeds.destination) {
+                    val ownedDeedsViewModel: OwnedDeedsViewModel = hiltViewModel()
+
+                    val deeds = ownedDeedsViewModel.deeds.collectAsState()
+
+                    OwnedDeedsScreen(deeds.value)
                 }
             }
         }

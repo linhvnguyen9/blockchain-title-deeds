@@ -162,6 +162,19 @@ object NavigationDirections {
             get() = R.string.all_wallet
     }
 
+    val ownedDeeds = object : NavigationDirection() {
+        override val arguments: List<NamedNavArgument>
+            get() = emptyList()
+
+        override val destination: String
+            get() = "owned_deeds"
+
+        override val isBottomNavigationItem: Boolean = true
+
+        override val screenNameRes: Int
+            get() = R.string.all_wallet
+    }
+
     //Special direction for navigate back inclusive
     val current = object : NavigationDirection() {
         override val arguments: List<NamedNavArgument>

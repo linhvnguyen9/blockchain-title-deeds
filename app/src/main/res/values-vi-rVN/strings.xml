@@ -4,4 +4,7 @@
     <string name="all_password">Mật khẩu</string>
     <string name="all_confirm_password">Xác nhận mật khẩu</string>
     <string name="all_logout">Đăng xuất</string>
+    <string name="land_purpose_residential">"Đất thổ cư "</string>
+    <string name="land_purpose_agricultural">Đất nông nghiệp</string>
+    <string name="land_purpose_non_agricultural">Đất phi nông nghiệp</string>
 </resources>
