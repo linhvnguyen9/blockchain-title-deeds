@@ -22,6 +22,9 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.material.placeholder
+import com.google.accompanist.placeholder.material.shimmer
 import com.linh.titledeed.R
 import com.linh.titledeed.domain.entity.Deed
 import com.linh.titledeed.domain.entity.LandPurpose
@@ -32,7 +35,7 @@ import timber.log.Timber
 
 @ExperimentalMaterialApi
 @Composable
-fun OwnedDeedsScreen(deeds: List<Deed>, onClickDeed: (Deed) -> Unit) {
+fun OwnedDeedsScreen(deeds: List<Deed>?, onClickDeed: (Deed) -> Unit) {
     Column(Modifier.then(screenModifier)) {
         ScreenTitle("Owned deeds")
         OwnedDeedsList(deeds, onClickDeed)
@@ -41,16 +44,23 @@ fun OwnedDeedsScreen(deeds: List<Deed>, onClickDeed: (Deed) -> Unit) {
 
 @ExperimentalMaterialApi
 @Composable
-private fun OwnedDeedsList(deeds: List<Deed>, onClickDeed: (Deed) -> Unit) {
+private fun OwnedDeedsList(deeds: List<Deed>?, onClickDeed: (Deed) -> Unit) {
     Timber.d("Received deeds $deeds")
 
     LazyColumn(Modifier.fillMaxSize()) {
-        itemsIndexed(deeds) { index, item ->
-            OwnedDeedItem(item) {
-                onClickDeed(item)
-            }
-            if (index < deeds.size - 1) {
+        if (deeds == null) {
+            items(PLACEHOLDER_COUNT) {
+                OwnedDeedItem(null) {}
                 Spacer(Modifier.height(12.dp))
+            }
+        } else {
+            itemsIndexed(deeds) { index, item ->
+                OwnedDeedItem(item) {
+                    onClickDeed(item)
+                }
+                if (index < deeds.size - 1) {
+                    Spacer(Modifier.height(12.dp))
+                }
             }
         }
     }
@@ -58,7 +68,10 @@ private fun OwnedDeedsList(deeds: List<Deed>, onClickDeed: (Deed) -> Unit) {
 
 @ExperimentalMaterialApi
 @Composable
-fun OwnedDeedItem(deed: Deed, onClickDeed: () -> Unit) {
+fun OwnedDeedItem(deed: Deed?, onClickDeed: () -> Unit) {
+    val placeholderVisible = deed == null
+    val placeholderModifier = Modifier.placeholder(placeholderVisible, highlight = PlaceholderHighlight.shimmer())
+
     Card(
         onClick = {
             onClickDeed()
@@ -70,23 +83,24 @@ fun OwnedDeedItem(deed: Deed, onClickDeed: () -> Unit) {
                 .padding(8.dp)
                 .fillMaxWidth()
         ) {
-            Text(deed.address, style = MaterialTheme.typography.h6)
+            Text(deed?.address ?: "", Modifier.fillMaxWidth().then(placeholderModifier), style = MaterialTheme.typography.h6)
             Spacer(Modifier.height(8.dp))
-            Row {
+            Row(Modifier.fillMaxWidth().then(placeholderModifier)) {
                 Text(
                     buildAnnotatedString {
-                        append(deed.areaInSquareMeters.toString() + " m")
+                        append(deed?.areaInSquareMeters.toString() + " m")
                         withStyle(superscript) {
                             append("2")
                         }
                     },
                     style = MaterialTheme.typography.body1
                 )
-                Text("-", Modifier.padding(horizontal = 8.dp), style = MaterialTheme.typography.body1)
-                val purpose = when (deed.purpose) {
+                Text("-", Modifier.padding(horizontal = 8.dp).then(placeholderModifier), style = MaterialTheme.typography.body1)
+                val purpose = when (deed?.purpose) {
                     LandPurpose.RESIDENTIAL -> stringResource(R.string.land_purpose_residential)
                     LandPurpose.AGRICULTURAL -> stringResource(R.string.land_purpose_agricultural)
                     LandPurpose.NON_AGRICULTURAL -> stringResource(R.string.land_purpose_non_agricultural)
+                    else -> ""
                 }
                 Text(purpose, style = MaterialTheme.typography.body1)
             }
@@ -122,3 +136,5 @@ fun OwnedDeedsScreenPreview() {
         }
     }
 }
+
+const val PLACEHOLDER_COUNT = 6
