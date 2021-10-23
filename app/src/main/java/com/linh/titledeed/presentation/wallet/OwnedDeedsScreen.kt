@@ -1,9 +1,11 @@
 package com.linh.titledeed.presentation.wallet
 
+import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -16,6 +18,8 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.linh.titledeed.R
@@ -26,21 +30,25 @@ import com.linh.titledeed.presentation.ui.theme.screenModifier
 import com.linh.titledeed.presentation.ui.theme.superscript
 import timber.log.Timber
 
+@ExperimentalMaterialApi
 @Composable
-fun OwnedDeedsScreen(deeds: List<Deed>) {
+fun OwnedDeedsScreen(deeds: List<Deed>, onClickDeed: (Deed) -> Unit) {
     Column(Modifier.then(screenModifier)) {
         ScreenTitle("Owned deeds")
-        OwnedDeedsList(deeds)
+        OwnedDeedsList(deeds, onClickDeed)
     }
 }
 
+@ExperimentalMaterialApi
 @Composable
-private fun OwnedDeedsList(deeds: List<Deed>) {
+private fun OwnedDeedsList(deeds: List<Deed>, onClickDeed: (Deed) -> Unit) {
     Timber.d("Received deeds $deeds")
 
     LazyColumn(Modifier.fillMaxSize()) {
         itemsIndexed(deeds) { index, item ->
-            OwnedDeedItem(item)
+            OwnedDeedItem(item) {
+                onClickDeed(item)
+            }
             if (index < deeds.size - 1) {
                 Spacer(Modifier.height(12.dp))
             }
@@ -48,9 +56,15 @@ private fun OwnedDeedsList(deeds: List<Deed>) {
     }
 }
 
+@ExperimentalMaterialApi
 @Composable
-fun OwnedDeedItem(deed: Deed) {
-    Card(Modifier.fillMaxWidth()) {
+fun OwnedDeedItem(deed: Deed, onClickDeed: () -> Unit) {
+    Card(
+        onClick = {
+            onClickDeed()
+        },
+        Modifier.fillMaxWidth()
+    ) {
         Column(
             Modifier
                 .padding(8.dp)
@@ -80,6 +94,7 @@ fun OwnedDeedItem(deed: Deed) {
     }
 }
 
+@ExperimentalMaterialApi
 @Preview
 @Composable
 fun OwnedDeedsScreenPreview() {
@@ -87,6 +102,7 @@ fun OwnedDeedsScreenPreview() {
         OwnedDeedsScreen(
             listOf(
                 Deed(
+                    "1",
                     "Test",
                     "Image",
                     "",
@@ -96,8 +112,13 @@ fun OwnedDeedsScreenPreview() {
                     LandPurpose.AGRICULTURAL,
                     1,
                     1
-                ), Deed("Test 2", "Image", "", 0.0, 0, false, LandPurpose.AGRICULTURAL, 1, 1)
+                ), Deed(
+                    "1",
+                    "Test 2", "Image", "", 0.0, 0, false, LandPurpose.AGRICULTURAL, 1, 1
+                )
             )
-        )
+        ) {
+
+        }
     }
 }

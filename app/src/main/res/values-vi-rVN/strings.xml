@@ -7,4 +7,15 @@
     <string name="land_purpose_residential">"Đất thổ cư "</string>
     <string name="land_purpose_agricultural">Đất nông nghiệp</string>
     <string name="land_purpose_non_agricultural">Đất phi nông nghiệp</string>
+    <string name="all_deed">Giấy chứng nhận</string>
+    <string name="deed_detail_land_no">Thửa đất số: %1$s</string>
+    <string name="deed_detail_map_no">Tờ bản đồ số: %1$s</string>
+    <string name="deed_detail_address">Địa chỉ: %1$s</string>
+    <string name="deed_detail_area">Diện tích: %1$s</string>
+    <string name="deed_detail_ownership">Hình thức sử dụng: %1$s</string>
+    <string name="deed_detail_purpose">Mục đích sử dụng: %1$s</string>
+    <string name="deed_detail_issue_date">Ngày cấp: %1$s</string>
+    <string name="deed_detail_notes">Ghi chú:</string>
+    <string name="deed_detail_private">Sử dụng riêng</string>
+    <string name="deed_detail_shared">Sử dụng chung</string>
 </resources>

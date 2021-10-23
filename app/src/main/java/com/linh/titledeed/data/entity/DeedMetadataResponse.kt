@@ -3,6 +3,7 @@ package com.linh.titledeed.data.entity
 import androidx.compose.ui.text.toUpperCase
 import com.google.gson.annotations.SerializedName
 import com.linh.titledeed.data.utils.DateFormatUtil.timeStringToCalendar
+import com.linh.titledeed.data.utils.getHttpLinkFromIpfsUri
 import com.linh.titledeed.domain.entity.Deed
 import com.linh.titledeed.domain.entity.LandPurpose
 import java.time.LocalDate
@@ -19,9 +20,10 @@ data class DeedMetadataResponse(
     val mapNo: Int?,
     val landNo: Int?
 ) {
-    fun toDomainModel() = Deed(
+    fun toDomainModel(id: String) = Deed(
+        id,
         address ?: "",
-        imageUri ?: "",
+        getHttpLinkFromIpfsUri(imageUri ?: ""),
         note ?: "",
         areaInSquareMeters ?: 0.0,
         timeStringToCalendar(issueDate)?.timeInMillis ?: 0L,

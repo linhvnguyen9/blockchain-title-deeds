@@ -1,6 +1,7 @@
 package com.linh.titledeed.domain.entity
 
 data class Deed(
+    val id: String,
     val address: String,
     val imageUri: String,
     val note: String,

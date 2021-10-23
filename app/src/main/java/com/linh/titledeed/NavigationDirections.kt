@@ -1,6 +1,9 @@
 package com.linh.titledeed
 
 import androidx.navigation.NamedNavArgument
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
+import com.linh.titledeed.presentation.NavigationCommand
 import timber.log.Timber
 
 object NavigationDirections {
@@ -173,6 +176,29 @@ object NavigationDirections {
 
         override val screenNameRes: Int
             get() = R.string.all_wallet
+    }
+
+    object DeedDetailNavigation {
+        const val KEY_TOKEN_ID = "tokenId"
+
+        const val route = "deed_detail/{$KEY_TOKEN_ID}"
+
+        val args : List<NamedNavArgument>
+            get() = listOf(
+                navArgument(KEY_TOKEN_ID) { type = NavType.StringType }
+            )
+
+        fun detail(tokenId: String) = object : NavigationDirection() {
+            override val arguments = args
+
+            override val destination: String
+                get() = "deed_detail/$tokenId"
+
+            override val isBottomNavigationItem: Boolean = true
+
+            override val screenNameRes: Int
+                get() = R.string.app_name
+        }
     }
 
     //Special direction for navigate back inclusive
