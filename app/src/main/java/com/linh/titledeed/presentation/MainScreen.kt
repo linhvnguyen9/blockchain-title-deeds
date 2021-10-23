@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -17,6 +18,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.linh.titledeed.NavigationDirections
 import com.linh.titledeed.R
+import com.linh.titledeed.presentation.deeds.DeedDetailScreen
+import com.linh.titledeed.presentation.deeds.DeedDetailViewModel
 import com.linh.titledeed.presentation.home.HomeViewModel
 import com.linh.titledeed.presentation.utils.convertToBalanceString
 import com.linh.titledeed.presentation.wallet.OwnedDeedsScreen
@@ -97,7 +100,19 @@ fun MainScreen(
 
                     val deeds = ownedDeedsViewModel.deeds.collectAsState()
 
-                    OwnedDeedsScreen(deeds.value)
+                    OwnedDeedsScreen(deeds.value, onClickDeed = {ownedDeedsViewModel.onClickDeed(it)})
+                }
+                composable(NavigationDirections.DeedDetailNavigation.route, NavigationDirections.DeedDetailNavigation.args) {
+                    val deedDetailViewModel: DeedDetailViewModel = hiltViewModel()
+
+                    val token = it.arguments?.getString(NavigationDirections.DeedDetailNavigation.KEY_TOKEN_ID) ?: ""
+                    val deed = deedDetailViewModel.deed.collectAsState()
+
+                    LaunchedEffect(key1 = token) {
+                        deedDetailViewModel.getDeed(token)
+                    }
+
+                    DeedDetailScreen(deed.value)
                 }
             }
         }

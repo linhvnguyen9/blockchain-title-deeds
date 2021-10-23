@@ -18,6 +18,17 @@
     <string name="land_purpose_residential">Residential land</string>
     <string name="land_purpose_agricultural">Agricultural land</string>
     <string name="land_purpose_non_agricultural">Non-agricultural land</string>
+    <string name="deed_detail_land_no">Land number: %1$s</string>
+    <string name="deed_detail_map_no">Map number: %1$s</string>
+    <string name="deed_detail_address">Address: %1$s</string>
+    <string name="deed_detail_area">Area: %1$s m<sup>2</sup></string>
+    <string name="deed_detail_issue_date">Issue date: %1$s</string>
+    <string name="deed_detail_ownership">Ownership: %1$s</string>
+    <string name="deed_detail_purpose">Purpose: %1$s</string>
+    <string name="deed_detail_notes">Notes: </string>
+    <string name="deed_detail_shared">Shared</string>
+    <string name="deed_detail_private">Private</string>
+    <string name="all_deed">Deed</string>
 
     <!--    Errors-->
     <string name="error_password_blank">Password must not be blank</string>
