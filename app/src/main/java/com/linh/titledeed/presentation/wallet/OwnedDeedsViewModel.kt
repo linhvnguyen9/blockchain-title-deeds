@@ -21,8 +21,8 @@ class OwnedDeedsViewModel @Inject constructor(private val getWalletInfoUseCase: 
     private val _wallet = MutableStateFlow(Wallet("", "", "", ""))
     val wallet: StateFlow<Wallet> get() = _wallet
 
-    private val _deeds = MutableStateFlow(emptyList<Deed>())
-    val deeds : StateFlow<List<Deed>> get() = _deeds
+    private val _deeds = MutableStateFlow<List<Deed>?>(null)
+    val deeds : StateFlow<List<Deed>?> get() = _deeds
 
     init {
         viewModelScope.launch {

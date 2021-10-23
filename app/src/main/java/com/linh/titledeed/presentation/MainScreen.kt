@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -28,6 +29,7 @@ import com.linh.titledeed.presentation.wallet.WalletScreen
 import com.linh.titledeed.presentation.wallet.WalletViewModel
 import timber.log.Timber
 
+@ExperimentalComposeUiApi
 @ExperimentalMaterialApi
 @Composable
 fun MainScreen(
