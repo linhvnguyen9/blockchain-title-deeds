@@ -5,8 +5,8 @@ import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -36,62 +36,63 @@ import kotlin.math.roundToInt
 
 @ExperimentalComposeUiApi
 @Composable
-fun DeedDetailScreen(deed: Deed) {
+fun DeedDetailScreen(deed: Deed, onClickTransferOwnership: () -> Unit) {
     val isPreview = remember { mutableStateOf(false) }
-    Box {
-        Column(screenModifier.verticalScroll(rememberScrollState())) {
-            ScreenTitle(stringResource(R.string.all_deed))
-            Text(stringResource(R.string.deed_detail_land_no, deed.landNo))
-            Text(stringResource(R.string.deed_detail_map_no, deed.mapNo))
-            Text(stringResource(R.string.deed_detail_address, deed.address))
-            Text(buildAnnotatedString {
-                append(deed.areaInSquareMeters.toString() + " m")
-                withStyle(superscript) {
-                    append("2")
-                }
-            })
-            Text(stringResource(R.string.deed_detail_issue_date, DateFormatUtil.formatDate(Calendar.getInstance().apply { timeInMillis = deed.issueDate })))
-            val ownership =
-                if (deed.isShared) stringResource(R.string.deed_detail_shared) else stringResource(R.string.deed_detail_private)
-            Text(
-                stringResource(
-                    R.string.deed_detail_ownership,
-                    ownership
-                )
-            )
-            val purpose = when (deed.purpose) {
-                LandPurpose.RESIDENTIAL -> stringResource(R.string.land_purpose_residential)
-                LandPurpose.AGRICULTURAL -> stringResource(R.string.land_purpose_agricultural)
-                LandPurpose.NON_AGRICULTURAL -> stringResource(R.string.land_purpose_non_agricultural)
+    Column(screenModifier.verticalScroll(rememberScrollState())) {
+        ScreenTitle(stringResource(R.string.all_deed))
+        Text(stringResource(R.string.deed_detail_land_no, deed.landNo))
+        Text(stringResource(R.string.deed_detail_map_no, deed.mapNo))
+        Text(stringResource(R.string.deed_detail_address, deed.address))
+        Text(buildAnnotatedString {
+            append(deed.areaInSquareMeters.toString() + " m")
+            withStyle(superscript) {
+                append("2")
             }
-            Text(
-                stringResource(
-                    R.string.deed_detail_purpose,
-                    purpose
-                )
+        })
+        Text(stringResource(R.string.deed_detail_issue_date, DateFormatUtil.formatDate(Calendar.getInstance().apply { timeInMillis = deed.issueDate })))
+        val ownership =
+            if (deed.isShared) stringResource(R.string.deed_detail_shared) else stringResource(R.string.deed_detail_private)
+        Text(
+            stringResource(
+                R.string.deed_detail_ownership,
+                ownership
             )
-            Text(stringResource(R.string.deed_detail_notes))
-            Text(deed.note)
-            Spacer(Modifier.height(4.dp))
-            Divider()
-            Spacer(Modifier.height(16.dp))
-
-            Image(
-                painter = rememberImagePainter(deed.imageUri, builder = {
-                    crossfade(true)
-                    placeholder(R.drawable.ic_baseline_image_24)
-                }),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(300.dp)
-                    .align(Alignment.CenterHorizontally)
-                    .clickable { isPreview.value = true }
-            )
+        )
+        val purpose = when (deed.purpose) {
+            LandPurpose.RESIDENTIAL -> stringResource(R.string.land_purpose_residential)
+            LandPurpose.AGRICULTURAL -> stringResource(R.string.land_purpose_agricultural)
+            LandPurpose.NON_AGRICULTURAL -> stringResource(R.string.land_purpose_non_agricultural)
         }
-        if (isPreview.value) {
-            DeedImagePreviewDialog(deed.imageUri) {
-                isPreview.value = false
-            }
+        Text(
+            stringResource(
+                R.string.deed_detail_purpose,
+                purpose
+            )
+        )
+        Text(stringResource(R.string.deed_detail_notes))
+        Text(deed.note)
+        Spacer(Modifier.height(4.dp))
+        Divider()
+        Spacer(Modifier.height(16.dp))
+        Image(
+            painter = rememberImagePainter(deed.imageUri, builder = {
+                crossfade(true)
+                placeholder(R.drawable.ic_baseline_image_24)
+            }),
+            contentDescription = null,
+            modifier = Modifier
+                .size(300.dp)
+                .align(Alignment.CenterHorizontally)
+                .clickable { isPreview.value = true }
+        )
+        Spacer(Modifier.height(32.dp))
+        TextButton(onClick = { onClickTransferOwnership() }) {
+            Text(stringResource(R.string.all_transfer))
+        }
+    }
+    if (isPreview.value) {
+        DeedImagePreviewDialog(deed.imageUri) {
+            isPreview.value = false
         }
     }
 }
@@ -169,5 +170,7 @@ fun DeedDetailScreenPreview() {
             1,
             1
         )
-    )
+    ) {
+
+    }
 }
