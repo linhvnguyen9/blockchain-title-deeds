@@ -46,4 +46,8 @@
     <string name="transaction_info_gas_cost">Gas cost:</string>
     <string name="all_cancel">Cancel</string>
     <string name="all_confirm">Confirm</string>
+    <string name="all_ok" translatable="false">OK</string>
+    <string name="transaction_info_success">Transaction successful!</string>
+    <string name="transaction_info_error">Error making transaction!</string>
+    <string name="transaction_info_loading">Making transaction…</string>
 </resources>

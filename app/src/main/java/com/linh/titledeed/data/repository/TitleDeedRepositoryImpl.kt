@@ -51,6 +51,10 @@ class TitleDeedRepositoryImpl @Inject constructor(private val ipfsService: IpfsS
         }
     }
 
+    override suspend fun transferOwnership(transaction: TransferOwnershipTransaction): String {
+        return titleDeedService.transferOwnership(transaction)
+    }
+
     private suspend fun getTokenMetadata(tokenId: BigInteger): DeedMetadataResponse {
         val metadataIpfsUri = titleDeedService.getMetadataUri(tokenId)
         val gatewayUrl = getHttpLinkFromIpfsUri(metadataIpfsUri)

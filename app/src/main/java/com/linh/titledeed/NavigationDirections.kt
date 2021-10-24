@@ -204,9 +204,11 @@ object NavigationDirections {
     object TransactionInfoNavigation {
         const val KEY_TRANSACTION_TYPE = "transactionType"
         const val KEY_RECEIVER_ADDRESS = "receiverAddress"
+        const val KEY_NAVIGATE_BACK_DESTINATION = "navigateBack"
+        const val KEY_NAVIGATE_BACK_POP_INCLUSIVE = "popInclusive"
         const val KEY_TOKEN_ID = "tokenId"
 
-        const val route = "transaction_info/{$KEY_TRANSACTION_TYPE}?$KEY_RECEIVER_ADDRESS={$KEY_RECEIVER_ADDRESS}&$KEY_TOKEN_ID={$KEY_TOKEN_ID}"
+        const val route = "transaction_info/{$KEY_TRANSACTION_TYPE}?$KEY_RECEIVER_ADDRESS={$KEY_RECEIVER_ADDRESS}&$KEY_TOKEN_ID={$KEY_TOKEN_ID}&$KEY_NAVIGATE_BACK_DESTINATION={$KEY_NAVIGATE_BACK_DESTINATION}&$KEY_NAVIGATE_BACK_POP_INCLUSIVE={$KEY_NAVIGATE_BACK_POP_INCLUSIVE}"
 
         val args: List<NamedNavArgument>
             get() = listOf(
@@ -221,14 +223,22 @@ object NavigationDirections {
                     type = NavType.StringType
                     nullable = true
                 },
+                navArgument(KEY_NAVIGATE_BACK_DESTINATION) {
+                    type = NavType.StringType
+                    nullable = true
+                },
+                navArgument(KEY_NAVIGATE_BACK_POP_INCLUSIVE) {
+                    type = NavType.BoolType
+                    defaultValue = false
+                },
             )
 
-        fun transactionInfo(transactionType: TransactionType, receiverAddress: String, tokenId: String = "") = object : NavigationDirection() {
+        fun transactionInfo(transactionType: TransactionType, receiverAddress: String, tokenId: String = "", navigateBackDestination: String = "", popInclusive: Boolean) = object : NavigationDirection() {
             override val arguments = args
 
             override val destination: String
                 get(){
-                    val value = "transaction_info/$transactionType?$KEY_RECEIVER_ADDRESS=$receiverAddress&$tokenId"
+                    val value = "transaction_info/$transactionType?$KEY_RECEIVER_ADDRESS=$receiverAddress&$tokenId&$KEY_NAVIGATE_BACK_DESTINATION=$navigateBackDestination&$KEY_NAVIGATE_BACK_POP_INCLUSIVE=$popInclusive"
                     Timber.d("transactionInfo $value")
                     return value
                 }

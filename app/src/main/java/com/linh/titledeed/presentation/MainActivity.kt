@@ -18,6 +18,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.linh.titledeed.NavigationDirections
+import com.linh.titledeed.presentation.home.HomeScreen
 import com.linh.titledeed.presentation.home.HomeViewModel
 import com.linh.titledeed.presentation.onboard.wallet.*
 import com.linh.titledeed.presentation.onboard.wallet.createwallet.ConfirmMnemonicScreen

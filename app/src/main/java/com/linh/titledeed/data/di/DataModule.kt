@@ -14,11 +14,14 @@ import org.web3j.crypto.Credentials
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.core.DefaultBlockParameterName
 import org.web3j.protocol.http.HttpService
+import org.web3j.protocol.websocket.WebSocketClient
+import org.web3j.protocol.websocket.WebSocketService
 import org.web3j.tx.gas.ContractGasProvider
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import java.math.BigInteger
+import java.net.URI
 import javax.inject.Singleton
 
 @Module
@@ -27,7 +30,10 @@ object DataModule {
     @Singleton
     @Provides
     fun provideWeb3j() : Web3j {
-        return Web3j.build(HttpService("http://192.168.1.109:8545"))
+        val webSocketClient = WebSocketClient(URI("ws://192.168.1.109:8545"))
+        val service = WebSocketService(webSocketClient, false)
+        service.connect()
+        return Web3j.build(service)
     }
 
     @Singleton

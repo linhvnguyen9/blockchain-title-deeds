@@ -8,4 +8,5 @@ interface TitleDeedRepository {
     suspend fun getAllOwnedDeeds(address: String): List<Deed>
     suspend fun getDeedDetail(tokenId: String): Deed
     suspend fun estimateGasTransferOwnership(transaction: TransferOwnershipTransaction): TransferOwnershipTransaction
+    suspend fun transferOwnership(transaction: TransferOwnershipTransaction): String
 }

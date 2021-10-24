@@ -1,4 +1,4 @@
-package com.linh.titledeed.presentation
+package com.linh.titledeed.presentation.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
