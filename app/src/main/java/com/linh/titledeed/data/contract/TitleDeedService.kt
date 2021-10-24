@@ -82,6 +82,16 @@ class TitleDeedService @Inject constructor(private val web3j: Web3j) {
             return@withContext smartContract.estimateGasSafeTransferFrom(transaction.senderAddress, transaction.receiverAddress, transaction.tokenId.toBigInteger()).send().amountUsed.toString(10)
         }
 
+    suspend fun transferOwnership(transaction: TransferOwnershipTransaction): String =
+        withContext(Dispatchers.IO) {
+            try {
+                val response = smartContract.safeTransferFrom(transaction.senderAddress, transaction.receiverAddress, transaction.tokenId.toBigInteger()).send()
+                return@withContext ""
+            } catch (e: Exception) {
+                return@withContext e.message ?: ""
+            }
+        }
+
     companion object {
         private val ETH_DECIMALS = BigInteger("1000000000000000000")
     }

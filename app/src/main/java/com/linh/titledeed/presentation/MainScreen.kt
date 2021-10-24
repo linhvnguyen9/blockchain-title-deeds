@@ -11,18 +11,17 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.*
 import com.linh.titledeed.NavigationDirections
 import com.linh.titledeed.R
-import com.linh.titledeed.domain.entity.Transaction
 import com.linh.titledeed.domain.entity.TransactionType
 import com.linh.titledeed.presentation.deeds.DeedDetailScreen
 import com.linh.titledeed.presentation.deeds.DeedDetailViewModel
 import com.linh.titledeed.presentation.deeds.TransferDeedOwnershipScreen
 import com.linh.titledeed.presentation.deeds.TransferDeedOwnershipViewModel
+import com.linh.titledeed.presentation.home.HomeScreen
 import com.linh.titledeed.presentation.home.HomeViewModel
 import com.linh.titledeed.presentation.transaction.TransactionInfoDialog
 import com.linh.titledeed.presentation.transaction.TransactionInfoViewModel
@@ -164,23 +163,29 @@ fun MainScreen(
                     val tokenId =
                         it.arguments?.getString(NavigationDirections.TransactionInfoNavigation.KEY_TOKEN_ID)
                             ?: ""
+                    val navigateBackDestination =
+                        it.arguments?.getString(NavigationDirections.TransactionInfoNavigation.KEY_NAVIGATE_BACK_DESTINATION)
+                            ?: ""
 
                     Timber.d("Navigate to dialog transactionType $transactionType receiverAddress $receiverAddress tokenId $tokenId")
 
                     val transaction = transactionInfoViewModel.transaction.collectAsState()
+                    val transactionResponse = transactionInfoViewModel.transactionResponse.collectAsState()
 
                     LaunchedEffect(key1 = transactionType, key2 = receiverAddress) {
                         transactionInfoViewModel.getTransactionDetail(
                             transactionType,
                             receiverAddress,
-                            tokenId
+                            tokenId,
+                            navigateBackDestination
                         )
                     }
 
                     TransactionInfoDialog(
                         transaction.value,
-                        onConfirm = { /*TODO*/ },
-                        onDismiss = { transactionInfoViewModel.onDismiss() }
+                        transactionResponse.value,
+                        onConfirm = { transactionInfoViewModel.onConfirm() },
+                        onDismiss = { transactionInfoViewModel.onDismiss(it) }
                     )
                 }
             }
@@ -188,7 +193,11 @@ fun MainScreen(
 
         navigationManager.commands.collectAsState().value.also { command ->
             if (command?.direction == NavigationDirections.back) {
-                navController.popBackStack()
+                if (command.popUpTo?.destination != null) {
+                    navController.popBackStack(command.popUpTo.destination, command.inclusive)
+                } else {
+                    navController.popBackStack()
+                }
             } else {
                 command?.let {
                     if (it.direction.destination.isNotEmpty() && it.direction.isBottomNavigationItem) {

@@ -1,8 +1,10 @@
 package com.linh.titledeed.presentation.deeds
 
 import androidx.lifecycle.ViewModel
+import androidx.navigation.Navigation
 import com.linh.titledeed.NavigationDirections
 import com.linh.titledeed.domain.entity.TransactionType
+import com.linh.titledeed.presentation.NavigationCommand
 import com.linh.titledeed.presentation.NavigationManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,12 +29,10 @@ class TransferDeedOwnershipViewModel @Inject constructor(private val navigationM
         //TODO: Check for receiver address that is the same as the owner
         //TODO: Check for receiver address that is too short / invalid
 
-        Timber.d("onClickSubmit receiverAddress ${receiverAddress.value}")
-        navigationManager.navigate(
-            NavigationDirections.TransactionInfoNavigation.transactionInfo(
-                TransactionType.TRANSFER_OWNERSHIP, receiverAddress.value, tokenId
-            )
+        val navDirection = NavigationDirections.TransactionInfoNavigation.transactionInfo(
+            TransactionType.TRANSFER_OWNERSHIP, receiverAddress.value, tokenId, NavigationDirections.ownedDeeds.destination, false
         )
+        navigationManager.navigate(NavigationCommand(navDirection, NavigationDirections.ownedDeeds, true))
     }
 
     fun setTokenId(tokenId: String) {
