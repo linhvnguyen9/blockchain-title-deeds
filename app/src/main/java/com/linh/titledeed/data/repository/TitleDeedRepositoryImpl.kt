@@ -6,6 +6,8 @@ import com.linh.titledeed.data.local.EncryptedSharedPreference
 import com.linh.titledeed.data.remote.IpfsService
 import com.linh.titledeed.data.utils.getHttpLinkFromIpfsUri
 import com.linh.titledeed.domain.entity.Deed
+import com.linh.titledeed.domain.entity.Transaction
+import com.linh.titledeed.domain.entity.TransferOwnershipTransaction
 import com.linh.titledeed.domain.entity.Wallet
 import com.linh.titledeed.domain.repository.TitleDeedRepository
 import timber.log.Timber
@@ -39,6 +41,14 @@ class TitleDeedRepositoryImpl @Inject constructor(private val ipfsService: IpfsS
     override suspend fun getDeedDetail(tokenId: String): Deed {
         Timber.d("getDeedDetail() tokenId $tokenId")
         return getTokenMetadata(tokenId.toBigInteger()).toDomainModel(tokenId)
+    }
+
+    override suspend fun estimateGasTransferOwnership(transaction: TransferOwnershipTransaction): TransferOwnershipTransaction {
+        val gasPrice = titleDeedService.estimateGasTransferOwnership(transaction)
+
+        transaction.apply {
+            return TransferOwnershipTransaction(gasPrice, senderAddress, receiverAddress, tokenId)
+        }
     }
 
     private suspend fun getTokenMetadata(tokenId: BigInteger): DeedMetadataResponse {

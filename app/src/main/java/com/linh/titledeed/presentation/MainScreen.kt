@@ -11,6 +11,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.*
@@ -126,10 +127,20 @@ fun MainScreen(
                         deedDetailViewModel.onClickTransfer()
                     }
                 }
-                composable(NavigationDirections.transferOwnership.destination) {
+                composable(
+                    NavigationDirections.TransferOwnershipNavigation.route,
+                    NavigationDirections.TransferOwnershipNavigation.args
+                ) {
                     val viewModel: TransferDeedOwnershipViewModel = hiltViewModel()
 
+                    val tokenId =
+                        it.arguments?.getString(NavigationDirections.TransferOwnershipNavigation.KEY_TOKEN_ID)
+                            ?: ""
                     val receiverAddress = viewModel.receiverAddress.collectAsState()
+
+                    LaunchedEffect(key1 = tokenId, key2 = receiverAddress) {
+                        viewModel.setTokenId(tokenId)
+                    }
 
                     TransferDeedOwnershipScreen(
                         receiverAddress.value,
@@ -139,7 +150,7 @@ fun MainScreen(
                 }
                 dialog(
                     NavigationDirections.TransactionInfoNavigation.route,
-                    NavigationDirections.TransactionInfoNavigation.args
+                    NavigationDirections.TransactionInfoNavigation.args,
                 ) {
                     val transactionInfoViewModel: TransactionInfoViewModel = hiltViewModel()
 
@@ -150,11 +161,20 @@ fun MainScreen(
                     val receiverAddress =
                         it.arguments?.getString(NavigationDirections.TransactionInfoNavigation.KEY_RECEIVER_ADDRESS)
                             ?: ""
+                    val tokenId =
+                        it.arguments?.getString(NavigationDirections.TransactionInfoNavigation.KEY_TOKEN_ID)
+                            ?: ""
+
+                    Timber.d("Navigate to dialog transactionType $transactionType receiverAddress $receiverAddress tokenId $tokenId")
 
                     val transaction = transactionInfoViewModel.transaction.collectAsState()
 
                     LaunchedEffect(key1 = transactionType, key2 = receiverAddress) {
-                        transactionInfoViewModel.getTransactionDetail(transactionType, receiverAddress)
+                        transactionInfoViewModel.getTransactionDetail(
+                            transactionType,
+                            receiverAddress,
+                            tokenId
+                        )
                     }
 
                     TransactionInfoDialog(

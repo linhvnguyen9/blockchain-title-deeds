@@ -39,6 +39,11 @@
     <string name="error_confirm_password_mismatch">Passwords does not match</string>
     <string name="error_mnemonic_mismatch">Secret Recovery Phrase does not match</string>
     <string name="all_logout">Logout</string>
-    <string name="transaction_info_transaction">Transaction</string>
+    <string name="transaction_info_transaction">Confirm transaction?</string>
     <string name="all_receiver_address">Receiver address</string>
+    <string name="transaction_info_transaction_name">Transaction name:</string>
+    <string name="transaction_info_receiver_address">Receiver address:</string>
+    <string name="transaction_info_gas_cost">Gas cost:</string>
+    <string name="all_cancel">Cancel</string>
+    <string name="all_confirm">Confirm</string>
 </resources>
