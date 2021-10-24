@@ -3,8 +3,7 @@ package com.linh.titledeed
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.linh.titledeed.presentation.NavigationCommand
-import timber.log.Timber
+import com.linh.titledeed.domain.entity.TransactionType
 
 object NavigationDirections {
     val welcome = object : NavigationDirection() {
@@ -178,12 +177,50 @@ object NavigationDirections {
             get() = R.string.all_wallet
     }
 
+    val transferOwnership = object : NavigationDirection() {
+        override val arguments: List<NamedNavArgument>
+            get() = emptyList()
+
+        override val destination: String
+            get() = "transfer_ownership"
+
+        override val isBottomNavigationItem: Boolean = true
+
+        override val screenNameRes: Int
+            get() = R.string.all_wallet
+    }
+
+    object TransactionInfoNavigation {
+        const val KEY_TRANSACTION_TYPE = "transactionType"
+        const val KEY_RECEIVER_ADDRESS = "receiverAddress"
+
+        const val route = "transaction_info/{$KEY_TRANSACTION_TYPE}?receiverAddress={$KEY_RECEIVER_ADDRESS}"
+
+        val args: List<NamedNavArgument>
+            get() = listOf(
+                navArgument(KEY_TRANSACTION_TYPE) { type = NavType.StringType },
+            )
+
+        fun transactionInfo(transactionType: TransactionType, receiverAddress: String) = object : NavigationDirection() {
+            override val arguments = args
+
+            override val destination: String
+                get() = "transaction_info/$transactionType?receiverAddress={$receiverAddress}"
+
+            override val isBottomNavigationItem: Boolean = true
+
+            override val screenNameRes: Int
+                get() = R.string.all_wallet
+        }
+    }
+
+
     object DeedDetailNavigation {
         const val KEY_TOKEN_ID = "tokenId"
 
         const val route = "deed_detail/{$KEY_TOKEN_ID}"
 
-        val args : List<NamedNavArgument>
+        val args: List<NamedNavArgument>
             get() = listOf(
                 navArgument(KEY_TOKEN_ID) { type = NavType.StringType }
             )
@@ -210,6 +247,20 @@ object NavigationDirections {
             get() = ""
 
         override val isBottomNavigationItem: Boolean = false
+
+        override val screenNameRes: Int
+            get() = R.string.all_wallet
+    }
+
+    // For navigating back
+    val back = object : NavigationDirection() {
+        override val arguments: List<NamedNavArgument>
+            get() = emptyList()
+
+        override val destination: String
+            get() = ""
+
+        override val isBottomNavigationItem: Boolean = true
 
         override val screenNameRes: Int
             get() = R.string.all_wallet
