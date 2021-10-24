@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.linh.titledeed.NavigationDirections
 import com.linh.titledeed.domain.entity.Transaction
 import com.linh.titledeed.domain.entity.TransactionType
+import com.linh.titledeed.domain.entity.TransferOwnershipTransaction
+import com.linh.titledeed.domain.usecase.EstimateTransactionGasUseCase
 import com.linh.titledeed.domain.usecase.GetWalletInfoUseCase
 import com.linh.titledeed.presentation.NavigationManager
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,17 +16,18 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TransactionInfoViewModel @Inject constructor(private val getWalletInfoUseCase: GetWalletInfoUseCase, private val navigationManager: NavigationManager): ViewModel() {
+class TransactionInfoViewModel @Inject constructor(private val getWalletInfoUseCase: GetWalletInfoUseCase, private val estimateTransactionGasUseCase: EstimateTransactionGasUseCase, private val navigationManager: NavigationManager): ViewModel() {
     private val _transaction = MutableStateFlow<Transaction?>(null)
     val transaction: StateFlow<Transaction?> get() = _transaction
 
-    fun getTransactionDetail(transactionType: TransactionType, receiverAddress: String) {
+    fun getTransactionDetail(transactionType: TransactionType, receiverAddress: String, tokenId: String = "") {
         viewModelScope.launch {
             val wallet = getWalletInfoUseCase()
 
             val transaction = when (transactionType) {
                 TransactionType.TRANSFER_OWNERSHIP -> {
-                    Transaction(transactionType, "", wallet.address, receiverAddress)
+                    val tempTransaction = TransferOwnershipTransaction(senderAddress = wallet.address, receiverAddress = receiverAddress, tokenId = tokenId)
+                    estimateTransactionGasUseCase(tempTransaction)
                 }
             }
             _transaction.value = transaction

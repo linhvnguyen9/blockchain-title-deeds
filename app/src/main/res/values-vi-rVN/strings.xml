@@ -19,6 +19,11 @@
     <string name="deed_detail_private">Sử dụng riêng</string>
     <string name="deed_detail_shared">Sử dụng chung</string>
     <string name="all_transfer">Chuyển nhượng</string>
-    <string name="transaction_info_transaction">Giao dịch</string>
+    <string name="transaction_info_transaction">Xác nhận giao dịch?</string>
     <string name="all_receiver_address">Địa chỉ ví nhận</string>
+    <string name="all_confirm">Xác nhận</string>
+    <string name="all_cancel">Hủy</string>
+    <string name="transaction_info_transaction_name">Tên giao dịch:</string>
+    <string name="transaction_info_receiver_address">Địa chỉ nhận:</string>
+    <string name="transaction_info_gas_cost">Phí giao dịch:</string>
 </resources>

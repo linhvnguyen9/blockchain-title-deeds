@@ -4,6 +4,7 @@ import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.linh.titledeed.domain.entity.TransactionType
+import timber.log.Timber
 
 object NavigationDirections {
     val welcome = object : NavigationDirection() {
@@ -177,35 +178,60 @@ object NavigationDirections {
             get() = R.string.all_wallet
     }
 
-    val transferOwnership = object : NavigationDirection() {
-        override val arguments: List<NamedNavArgument>
-            get() = emptyList()
+    object TransferOwnershipNavigation {
+        const val KEY_TOKEN_ID = "tokenId"
 
-        override val destination: String
-            get() = "transfer_ownership"
+        const val route = "transfer_ownership/{$KEY_TOKEN_ID}"
 
-        override val isBottomNavigationItem: Boolean = true
+        val args: List<NamedNavArgument>
+            get() = listOf(
+                navArgument(KEY_TOKEN_ID) { type = NavType.StringType },
+            )
 
-        override val screenNameRes: Int
-            get() = R.string.all_wallet
+        fun transferOwnership(tokenId: String) = object : NavigationDirection() {
+            override val arguments = args
+
+            override val destination: String
+                get() = "transfer_ownership/tokenId=$tokenId"
+
+            override val isBottomNavigationItem: Boolean = true
+
+            override val screenNameRes: Int
+                get() = R.string.all_wallet
+        }
     }
 
     object TransactionInfoNavigation {
         const val KEY_TRANSACTION_TYPE = "transactionType"
         const val KEY_RECEIVER_ADDRESS = "receiverAddress"
+        const val KEY_TOKEN_ID = "tokenId"
 
-        const val route = "transaction_info/{$KEY_TRANSACTION_TYPE}?receiverAddress={$KEY_RECEIVER_ADDRESS}"
+        const val route = "transaction_info/{$KEY_TRANSACTION_TYPE}?$KEY_RECEIVER_ADDRESS={$KEY_RECEIVER_ADDRESS}&$KEY_TOKEN_ID={$KEY_TOKEN_ID}"
 
         val args: List<NamedNavArgument>
             get() = listOf(
-                navArgument(KEY_TRANSACTION_TYPE) { type = NavType.StringType },
+                navArgument(KEY_TRANSACTION_TYPE) {
+                    type = NavType.StringType
+                },
+                navArgument(KEY_TOKEN_ID) {
+                    type = NavType.StringType
+                    nullable = true
+                },
+                navArgument(KEY_RECEIVER_ADDRESS) {
+                    type = NavType.StringType
+                    nullable = true
+                },
             )
 
-        fun transactionInfo(transactionType: TransactionType, receiverAddress: String) = object : NavigationDirection() {
+        fun transactionInfo(transactionType: TransactionType, receiverAddress: String, tokenId: String = "") = object : NavigationDirection() {
             override val arguments = args
 
             override val destination: String
-                get() = "transaction_info/$transactionType?receiverAddress={$receiverAddress}"
+                get(){
+                    val value = "transaction_info/$transactionType?$KEY_RECEIVER_ADDRESS=$receiverAddress&$tokenId"
+                    Timber.d("transactionInfo $value")
+                    return value
+                }
 
             override val isBottomNavigationItem: Boolean = true
 
