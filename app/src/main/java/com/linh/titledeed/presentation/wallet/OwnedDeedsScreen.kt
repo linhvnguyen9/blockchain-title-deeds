@@ -9,6 +9,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,6 +26,8 @@ import androidx.compose.ui.unit.sp
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.linh.titledeed.R
 import com.linh.titledeed.domain.entity.Deed
 import com.linh.titledeed.domain.entity.LandPurpose
@@ -35,10 +38,12 @@ import timber.log.Timber
 
 @ExperimentalMaterialApi
 @Composable
-fun OwnedDeedsScreen(deeds: List<Deed>?, onClickDeed: (Deed) -> Unit) {
-    Column(Modifier.then(screenModifier)) {
-        ScreenTitle("Owned deeds")
-        OwnedDeedsList(deeds, onClickDeed)
+fun OwnedDeedsScreen(deeds: List<Deed>?, isRefreshing: Boolean, onClickDeed: (Deed) -> Unit, onRefresh: () -> Unit) {
+    SwipeRefresh(rememberSwipeRefreshState(isRefreshing), onRefresh = onRefresh) {
+        Column(Modifier.then(screenModifier)) {
+            ScreenTitle("Owned deeds")
+            OwnedDeedsList(deeds, onClickDeed)
+        }
     }
 }
 
@@ -83,9 +88,15 @@ fun OwnedDeedItem(deed: Deed?, onClickDeed: () -> Unit) {
                 .padding(8.dp)
                 .fillMaxWidth()
         ) {
-            Text(deed?.address ?: "", Modifier.fillMaxWidth().then(placeholderModifier), style = MaterialTheme.typography.h6)
+            Text(deed?.address ?: "",
+                Modifier
+                    .fillMaxWidth()
+                    .then(placeholderModifier), style = MaterialTheme.typography.h6)
             Spacer(Modifier.height(8.dp))
-            Row(Modifier.fillMaxWidth().then(placeholderModifier)) {
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .then(placeholderModifier)) {
                 Text(
                     buildAnnotatedString {
                         append(deed?.areaInSquareMeters.toString() + " m")
@@ -95,7 +106,10 @@ fun OwnedDeedItem(deed: Deed?, onClickDeed: () -> Unit) {
                     },
                     style = MaterialTheme.typography.body1
                 )
-                Text("-", Modifier.padding(horizontal = 8.dp).then(placeholderModifier), style = MaterialTheme.typography.body1)
+                Text("-",
+                    Modifier
+                        .padding(horizontal = 8.dp)
+                        .then(placeholderModifier), style = MaterialTheme.typography.body1)
                 val purpose = when (deed?.purpose) {
                     LandPurpose.RESIDENTIAL -> stringResource(R.string.land_purpose_residential)
                     LandPurpose.AGRICULTURAL -> stringResource(R.string.land_purpose_agricultural)
@@ -130,7 +144,9 @@ fun OwnedDeedsScreenPreview() {
                     "1",
                     "Test 2", "Image", "", 0.0, 0, false, LandPurpose.AGRICULTURAL, 1, 1
                 )
-            )
+            ),
+            isRefreshing = false,
+            onClickDeed = {},
         ) {
 
         }

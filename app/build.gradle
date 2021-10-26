@@ -86,6 +86,7 @@ dependencies {
     //Compose Accompanist
     implementation "com.google.accompanist:accompanist-placeholder-material:0.18.0"
     implementation "com.google.accompanist:accompanist-flowlayout:0.18.0"
+    implementation "com.google.accompanist:accompanist-swiperefresh:0.18.0"
 
     //Web3J
     implementation ('org.web3j:core:4.8.7-android')

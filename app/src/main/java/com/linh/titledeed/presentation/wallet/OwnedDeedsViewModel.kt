@@ -24,17 +24,30 @@ class OwnedDeedsViewModel @Inject constructor(private val getWalletInfoUseCase: 
     private val _deeds = MutableStateFlow<List<Deed>?>(null)
     val deeds : StateFlow<List<Deed>?> get() = _deeds
 
+    private val _isRefreshing = MutableStateFlow<Boolean>(false)
+    val isRefreshing : StateFlow<Boolean> get() = _isRefreshing
+
     init {
         viewModelScope.launch {
-            val wallet = getWalletInfoUseCase()
-            _deeds.value = getAllOwnedDeedsUseCase(wallet.address)
+            getDeeds()
+        }
+    }
 
-            Timber.d("Received deeds ${deeds.value}")
+    fun onRefresh() {
+        viewModelScope.launch {
+            _isRefreshing.value = true
+            getDeeds()
+            _isRefreshing.value = false
         }
     }
 
     fun onClickDeed(deed: Deed) {
         Timber.d("onClickDeed id ${deed.id}")
         navigationManager.navigate(NavigationCommand(NavigationDirections.DeedDetailNavigation.detail(deed.id)))
+    }
+
+    private suspend fun getDeeds() {
+        val wallet = getWalletInfoUseCase()
+        _deeds.value = getAllOwnedDeedsUseCase(wallet.address)
     }
 }

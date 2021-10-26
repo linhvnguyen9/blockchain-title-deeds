@@ -91,13 +91,15 @@
         <entry key="../../../../layout/compose-model-1635053478969.xml" value="0.1" />
         <entry key="../../../../layout/compose-model-1635065853787.xml" value="0.25" />
         <entry key="../../../../layout/compose-model-1635176022638.xml" value="2.0" />
+        <entry key="../../../../layout/compose-model-1635240278888.xml" value="0.2" />
+        <entry key="../../../../layout/compose-model-1635242470432.xml" value="0.18201013513513514" />
         <entry key="app/src/main/res/drawable/ic_baseline_account_balance_wallet_24.xml" value="0.35555555555555557" />
         <entry key="app/src/main/res/drawable/ic_baseline_content_copy_24.xml" value="0.18385416666666668" />
         <entry key="app/src/main/res/drawable/ic_bnb.xml" value="0.18385416666666668" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

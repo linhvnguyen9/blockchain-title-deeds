@@ -104,8 +104,13 @@ fun MainScreen(
                     val ownedDeedsViewModel: OwnedDeedsViewModel = hiltViewModel()
 
                     val deeds = ownedDeedsViewModel.deeds.collectAsState()
+                    val isRefreshing = ownedDeedsViewModel.isRefreshing.collectAsState()
 
-                    OwnedDeedsScreen(deeds.value, onClickDeed = {ownedDeedsViewModel.onClickDeed(it)})
+                    OwnedDeedsScreen(
+                        deeds.value,
+                        isRefreshing = isRefreshing.value,
+                        onClickDeed = { ownedDeedsViewModel.onClickDeed(it) },
+                        onRefresh = { ownedDeedsViewModel.onRefresh() })
                 }
                 composable(
                     NavigationDirections.DeedDetailNavigation.route,
