@@ -38,6 +38,6 @@ class VTitleDeedsExtensions(credentials: Credentials, web3j: Web3j, contractGasP
 
     companion object {
         private const val ERC721_SMART_CONTRACT_ADDRESS =
-            "0xf359798202654c90c9fabba17E36ec2B8AA65Be1"
+            "0xFf652ECa31989c505783275C959D0369923c890C"
     }
 }

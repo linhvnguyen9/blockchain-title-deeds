@@ -30,10 +30,7 @@ object DataModule {
     @Singleton
     @Provides
     fun provideWeb3j() : Web3j {
-        val webSocketClient = WebSocketClient(URI("ws://192.168.1.109:8545"))
-        val service = WebSocketService(webSocketClient, false)
-        service.connect()
-        return Web3j.build(service)
+        return Web3j.build(HttpService("http://192.168.1.109:8545"))
     }
 
     @Singleton
@@ -91,7 +88,6 @@ object DataModule {
     fun provideOkhttp(loggingInterceptor: HttpLoggingInterceptor, authInterceptor: AuthInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
-            .addInterceptor(authInterceptor)
             .build()
     }
 
@@ -99,7 +95,7 @@ object DataModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://api.pinata.cloud/")
+            .baseUrl("https://ipfs.io/ipfs/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
