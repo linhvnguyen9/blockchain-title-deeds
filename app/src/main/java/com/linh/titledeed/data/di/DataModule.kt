@@ -1,14 +1,18 @@
 package com.linh.titledeed.data.di
 
 import android.app.Application
+import com.google.gson.Gson
 import com.linh.titledeed.data.contract.WalletService
 import com.linh.titledeed.data.remote.AuthInterceptor
+import com.linh.titledeed.data.remote.ContractCallErrorInterceptor
 import com.linh.titledeed.data.remote.IpfsService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import org.web3j.crypto.Credentials
 import org.web3j.protocol.Web3j
@@ -29,8 +33,35 @@ import javax.inject.Singleton
 object DataModule {
     @Singleton
     @Provides
-    fun provideWeb3j() : Web3j {
-        return Web3j.build(HttpService("http://192.168.1.109:8545"))
+    fun provideGson(): Gson {
+        return Gson()
+    }
+
+    @Singleton
+    @Provides
+    fun provideAuthInterceptor(): AuthInterceptor {
+        return AuthInterceptor()
+    }
+
+    @Singleton
+    @Provides
+    fun provideContractCallErrorInterceptor(gson: Gson): ContractCallErrorInterceptor {
+        return ContractCallErrorInterceptor(gson)
+    }
+
+    @Singleton
+    @Provides
+    fun provideOkhttp(loggingInterceptor: HttpLoggingInterceptor, contractCallErrorInterceptor: ContractCallErrorInterceptor): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .addInterceptor(contractCallErrorInterceptor)
+            .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideWeb3j(okHttpClient: OkHttpClient) : Web3j {
+        return Web3j.build(HttpService("http://192.168.1.109:8545", okHttpClient))
     }
 
     @Singleton
@@ -75,20 +106,6 @@ object DataModule {
     fun provideLoggingInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor()
             .setLevel(HttpLoggingInterceptor.Level.BODY)
-    }
-
-    @Singleton
-    @Provides
-    fun provideAuthInterceptor(): AuthInterceptor {
-        return AuthInterceptor()
-    }
-
-    @Singleton
-    @Provides
-    fun provideOkhttp(loggingInterceptor: HttpLoggingInterceptor, authInterceptor: AuthInterceptor): OkHttpClient {
-        return OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor)
-            .build()
     }
 
     @Singleton

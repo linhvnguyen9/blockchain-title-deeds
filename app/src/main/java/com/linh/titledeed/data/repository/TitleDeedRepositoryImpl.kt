@@ -2,6 +2,7 @@ package com.linh.titledeed.data.repository
 
 import com.linh.titledeed.data.contract.TitleDeedService
 import com.linh.titledeed.data.entity.DeedMetadataResponse
+import com.linh.titledeed.data.entity.TokenOwnerException
 import com.linh.titledeed.data.local.EncryptedSharedPreference
 import com.linh.titledeed.data.remote.IpfsService
 import com.linh.titledeed.data.utils.getHttpLinkFromIpfsUri
@@ -10,7 +11,9 @@ import com.linh.titledeed.domain.entity.Transaction
 import com.linh.titledeed.domain.entity.TransferOwnershipTransaction
 import com.linh.titledeed.domain.entity.Wallet
 import com.linh.titledeed.domain.repository.TitleDeedRepository
+import com.linh.titledeed.domain.utils.Resource
 import timber.log.Timber
+import java.lang.Exception
 import java.math.BigInteger
 import javax.inject.Inject
 
@@ -43,11 +46,15 @@ class TitleDeedRepositoryImpl @Inject constructor(private val ipfsService: IpfsS
         return getTokenMetadata(tokenId.toBigInteger()).toDomainModel(tokenId)
     }
 
-    override suspend fun estimateGasTransferOwnership(transaction: TransferOwnershipTransaction): TransferOwnershipTransaction {
-        val gasPrice = titleDeedService.estimateGasTransferOwnership(transaction)
+    override suspend fun estimateGasTransferOwnership(transaction: TransferOwnershipTransaction): Resource<TransferOwnershipTransaction> {
+        try {
+            val gasPrice = titleDeedService.estimateGasTransferOwnership(transaction)
 
-        transaction.apply {
-            return TransferOwnershipTransaction(gasPrice, senderAddress, receiverAddress, tokenId)
+            transaction.apply {
+                return Resource.success(TransferOwnershipTransaction(gasPrice, senderAddress, receiverAddress, tokenId))
+            }
+        } catch (e: Exception) {
+            return Resource.error(e)
         }
     }
 

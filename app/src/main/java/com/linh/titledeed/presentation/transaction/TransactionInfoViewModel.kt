@@ -28,8 +28,8 @@ class TransactionInfoViewModel @Inject constructor(
     private val makeTransactionUseCase: MakeTransactionUseCase,
     private val navigationManager: NavigationManager
 ) : ViewModel() {
-    private val _transaction = MutableStateFlow<Transaction?>(null)
-    val transaction: StateFlow<Transaction?> get() = _transaction
+    private val _transaction = MutableStateFlow<Resource<Transaction>?>(null)
+    val transaction: StateFlow<Resource<Transaction>?> get() = _transaction
 
     private val _transactionResponse = MutableStateFlow<Resource<String>?>(null)
     val transactionResponse: StateFlow<Resource<String>?> get() = _transactionResponse
@@ -69,9 +69,9 @@ class TransactionInfoViewModel @Inject constructor(
 
             val transaction = transaction.value
 
-            val response = when (transaction) {
+            val response = when (transaction?.data) {
                 is TransferOwnershipTransaction -> {
-                    makeTransactionUseCase(transaction)
+                    makeTransactionUseCase(transaction.data)
                 }
                 else -> {
                     ""
