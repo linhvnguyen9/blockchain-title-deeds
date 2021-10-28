@@ -38,6 +38,9 @@
     <string name="error_confirm_password_blank">Confirm password must not be blank</string>
     <string name="error_confirm_password_mismatch">Passwords does not match</string>
     <string name="error_mnemonic_mismatch">Secret Recovery Phrase does not match</string>
+    <string name="error_no_longer_owner">You\'re no longer the owner of the token</string>
+    <string name="error_not_enough_gas">You don\'t have enough funds to make transaction!</string>
+
     <string name="all_logout">Logout</string>
     <string name="transaction_info_transaction">Confirm transaction?</string>
     <string name="all_receiver_address">Receiver address</string>

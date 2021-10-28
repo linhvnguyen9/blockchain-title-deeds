@@ -8,13 +8,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.linh.titledeed.R
+import com.linh.titledeed.data.entity.InsufficientGasException
 import com.linh.titledeed.data.entity.TokenOwnerException
 import com.linh.titledeed.domain.entity.Transaction
 import com.linh.titledeed.domain.entity.TransactionType
 import com.linh.titledeed.domain.utils.Resource
 
 @Composable
-fun TransactionInfoDialog(transaction: Resource<Transaction>?, response: Resource<String>?, onConfirm: () -> Unit, onDismiss: (popUpTo: Boolean) -> Unit) {
+fun TransactionInfoDialog(transaction: Resource<Transaction>?, response: Resource<Any>?, onConfirm: () -> Unit, onDismiss: (popUpTo: Boolean) -> Unit) {
     Card {
         Column(
             Modifier
@@ -22,11 +23,14 @@ fun TransactionInfoDialog(transaction: Resource<Transaction>?, response: Resourc
                 .height(260.dp)) {
             when {
                 response?.isError() == true || transaction?.isError() == true -> {
-                    val errorMessage = if (response?.data != null) {
-                        response.data
+                    val errorMessage = if (response?.isError() == true) {
+                        when (response.error) {
+                            is InsufficientGasException -> stringResource(R.string.error_not_enough_gas)
+                            else -> ""
+                        }
                     } else {
                         when (transaction?.error) {
-                            is TokenOwnerException -> "You're no longer the owner of the token"
+                            is TokenOwnerException -> stringResource(R.string.error_no_longer_owner)
                             else -> ""
                         }
                     }

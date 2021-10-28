@@ -24,7 +24,9 @@ class TitleDeedService @Inject constructor(private val web3j: Web3j) {
     }
 
     private fun initCredentials(wallet: Wallet): Credentials {
-        return WalletUtils.loadBip39Credentials(wallet.password, wallet.mnemonic)
+        val credentials = WalletUtils.loadBip39Credentials(wallet.password, wallet.mnemonic)
+        Timber.d("Wallet private key ${credentials.ecKeyPair.privateKey.toString(16)}")
+        return credentials
     }
 
     private fun initSmartContract(credentials: Credentials): VTitleDeedsExtensions {
@@ -82,15 +84,11 @@ class TitleDeedService @Inject constructor(private val web3j: Web3j) {
             return@withContext smartContract.estimateGasSafeTransferFrom(transaction.senderAddress, transaction.receiverAddress, transaction.tokenId.toBigInteger()).send().amountUsed.toString(10)
         }
 
-    suspend fun transferOwnership(transaction: TransferOwnershipTransaction): String =
+    suspend fun transferOwnership(transaction: TransferOwnershipTransaction) {
         withContext(Dispatchers.IO) {
-            try {
-                val response = smartContract.safeTransferFrom(transaction.senderAddress, transaction.receiverAddress, transaction.tokenId.toBigInteger()).send()
-                return@withContext ""
-            } catch (e: Exception) {
-                return@withContext e.message ?: ""
-            }
+            smartContract.safeTransferFrom(transaction.senderAddress, transaction.receiverAddress, transaction.tokenId.toBigInteger()).send()
         }
+    }
 
     companion object {
         private val ETH_DECIMALS = BigInteger("1000000000000000000")
