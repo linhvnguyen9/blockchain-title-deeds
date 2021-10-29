@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -18,17 +19,23 @@ import com.linh.titledeed.presentation.ui.theme.screenModifier
 @Composable
 fun TransferDeedOwnershipScreen(
     receiverAddress: String,
+    receiverAddressError: String,
     onReceiverAddressChange: (String) -> Unit,
     onClickSubmit: () -> Unit
 ) {
+    val hasError = receiverAddressError.isNotBlank()
     Column(screenModifier) {
         ScreenTitle(stringResource(R.string.all_transfer))
         TextField(
             receiverAddress,
             label = { Text(text = stringResource(R.string.all_receiver_address)) },
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = { onReceiverAddressChange(it) }
+            onValueChange = { onReceiverAddressChange(it) },
+            isError = hasError,
         )
+        if (hasError) {
+            Text(receiverAddressError, color = MaterialTheme.colors.error)
+        }
         Spacer(Modifier.height(16.dp))
         Button(onClick = { onClickSubmit() }) {
             Text(stringResource(R.string.all_submit))

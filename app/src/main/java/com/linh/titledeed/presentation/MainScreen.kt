@@ -26,6 +26,7 @@ import com.linh.titledeed.presentation.home.HomeViewModel
 import com.linh.titledeed.presentation.transaction.TransactionInfoDialog
 import com.linh.titledeed.presentation.transaction.TransactionInfoViewModel
 import com.linh.titledeed.presentation.utils.convertToBalanceString
+import com.linh.titledeed.presentation.utils.getErrorStringResource
 import com.linh.titledeed.presentation.utils.parentViewModel
 import com.linh.titledeed.presentation.wallet.OwnedDeedsScreen
 import com.linh.titledeed.presentation.wallet.OwnedDeedsViewModel
@@ -142,6 +143,7 @@ fun MainScreen(
                         it.arguments?.getString(NavigationDirections.TransferOwnershipNavigation.KEY_TOKEN_ID)
                             ?: ""
                     val receiverAddress = viewModel.receiverAddress.collectAsState()
+                    val receiverAddressError = viewModel.receiverAddressError.collectAsState()
 
                     LaunchedEffect(key1 = tokenId, key2 = receiverAddress) {
                         viewModel.setTokenId(tokenId)
@@ -149,6 +151,7 @@ fun MainScreen(
 
                     TransferDeedOwnershipScreen(
                         receiverAddress.value,
+                        getErrorStringResource(receiverAddressError.value),
                         onReceiverAddressChange = { viewModel.setReceiverAddress(it) },
                         onClickSubmit = { viewModel.onClickSubmit() }
                     )
