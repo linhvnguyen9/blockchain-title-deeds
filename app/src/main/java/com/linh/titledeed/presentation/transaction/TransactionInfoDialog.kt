@@ -20,7 +20,8 @@ fun TransactionInfoDialog(transaction: Resource<Transaction>?, response: Resourc
         Column(
             Modifier
                 .padding(18.dp)
-                .height(260.dp)) {
+                .height(260.dp)
+        ) {
             when {
                 response?.isError() == true || transaction?.isError() == true -> {
                     val errorMessage = if (response?.isError() == true) {

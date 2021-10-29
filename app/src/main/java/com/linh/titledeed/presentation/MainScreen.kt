@@ -26,6 +26,7 @@ import com.linh.titledeed.presentation.home.HomeViewModel
 import com.linh.titledeed.presentation.transaction.TransactionInfoDialog
 import com.linh.titledeed.presentation.transaction.TransactionInfoViewModel
 import com.linh.titledeed.presentation.utils.convertToBalanceString
+import com.linh.titledeed.presentation.utils.parentViewModel
 import com.linh.titledeed.presentation.wallet.OwnedDeedsScreen
 import com.linh.titledeed.presentation.wallet.OwnedDeedsViewModel
 import com.linh.titledeed.presentation.wallet.WalletScreen
@@ -101,7 +102,7 @@ fun MainScreen(
                     )
                 }
                 composable(NavigationDirections.ownedDeeds.destination) {
-                    val ownedDeedsViewModel: OwnedDeedsViewModel = hiltViewModel()
+                    val ownedDeedsViewModel: OwnedDeedsViewModel = parentViewModel(navController, NavigationDirections.ownedDeeds.destination)
 
                     val deeds = ownedDeedsViewModel.deeds.collectAsState()
                     val isRefreshing = ownedDeedsViewModel.isRefreshing.collectAsState()
@@ -156,6 +157,7 @@ fun MainScreen(
                     NavigationDirections.TransactionInfoNavigation.route,
                     NavigationDirections.TransactionInfoNavigation.args,
                 ) {
+                    val ownedDeedsViewModel: OwnedDeedsViewModel = parentViewModel(navController, NavigationDirections.ownedDeeds.destination)
                     val transactionInfoViewModel: TransactionInfoViewModel = hiltViewModel()
 
                     val transactionTypeString =
@@ -190,7 +192,10 @@ fun MainScreen(
                         transaction.value,
                         transactionResponse.value,
                         onConfirm = { transactionInfoViewModel.onConfirm() },
-                        onDismiss = { transactionInfoViewModel.onDismiss(it) }
+                        onDismiss = {
+                            ownedDeedsViewModel.onRefresh()
+                            transactionInfoViewModel.onDismiss(it)
+                        }
                     )
                 }
             }
