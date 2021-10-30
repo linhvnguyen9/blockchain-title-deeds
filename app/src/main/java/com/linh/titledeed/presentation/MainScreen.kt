@@ -174,19 +174,24 @@ fun MainScreen(
                     }
 
                     val title = viewModel.saleTitle.collectAsState()
+                    val titleError = viewModel.saleTitleError.collectAsState()
                     val description = viewModel.saleDescription.collectAsState()
                     val phoneNumber = viewModel.phoneNumber.collectAsState()
+                    val phoneNumberError = viewModel.phoneNumberError.collectAsState()
                     val salePriceInWei = viewModel.priceInWei.collectAsState()
+                    val salePriceInWeiError = viewModel.priceInWeiError.collectAsState()
 
                     SellDeedScreen(
                         title.value,
+                        getErrorStringResource(titleError.value),
                         onTitleChange = { viewModel.setSaleTitle(it) },
                         description.value,
                         onDescriptionChange = { viewModel.setSaleDescription(it) },
                         phoneNumber.value,
+                        getErrorStringResource(phoneNumberError.value),
                         onPhoneNumberChange = { viewModel.setPhoneNumber(it) },
                         salePriceInWei.value,
-                        "",
+                        getErrorStringResource(salePriceInWeiError.value),
                         onSalePriceChange = { viewModel.setPriceInWei(it) },
                         onClickSubmit = { viewModel.onClickSubmit() }
                     )
