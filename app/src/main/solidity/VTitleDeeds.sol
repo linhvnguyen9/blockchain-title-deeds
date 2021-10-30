@@ -18,6 +18,7 @@ contract VTitleDeeds is ERC721, ERC721Enumerable, Pausable, Ownable, ERC721Burna
         uint256 itemId;
         uint256 price;
         bool isForSale;
+        string metadataUri;
     }
 
     mapping(uint => Offer) public deedsOfferedForSale;
@@ -42,15 +43,16 @@ contract VTitleDeeds is ERC721, ERC721Enumerable, Pausable, Ownable, ERC721Burna
         _setTokenURI(tokenId, _tokenURI);
     }
 
-    function offerForSale(uint itemId, uint salePriceInWei) public {
+    function offerForSale(uint itemId, uint salePriceInWei, string memory _metadataUri) public {
         require(ownerOf(itemId) == msg.sender, "You're not the owner of this token");
-        deedsOfferedForSale[itemId] = Offer(msg.sender, itemId, salePriceInWei, true);
+        deedsOfferedForSale[itemId] = Offer(msg.sender, itemId, salePriceInWei, true, _metadataUri);
         emit DeedOffered(itemId, salePriceInWei);
     }
 
     function closeSaleOffer(uint itemId) public {
         require(ownerOf(itemId) == msg.sender, "You're not the owner of this token");
-        deedsOfferedForSale[itemId] = Offer(msg.sender, itemId, 0, false);
+        Offer memory oldOffer = deedsOfferedForSale[itemId];
+        deedsOfferedForSale[itemId] = Offer(msg.sender, itemId, 0, false, oldOffer.metadataUri);
         emit DeedNoLongerForSale(itemId);
     }
 
