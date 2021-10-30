@@ -45,6 +45,9 @@
     <string name="error_receiver_address_blank">Receiver address must not be blank</string>
     <string name="error_receiver_address_is_self">Cannot transfer ownership to self</string>
     <string name="error_receiver_address_format">Invalid receiver address format</string>
+    <string name="error_sell_property_title_blank">Title must not be blank</string>
+    <string name="error_sell_property_phone_blank">Phone number must not be blank</string>
+    <string name="error_sell_property_price_blank">Price must not be blank</string>
 
     <string name="all_logout">Logout</string>
     <string name="transaction_info_transaction">Confirm transaction?</string>

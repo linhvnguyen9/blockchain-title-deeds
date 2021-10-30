@@ -27,10 +27,12 @@ import com.linh.titledeed.presentation.ui.theme.screenModifier
 @Composable
 fun SellDeedScreen(
     title: String,
+    titleError: String,
     onTitleChange: (String) -> Unit,
     description: String,
     onDescriptionChange: (String) -> Unit,
     phoneNumber: String,
+    phoneNumberError: String,
     onPhoneNumberChange: (String) -> Unit,
     salePriceInWei: String,
     salePriceInWeiError: String,
@@ -47,11 +49,15 @@ fun SellDeedScreen(
             modifier = Modifier.fillMaxWidth(),
             onValueChange = { onTitleChange(it) },
             singleLine = true,
+            isError = titleError.isNotBlank(),
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
             keyboardActions = KeyboardActions(
                 onNext = { localFocusManager.moveFocus(FocusDirection.Down) }
             )
         )
+        if (titleError.isNotBlank()) {
+            Text(titleError, color = MaterialTheme.colors.error)
+        }
         Spacer(Modifier.height(16.dp))
         TextField(
             phoneNumber,
@@ -59,11 +65,15 @@ fun SellDeedScreen(
             modifier = Modifier.fillMaxWidth(),
             onValueChange = { onPhoneNumberChange(it) },
             singleLine = true,
+            isError = phoneNumberError.isNotBlank(),
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Phone, imeAction = ImeAction.Next),
             keyboardActions = KeyboardActions(
                 onNext = { localFocusManager.moveFocus(FocusDirection.Down) }
             )
         )
+        if (phoneNumberError.isNotBlank()) {
+            Text(phoneNumberError, color = MaterialTheme.colors.error)
+        }
         Spacer(Modifier.height(16.dp))
         TextField(
             salePriceInWei,
@@ -71,11 +81,15 @@ fun SellDeedScreen(
             modifier = Modifier.fillMaxWidth(),
             onValueChange = { onSalePriceChange(it) },
             singleLine = true,
+            isError = salePriceInWeiError.isNotBlank(),
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
             keyboardActions = KeyboardActions(
                 onNext = { localFocusManager.moveFocus(FocusDirection.Down) }
             )
         )
+        if (salePriceInWeiError.isNotBlank()) {
+            Text(salePriceInWeiError, color = MaterialTheme.colors.error)
+        }
         Spacer(Modifier.height(16.dp))
         TextField(
             description,
