@@ -1,5 +1,7 @@
 {
+  "tokenId": 0,
   "title": "Nhà xịn đây",
   "description": "Nhà chính chủ, mới ở 1 năm, ...",
+  "phoneNumber": "0904123456",
   "image": ["ipfs://", "ipfs://", "ipfs://", "ipfs://"]
 }
