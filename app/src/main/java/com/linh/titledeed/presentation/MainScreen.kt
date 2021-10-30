@@ -17,10 +17,7 @@ import androidx.navigation.compose.*
 import com.linh.titledeed.NavigationDirections
 import com.linh.titledeed.R
 import com.linh.titledeed.domain.entity.TransactionType
-import com.linh.titledeed.presentation.deeds.DeedDetailScreen
-import com.linh.titledeed.presentation.deeds.DeedDetailViewModel
-import com.linh.titledeed.presentation.deeds.TransferDeedOwnershipScreen
-import com.linh.titledeed.presentation.deeds.TransferDeedOwnershipViewModel
+import com.linh.titledeed.presentation.deeds.*
 import com.linh.titledeed.presentation.home.HomeScreen
 import com.linh.titledeed.presentation.home.HomeViewModel
 import com.linh.titledeed.presentation.transaction.TransactionInfoDialog
@@ -129,9 +126,15 @@ fun MainScreen(
                         deedDetailViewModel.getDeed(token)
                     }
 
-                    DeedDetailScreen(deed.value) {
-                        deedDetailViewModel.onClickTransfer()
-                    }
+                    DeedDetailScreen(
+                        deed.value,
+                        onClickSell = {
+                            deedDetailViewModel.onClickSell()
+                        },
+                        onClickTransferOwnership = {
+                            deedDetailViewModel.onClickTransfer()
+                        }
+                    )
                 }
                 composable(
                     NavigationDirections.TransferOwnershipNavigation.route,
@@ -156,11 +159,44 @@ fun MainScreen(
                         onClickSubmit = { viewModel.onClickSubmit() }
                     )
                 }
+                composable(
+                    NavigationDirections.SellDeedNavigation.route,
+                    NavigationDirections.SellDeedNavigation.args
+                ) { navBackStackEntry ->
+                    val viewModel: SellDeedViewModel = hiltViewModel()
+
+                    val tokenId =
+                        navBackStackEntry.arguments?.getString(NavigationDirections.SellDeedNavigation.KEY_TOKEN_ID)
+                            ?: ""
+
+                    LaunchedEffect(key1 = tokenId) {
+                        viewModel.setTokenId(tokenId)
+                    }
+
+                    val title = viewModel.saleTitle.collectAsState()
+                    val description = viewModel.saleDescription.collectAsState()
+                    val phoneNumber = viewModel.phoneNumber.collectAsState()
+                    val salePriceInWei = viewModel.priceInWei.collectAsState()
+
+                    SellDeedScreen(
+                        title.value,
+                        onTitleChange = { viewModel.setSaleTitle(it) },
+                        description.value,
+                        onDescriptionChange = { viewModel.setSaleDescription(it) },
+                        phoneNumber.value,
+                        onPhoneNumberChange = { viewModel.setPhoneNumber(it) },
+                        salePriceInWei.value,
+                        "",
+                        onSalePriceChange = { viewModel.setPriceInWei(it) },
+                        onClickSubmit = { viewModel.onClickSubmit() }
+                    )
+                }
                 dialog(
                     NavigationDirections.TransactionInfoNavigation.route,
                     NavigationDirections.TransactionInfoNavigation.args,
                 ) {
-                    val ownedDeedsViewModel: OwnedDeedsViewModel = parentViewModel(navController, NavigationDirections.ownedDeeds.destination)
+                    val ownedDeedsViewModel: OwnedDeedsViewModel =
+                        parentViewModel(navController, NavigationDirections.ownedDeeds.destination)
                     val transactionInfoViewModel: TransactionInfoViewModel = hiltViewModel()
 
                     val transactionTypeString =

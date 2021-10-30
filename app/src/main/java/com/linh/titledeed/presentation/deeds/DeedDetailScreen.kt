@@ -36,7 +36,7 @@ import kotlin.math.roundToInt
 
 @ExperimentalComposeUiApi
 @Composable
-fun DeedDetailScreen(deed: Deed, onClickTransferOwnership: () -> Unit) {
+fun DeedDetailScreen(deed: Deed, onClickTransferOwnership: () -> Unit, onClickSell: () -> Unit) {
     val isPreview = remember { mutableStateOf(false) }
     Column(screenModifier.verticalScroll(rememberScrollState())) {
         ScreenTitle(stringResource(R.string.all_deed))
@@ -88,6 +88,10 @@ fun DeedDetailScreen(deed: Deed, onClickTransferOwnership: () -> Unit) {
         Spacer(Modifier.height(32.dp))
         TextButton(onClick = { onClickTransferOwnership() }) {
             Text(stringResource(R.string.all_transfer))
+        }
+        Spacer(Modifier.height(8.dp))
+        TextButton(onClick = { onClickSell() }, contentPadding = PaddingValues(8.dp)) {
+            Text(stringResource(R.string.all_sell))
         }
     }
     if (isPreview.value) {
@@ -169,7 +173,8 @@ fun DeedDetailScreenPreview() {
             LandPurpose.AGRICULTURAL,
             1,
             1
-        )
+        ),
+        onClickTransferOwnership = {}
     ) {
 
     }

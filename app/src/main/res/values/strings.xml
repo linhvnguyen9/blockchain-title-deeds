@@ -30,6 +30,8 @@
     <string name="deed_detail_private">Private</string>
     <string name="all_deed">Deed</string>
     <string name="all_transfer">Transfer ownership</string>
+    <string name="all_sell">Sell</string>
+    <string name="sell_deed_screen_title">Sell property</string>
 
     <!--    Errors-->
     <string name="error_password_blank">Password must not be blank</string>
@@ -56,4 +58,8 @@
     <string name="transaction_info_success">Transaction successful!</string>
     <string name="transaction_info_error">Error making transaction!</string>
     <string name="transaction_info_loading">Making transaction…</string>
+    <string name="sell_deed_price">Price in wei</string>
+    <string name="sell_phone_number">Phone Number</string>
+    <string name="all_title">Title</string>
+    <string name="all_description">Description</string>
 </resources>

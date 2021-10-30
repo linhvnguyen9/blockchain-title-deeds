@@ -51,9 +51,10 @@ object DataModule {
 
     @Singleton
     @Provides
-    fun provideOkhttp(loggingInterceptor: HttpLoggingInterceptor, contractCallErrorInterceptor: ContractCallErrorInterceptor): OkHttpClient {
+    fun provideOkhttp(authInterceptor: AuthInterceptor, loggingInterceptor: HttpLoggingInterceptor, contractCallErrorInterceptor: ContractCallErrorInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
+            .addInterceptor(authInterceptor)
             .addInterceptor(contractCallErrorInterceptor)
             .build()
     }
@@ -112,7 +113,7 @@ object DataModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://ipfs.io/ipfs/")
+            .baseUrl("https://api.pinata.cloud/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()

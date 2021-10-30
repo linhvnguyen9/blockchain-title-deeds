@@ -8,7 +8,7 @@ class AuthInterceptor: Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val authenticateRequest = request.newBuilder()
-//            .addHeader("Authorization", "Bearer ${BuildConfig.PINATA_JWT}")
+            .addHeader("Authorization", "Bearer ${BuildConfig.PINATA_JWT}")
             .build()
         return chain.proceed(authenticateRequest)
     }

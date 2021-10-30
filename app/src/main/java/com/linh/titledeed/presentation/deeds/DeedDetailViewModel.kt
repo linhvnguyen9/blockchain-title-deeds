@@ -30,4 +30,8 @@ class DeedDetailViewModel @Inject constructor(private val getDeedDetailUseCase: 
     fun onClickTransfer() {
         navigationManager.navigate(NavigationDirections.TransferOwnershipNavigation.transferOwnership(deed.value.id))
     }
+
+    fun onClickSell() {
+        navigationManager.navigate(NavigationDirections.SellDeedNavigation.sellDeed(deed.value.id))
+    }
 }
