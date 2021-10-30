@@ -1,16 +1,30 @@
 package com.linh.titledeed.presentation.deeds
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.linh.titledeed.NavigationDirection
+import com.linh.titledeed.NavigationDirections
 import com.linh.titledeed.R
+import com.linh.titledeed.domain.entity.Sale
+import com.linh.titledeed.domain.entity.TransactionType
+import com.linh.titledeed.domain.usecase.GetWalletInfoUseCase
+import com.linh.titledeed.domain.usecase.UploadSaleMetadataUseCase
+import com.linh.titledeed.domain.utils.Resource
+import com.linh.titledeed.presentation.NavigationCommand
 import com.linh.titledeed.presentation.NavigationManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class SellDeedViewModel @Inject constructor(private val navigationManager: NavigationManager): ViewModel() {
+class SellDeedViewModel @Inject constructor(
+    private val uploadSaleMetadataUseCase: UploadSaleMetadataUseCase,
+    private val getWalletInfoUseCase: GetWalletInfoUseCase,
+    private val navigationManager: NavigationManager
+): ViewModel() {
     private val _priceInWei = MutableStateFlow("")
     val priceInWei: StateFlow<String> get() = _priceInWei
     private val _priceInWeiError = MutableStateFlow<@androidx.annotation.StringRes Int>(0)
@@ -28,6 +42,9 @@ class SellDeedViewModel @Inject constructor(private val navigationManager: Navig
     val phoneNumber: StateFlow<String> get() = _phoneNumber
     private val _phoneNumberError = MutableStateFlow<@androidx.annotation.StringRes Int>(0)
     val phoneNumberError: StateFlow<Int> get() = _phoneNumberError
+
+    private val _uploadMetadataResponse = MutableStateFlow<Resource<String>?>(null)
+    val uploadMetadataResponse: StateFlow<Resource<String>?> get() = _uploadMetadataResponse
 
     private lateinit var tokenId: String
 
@@ -76,7 +93,33 @@ class SellDeedViewModel @Inject constructor(private val navigationManager: Navig
             return
         }
 
-        //TODO: Upload JSON metadata
-        //TODO: Create sale transaction
+        viewModelScope.launch {
+            val title = saleTitle.value
+            val description = saleDescription.value
+            val phoneNumber = phoneNumber.value
+            val priceInWei = priceInWei.value
+
+            val sale = Sale(tokenId, title, description, phoneNumber, emptyList()) //TODO: Add support for images
+            _uploadMetadataResponse.value = Resource.loading()
+            val uploadResponse = uploadSaleMetadataUseCase(sale)
+            _uploadMetadataResponse.value = uploadResponse
+
+            val navDirection = NavigationDirections.TransactionInfoNavigation.transactionInfo(
+                TransactionType.CREATE_SALE,
+                "",
+                tokenId,
+                priceInWei,
+                uploadResponse.data ?: "",
+                NavigationDirections.DeedDetailNavigation.route,
+                false
+            )
+            navigationManager.navigate(
+                NavigationCommand(
+                    navDirection,
+                    NavigationDirections.DeedDetailNavigation.detail(tokenId),
+                    true
+                )
+            )
+        }
     }
 }

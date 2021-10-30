@@ -12,6 +12,6 @@ interface IpfsService {
     @GET
     suspend fun getMetadataFile(@Url url: String): DeedMetadataResponse
 
-    @POST
+    @POST("pinning/pinJSONToIPFS")
     suspend fun pinSaleMetadataToIpfs(@Body metadata: Sale): PinFileToIpfsResponse
 }

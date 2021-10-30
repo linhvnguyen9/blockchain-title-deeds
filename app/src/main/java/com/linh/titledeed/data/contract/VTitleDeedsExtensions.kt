@@ -3,6 +3,7 @@ package com.linh.titledeed.data.contract
 import org.web3j.abi.datatypes.Address
 import org.web3j.abi.datatypes.Function
 import org.web3j.abi.datatypes.Type
+import org.web3j.abi.datatypes.Utf8String
 import org.web3j.abi.datatypes.generated.Uint256
 import org.web3j.crypto.Credentials
 import org.web3j.protocol.Web3j
@@ -30,6 +31,27 @@ class VTitleDeedsExtensions(credentials: Credentials, web3j: Web3j, contractGasP
                 BigInteger("1"),
                 gasProvider.getGasPrice(FUNC_safeTransferFrom),
                 gasProvider.getGasLimit(FUNC_safeTransferFrom),
+                contractAddress,
+                executeRemoteCallTransaction(function).encodeFunctionCall()
+            )
+        )
+    }
+
+    fun estimateGasCreateSale(itemId: BigInteger, salePriceInWei: BigInteger, _metadataUri: String): Request<*, EthEstimateGas> {
+        val function = Function(
+            FUNC_OFFERFORSALE,
+            Arrays.asList<Type<*>>(
+                Uint256(itemId),
+                Uint256(salePriceInWei),
+                Utf8String(_metadataUri)
+            ), emptyList()
+        )
+        return web3j.ethEstimateGas(
+            Transaction.createFunctionCallTransaction(
+                transactionManager.fromAddress,
+                BigInteger("1"),
+                gasProvider.getGasPrice(FUNC_OFFERFORSALE),
+                gasProvider.getGasLimit(FUNC_OFFERFORSALE),
                 contractAddress,
                 executeRemoteCallTransaction(function).encodeFunctionCall()
             )

@@ -43,8 +43,13 @@ class TitleDeedRepositoryImpl @Inject constructor(private val ipfsService: IpfsS
         return getTokenMetadata(tokenId.toBigInteger()).toDomainModel(tokenId)
     }
 
-    override suspend fun uploadSaleMetadata(sale: Sale): Resource<Any> {
-        TODO("Not yet implemented")
+    override suspend fun uploadSaleMetadata(sale: Sale): Resource<String> {
+        return try {
+            val response = ipfsService.pinSaleMetadataToIpfs(sale)
+            Resource.success(response.cid)
+        } catch (e: Exception) {
+            Resource.error(e)
+        }
     }
 
     override suspend fun estimateGasTransferOwnership(transaction: TransferOwnershipTransaction): Resource<TransferOwnershipTransaction> {
@@ -62,6 +67,27 @@ class TitleDeedRepositoryImpl @Inject constructor(private val ipfsService: IpfsS
     override suspend fun transferOwnership(transaction: TransferOwnershipTransaction): Resource<Any> {
         return try {
             titleDeedService.transferOwnership(transaction)
+            Resource.success("")
+        } catch (e: Exception) {
+            Resource.error(e)
+        }
+    }
+
+    override suspend fun estimateGasCreateSale(transaction: CreateSaleTransaction): Resource<CreateSaleTransaction> {
+        try {
+            val gasPrice = titleDeedService.estimateGasCreateSale(transaction)
+
+            transaction.run {
+                return Resource.success(CreateSaleTransaction(gasPrice, senderAddress, tokenId, priceInWei, metadataUri))
+            }
+        } catch (e: Exception) {
+            return Resource.error(e)
+        }
+    }
+
+    override suspend fun createSale(transaction: CreateSaleTransaction): Resource<Any> {
+        return try {
+            titleDeedService.createSale(transaction)
             Resource.success("")
         } catch (e: Exception) {
             Resource.error(e)

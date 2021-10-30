@@ -6,6 +6,7 @@ import androidx.navigation.NamedNavArgument
 import com.linh.titledeed.NavigationDirection
 import com.linh.titledeed.NavigationDirections
 import com.linh.titledeed.R
+import com.linh.titledeed.domain.entity.CreateSaleTransaction
 import com.linh.titledeed.domain.entity.Transaction
 import com.linh.titledeed.domain.entity.TransactionType
 import com.linh.titledeed.domain.entity.TransferOwnershipTransaction
@@ -41,6 +42,8 @@ class TransactionInfoViewModel @Inject constructor(
         transactionType: TransactionType,
         receiverAddress: String,
         tokenId: String = "",
+        priceInWei: String = "",
+        metadataUri: String = "",
         navigateBackDestination: String = "",
         popInclusive: Boolean = false
     ) {
@@ -51,15 +54,23 @@ class TransactionInfoViewModel @Inject constructor(
 
             val transaction = when (transactionType) {
                 TransactionType.TRANSFER_OWNERSHIP -> {
-                    val tempTransaction = TransferOwnershipTransaction(
+                    TransferOwnershipTransaction(
                         senderAddress = wallet.address,
                         receiverAddress = receiverAddress,
                         tokenId = tokenId
                     )
-                    estimateTransactionGasUseCase(tempTransaction)
+                }
+                TransactionType.CREATE_SALE -> {
+                    CreateSaleTransaction(
+                        senderAddress = wallet.address,
+                        tokenId = tokenId,
+                        priceInWei = priceInWei,
+                        metadataUri = metadataUri
+                    )
                 }
             }
-            _transaction.value = transaction
+            val transactionInfoWithGasEstimate = estimateTransactionGasUseCase(transaction)
+            _transaction.value = transactionInfoWithGasEstimate
         }
     }
 
@@ -73,7 +84,10 @@ class TransactionInfoViewModel @Inject constructor(
                 is TransferOwnershipTransaction -> {
                     makeTransactionUseCase(transaction.data)
                 }
-                else -> null
+                is CreateSaleTransaction -> {
+                    makeTransactionUseCase(transaction.data)
+                }
+                null -> null
             }
             _transactionResponse.value = response
         }

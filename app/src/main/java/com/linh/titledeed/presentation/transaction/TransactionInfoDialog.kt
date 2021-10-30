@@ -52,7 +52,8 @@ fun TransactionInfoDialog(transaction: Resource<Transaction>?, response: Resourc
 
                     val transactionName = when (transaction?.data?.type) {
                         TransactionType.TRANSFER_OWNERSHIP -> stringResource(R.string.all_transfer)
-                        else -> ""
+                        TransactionType.CREATE_SALE -> stringResource(R.string.sell_deed_screen_title)
+                        null -> ""
                     }
                     Text(stringResource(R.string.transaction_info_transaction_name), style = MaterialTheme.typography.subtitle2)
                     Text(transactionName, style = MaterialTheme.typography.body1)

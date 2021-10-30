@@ -1,5 +1,6 @@
 package com.linh.titledeed.data.contract
 
+import com.linh.titledeed.domain.entity.CreateSaleTransaction
 import com.linh.titledeed.domain.entity.Deed
 import com.linh.titledeed.domain.entity.TransferOwnershipTransaction
 import com.linh.titledeed.domain.entity.Wallet
@@ -81,12 +82,43 @@ class TitleDeedService @Inject constructor(private val web3j: Web3j) {
             Timber.d("estimateGasTransferOwnership sender address ${transaction.senderAddress} receiverAddress ${transaction.receiverAddress}")
             Timber.d("estimateGasTransferOwnership tokenId ${transaction.tokenId.toBigDecimal()}")
 
-            return@withContext smartContract.estimateGasSafeTransferFrom(transaction.senderAddress, transaction.receiverAddress, transaction.tokenId.toBigInteger()).send().amountUsed.toString(10)
+            return@withContext smartContract.estimateGasSafeTransferFrom(
+                transaction.senderAddress,
+                transaction.receiverAddress,
+                transaction.tokenId.toBigInteger()
+            ).send().amountUsed.toString(10)
         }
 
     suspend fun transferOwnership(transaction: TransferOwnershipTransaction) {
         withContext(Dispatchers.IO) {
-            smartContract.safeTransferFrom(transaction.senderAddress, transaction.receiverAddress, transaction.tokenId.toBigInteger()).send()
+            smartContract.safeTransferFrom(
+                transaction.senderAddress,
+                transaction.receiverAddress,
+                transaction.tokenId.toBigInteger()
+            ).send()
+        }
+    }
+
+    suspend fun estimateGasCreateSale(transaction: CreateSaleTransaction): String =
+        withContext(Dispatchers.IO) {
+            transaction.run {
+                return@withContext smartContract.estimateGasCreateSale(
+                    tokenId.toBigInteger(),
+                    priceInWei.toBigInteger(),
+                    metadataUri
+                ).send().amountUsed.toString(10)
+            }
+        }
+
+    suspend fun createSale(transaction: CreateSaleTransaction) {
+        withContext(Dispatchers.IO) {
+            transaction.run {
+                smartContract.offerForSale(
+                    tokenId.toBigInteger(),
+                    priceInWei.toBigInteger(),
+                    metadataUri
+                ).send()
+            }
         }
     }
 
