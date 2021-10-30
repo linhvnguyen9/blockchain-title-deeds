@@ -3,5 +3,8 @@
   "title": "Nhà xịn đây",
   "description": "Nhà chính chủ, mới ở 1 năm, ...",
   "phoneNumber": "0904123456",
-  "image": ["ipfs://", "ipfs://", "ipfs://", "ipfs://"]
+  "imageUrls": [
+    "ipfs://Qmagv6dPdnDJxS2HYFZESLa8pqkRSkZq69W4hkYjChD7Rf",
+    "ipfs://QmVF5u6t881C3icUBLU1gqXMf18LG4e3mr4UY8keUeB7fS"
+  ]
 }

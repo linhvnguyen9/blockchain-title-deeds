@@ -201,6 +201,29 @@ object NavigationDirections {
         }
     }
 
+    object SellDeedNavigation {
+        const val KEY_TOKEN_ID = "tokenId"
+
+        const val route = "sell_deed/{$KEY_TOKEN_ID}"
+
+        val args: List<NamedNavArgument>
+            get() = listOf(
+                navArgument(KEY_TOKEN_ID) { type = NavType.StringType },
+            )
+
+        fun sellDeed(tokenId: String) = object : NavigationDirection() {
+            override val arguments = args
+
+            override val destination: String
+                get() = "sell_deed/tokenId=$tokenId"
+
+            override val isBottomNavigationItem: Boolean = true
+
+            override val screenNameRes: Int
+                get() = R.string.all_wallet
+        }
+    }
+
     object TransactionInfoNavigation {
         const val KEY_TRANSACTION_TYPE = "transactionType"
         const val KEY_RECEIVER_ADDRESS = "receiverAddress"
