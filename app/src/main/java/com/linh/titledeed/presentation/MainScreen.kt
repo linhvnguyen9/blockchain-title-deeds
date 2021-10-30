@@ -180,6 +180,7 @@ fun MainScreen(
                     val phoneNumberError = viewModel.phoneNumberError.collectAsState()
                     val salePriceInWei = viewModel.priceInWei.collectAsState()
                     val salePriceInWeiError = viewModel.priceInWeiError.collectAsState()
+                    val uploadMetadataResponse = viewModel.uploadMetadataResponse.collectAsState()
 
                     SellDeedScreen(
                         title.value,
@@ -193,7 +194,8 @@ fun MainScreen(
                         salePriceInWei.value,
                         getErrorStringResource(salePriceInWeiError.value),
                         onSalePriceChange = { viewModel.setPriceInWei(it) },
-                        onClickSubmit = { viewModel.onClickSubmit() }
+                        onClickSubmit = { viewModel.onClickSubmit() },
+                        uploadMetadataResponse = uploadMetadataResponse.value
                     )
                 }
                 dialog(
@@ -214,6 +216,12 @@ fun MainScreen(
                     val tokenId =
                         it.arguments?.getString(NavigationDirections.TransactionInfoNavigation.KEY_TOKEN_ID)
                             ?: ""
+                    val uri =
+                        it.arguments?.getString(NavigationDirections.TransactionInfoNavigation.KEY_URI)
+                            ?: ""
+                    val price =
+                        it.arguments?.getString(NavigationDirections.TransactionInfoNavigation.KEY_PRICE)
+                            ?: ""
                     val navigateBackDestination =
                         it.arguments?.getString(NavigationDirections.TransactionInfoNavigation.KEY_NAVIGATE_BACK_DESTINATION)
                             ?: ""
@@ -228,6 +236,8 @@ fun MainScreen(
                             transactionType,
                             receiverAddress,
                             tokenId,
+                            price,
+                            uri,
                             navigateBackDestination
                         )
                     }

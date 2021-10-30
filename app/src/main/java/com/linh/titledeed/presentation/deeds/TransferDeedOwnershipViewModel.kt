@@ -45,6 +45,8 @@ class TransferDeedOwnershipViewModel @Inject constructor(
             TransactionType.TRANSFER_OWNERSHIP,
             receiverAddress.value,
             tokenId,
+            "",
+            "",
             NavigationDirections.ownedDeeds.destination,
             false
         )

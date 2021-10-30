@@ -1,5 +1,6 @@
 package com.linh.titledeed.domain.usecase
 
+import com.linh.titledeed.domain.entity.CreateSaleTransaction
 import com.linh.titledeed.domain.entity.Transaction
 import com.linh.titledeed.domain.entity.TransferOwnershipTransaction
 import com.linh.titledeed.domain.repository.TitleDeedRepository
@@ -11,6 +12,9 @@ class MakeTransactionUseCase @Inject constructor (private val titleDeedRepositor
         return when (transaction) {
             is TransferOwnershipTransaction -> {
                 titleDeedRepository.transferOwnership(transaction)
+            }
+            is CreateSaleTransaction -> {
+                titleDeedRepository.createSale(transaction)
             }
         }
     }
