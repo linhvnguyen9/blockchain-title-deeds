@@ -30,14 +30,21 @@ class DeedDetailViewModel @Inject constructor(private val getDeedDetailUseCase: 
     private val _isOwner = MutableStateFlow(false)
     val isOwner: StateFlow<Boolean> get() = _isOwner
 
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing: StateFlow<Boolean> get() = _isRefreshing
+
     fun getDeed(tokenId: String) {
         viewModelScope.launch {
+            _isRefreshing.value = true
+
             val wallet = getWalletInfoUseCase()
 
             _deed.value = getDeedDetailUseCase(tokenId)
             _sale.value = getSaleInfoUseCase(tokenId)
             _tokenOwner.value = getTokenOwnerUseCase(tokenId)
             _isOwner.value = wallet.address == tokenOwner.value
+
+            _isRefreshing.value = false
         }
     }
 
