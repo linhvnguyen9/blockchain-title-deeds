@@ -115,11 +115,12 @@ fun MainScreen(
                     NavigationDirections.DeedDetailNavigation.route,
                     NavigationDirections.DeedDetailNavigation.args
                 ) {
-                    val deedDetailViewModel: DeedDetailViewModel = hiltViewModel()
-
                     val token =
                         it.arguments?.getString(NavigationDirections.DeedDetailNavigation.KEY_TOKEN_ID)
                             ?: ""
+
+                    val deedDetailViewModel: DeedDetailViewModel = parentViewModel(navController, NavigationDirections.DeedDetailNavigation.route)
+
                     val deed = deedDetailViewModel.deed.collectAsState()
                     val sale = deedDetailViewModel.sale.collectAsState()
                     val isOwner = deedDetailViewModel.isOwner.collectAsState()
@@ -213,6 +214,9 @@ fun MainScreen(
                 ) {
                     val ownedDeedsViewModel: OwnedDeedsViewModel =
                         parentViewModel(navController, NavigationDirections.ownedDeeds.destination)
+                    val deedDetailViewModel: DeedDetailViewModel =
+                        parentViewModel(navController, NavigationDirections.DeedDetailNavigation.route)
+
                     val transactionInfoViewModel: TransactionInfoViewModel = hiltViewModel()
 
                     val transactionTypeString =
@@ -256,6 +260,7 @@ fun MainScreen(
                         transactionResponse.value,
                         onConfirm = { transactionInfoViewModel.onConfirm() },
                         onDismiss = {
+                            deedDetailViewModel.getDeed(tokenId)
                             ownedDeedsViewModel.onRefresh()
                             transactionInfoViewModel.onDismiss(it)
                         }
