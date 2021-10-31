@@ -58,6 +58,23 @@ class VTitleDeedsExtensions(credentials: Credentials, web3j: Web3j, contractGasP
         )
     }
 
+    fun estimateGasCancelSale(itemId: BigInteger): Request<*, EthEstimateGas> {
+        val function = Function(
+            FUNC_CLOSESALEOFFER,
+            Arrays.asList<Type<*>>(Uint256(itemId)), emptyList()
+        )
+        return web3j.ethEstimateGas(
+            Transaction.createFunctionCallTransaction(
+                transactionManager.fromAddress,
+                BigInteger("1"),
+                gasProvider.getGasPrice(FUNC_CLOSESALEOFFER),
+                gasProvider.getGasLimit(FUNC_CLOSESALEOFFER),
+                contractAddress,
+                executeRemoteCallTransaction(function).encodeFunctionCall()
+            )
+        )
+    }
+
     companion object {
         private const val ERC721_SMART_CONTRACT_ADDRESS =
             "0xFD276805F740FA1C06dFdE1c1D20Fad8a54AF5c9"

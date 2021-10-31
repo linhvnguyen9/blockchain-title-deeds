@@ -46,6 +46,7 @@ fun DeedDetailScreen(
     isRefreshing: Boolean,
     onClickTransferOwnership: () -> Unit,
     onClickSell: () -> Unit,
+    onClickCancelSell: () -> Unit,
     onRefresh: () -> Unit
 ) {
     val isPreview = remember { mutableStateOf(false) }
@@ -111,7 +112,7 @@ fun DeedDetailScreen(
             Spacer(Modifier.height(8.dp))
             Divider()
             Spacer(Modifier.height(16.dp))
-            SaleInfo(sale, isOwner, onClickSell)
+            SaleInfo(sale, isOwner, onClickSell, onClickCancelSell)
         }
         if (isPreview.value) {
             DeedImagePreviewDialog(deed.imageUri) {
@@ -123,7 +124,7 @@ fun DeedDetailScreen(
 
 @ExperimentalMaterialApi
 @Composable
-private fun SaleInfo(sale: Sale, isOwner: Boolean, onClickSell: () -> Unit) {
+private fun SaleInfo(sale: Sale, isOwner: Boolean, onClickSell: () -> Unit, onClickCancelSell: () -> Unit) {
     Text("Current sale", style = MaterialTheme.typography.caption)
     Spacer(Modifier.height(8.dp))
     if (sale.isForSale) {
@@ -148,6 +149,10 @@ private fun SaleInfo(sale: Sale, isOwner: Boolean, onClickSell: () -> Unit) {
         if (!isOwner) {
             Text(stringResource(R.string.deed_detail_seller), style = MaterialTheme.typography.caption)
             WalletAddress(sale.sellerAddress)
+        } else {
+            TextButton(onClick = { onClickCancelSell() }, contentPadding = PaddingValues(8.dp)) {
+                Text(stringResource(R.string.all_cancel_sell))
+            }
         }
     } else {
         Text("This property is not for sale")
@@ -238,6 +243,7 @@ fun DeedDetailScreenPreview() {
         isOwner = true,
         onClickTransferOwnership = {},
         onClickSell = {},
+        onClickCancelSell = {},
     ) {
 
     }

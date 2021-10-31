@@ -138,6 +138,9 @@ fun MainScreen(
                         onClickSell = {
                             deedDetailViewModel.onClickSell()
                         },
+                        onClickCancelSell = {
+                            deedDetailViewModel.onClickCancelSell()
+                        },
                         onClickTransferOwnership = {
                             deedDetailViewModel.onClickTransfer()
                         },

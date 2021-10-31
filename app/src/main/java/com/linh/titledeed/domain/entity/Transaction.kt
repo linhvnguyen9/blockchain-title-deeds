@@ -6,7 +6,10 @@ class TransferOwnershipTransaction(gasPriceInWei: String = "", senderAddress: St
 
 class CreateSaleTransaction(gasPriceInWei: String = "", senderAddress: String = "", val tokenId: String, val priceInWei: String, val metadataUri: String) : Transaction(TransactionType.CREATE_SALE, gasPriceInWei, senderAddress)
 
+class CancelSaleTransaction(gasPriceInWei: String = "", senderAddress: String = "", val tokenId: String) : Transaction(TransactionType.CANCEL_SALE, gasPriceInWei, senderAddress)
+
 enum class TransactionType {
     TRANSFER_OWNERSHIP,
-    CREATE_SALE
+    CREATE_SALE,
+    CANCEL_SALE
 }

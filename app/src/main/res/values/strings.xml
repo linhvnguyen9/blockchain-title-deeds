@@ -33,6 +33,7 @@
     <string name="all_deed">Deed</string>
     <string name="all_transfer">Transfer ownership</string>
     <string name="all_sell">Sell</string>
+    <string name="all_cancel_sell">Cancel sell</string>
     <string name="sell_deed_screen_title">Sell property</string>
 
     <!--    Errors-->
