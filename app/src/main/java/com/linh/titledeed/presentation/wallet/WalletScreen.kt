@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import com.linh.titledeed.R
 import com.linh.titledeed.domain.entity.Wallet
 import com.linh.titledeed.presentation.ui.composable.ScreenTitle
+import com.linh.titledeed.presentation.ui.composable.WalletAddress
 import com.linh.titledeed.presentation.ui.theme.chip
 import com.linh.titledeed.presentation.ui.theme.screenModifier
 import com.linh.titledeed.presentation.ui.theme.ubuntu
@@ -66,30 +67,6 @@ private fun WalletInfo(ethBalance: String, wallet: Wallet) {
                 style = MaterialTheme.typography.subtitle1
             )
             WalletAddress(wallet.address)
-        }
-    }
-}
-
-@ExperimentalMaterialApi
-@Composable
-private fun WalletAddress(address: String) {
-    val context = LocalContext.current
-
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(
-            address.getTruncatedAddress(),
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            fontFamily = ubuntu,
-            fontSize = 18.sp
-        )
-        IconButton(
-            onClick = {
-                copy(context, address)
-                Toast.makeText(context, "Copied address!", Toast.LENGTH_SHORT).show()
-            }
-        ) {
-            Icon(painterResource(R.drawable.ic_baseline_content_copy_24), null)
         }
     }
 }

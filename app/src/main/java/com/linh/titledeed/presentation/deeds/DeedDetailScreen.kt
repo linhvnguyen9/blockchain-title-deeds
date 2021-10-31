@@ -3,9 +3,7 @@ package com.linh.titledeed.presentation.deeds
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Divider
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,15 +26,24 @@ import com.linh.titledeed.R
 import com.linh.titledeed.data.utils.DateFormatUtil
 import com.linh.titledeed.domain.entity.Deed
 import com.linh.titledeed.domain.entity.LandPurpose
+import com.linh.titledeed.domain.entity.Sale
 import com.linh.titledeed.presentation.ui.composable.ScreenTitle
+import com.linh.titledeed.presentation.ui.composable.WalletAddress
 import com.linh.titledeed.presentation.ui.theme.screenModifier
 import com.linh.titledeed.presentation.ui.theme.superscript
 import java.util.*
 import kotlin.math.roundToInt
 
+@ExperimentalMaterialApi
 @ExperimentalComposeUiApi
 @Composable
-fun DeedDetailScreen(deed: Deed, onClickTransferOwnership: () -> Unit, onClickSell: () -> Unit) {
+fun DeedDetailScreen(
+    deed: Deed,
+    sale: Sale,
+    isOwner: Boolean,
+    onClickTransferOwnership: () -> Unit,
+    onClickSell: () -> Unit
+) {
     val isPreview = remember { mutableStateOf(false) }
     Column(screenModifier.verticalScroll(rememberScrollState())) {
         ScreenTitle(stringResource(R.string.all_deed))
@@ -49,7 +56,13 @@ fun DeedDetailScreen(deed: Deed, onClickTransferOwnership: () -> Unit, onClickSe
                 append("2")
             }
         })
-        Text(stringResource(R.string.deed_detail_issue_date, DateFormatUtil.formatDate(Calendar.getInstance().apply { timeInMillis = deed.issueDate })))
+        Text(
+            stringResource(
+                R.string.deed_detail_issue_date,
+                DateFormatUtil.formatDate(
+                    Calendar.getInstance().apply { timeInMillis = deed.issueDate })
+            )
+        )
         val ownership =
             if (deed.isShared) stringResource(R.string.deed_detail_shared) else stringResource(R.string.deed_detail_private)
         Text(
@@ -90,13 +103,51 @@ fun DeedDetailScreen(deed: Deed, onClickTransferOwnership: () -> Unit, onClickSe
             Text(stringResource(R.string.all_transfer))
         }
         Spacer(Modifier.height(8.dp))
-        TextButton(onClick = { onClickSell() }, contentPadding = PaddingValues(8.dp)) {
-            Text(stringResource(R.string.all_sell))
-        }
+        Divider()
+        Spacer(Modifier.height(16.dp))
+        SaleInfo(sale, isOwner, onClickSell)
     }
     if (isPreview.value) {
         DeedImagePreviewDialog(deed.imageUri) {
             isPreview.value = false
+        }
+    }
+}
+
+@ExperimentalMaterialApi
+@Composable
+private fun SaleInfo(sale: Sale, isOwner: Boolean, onClickSell: () -> Unit) {
+    Text("Current sale", style = MaterialTheme.typography.caption)
+    Spacer(Modifier.height(8.dp))
+    if (sale.isForSale) {
+        Text(sale.title, style = MaterialTheme.typography.h5)
+        if (sale.description.isNotBlank()) {
+            Text(sale.description, style = MaterialTheme.typography.subtitle2)
+        }
+        Spacer(Modifier.height(4.dp))
+        Row {
+            Text(sale.price, Modifier.alignByBaseline(), style = MaterialTheme.typography.h6)
+            Spacer(Modifier.width(4.dp))
+            Text(
+                stringResource(R.string.all_wei),
+                Modifier.alignByBaseline(),
+                style = MaterialTheme.typography.subtitle2
+            )
+        }
+        Spacer(Modifier.height(12.dp))
+        Text(stringResource(R.string.deed_detail_sale_contact_phone), style = MaterialTheme.typography.caption)
+        Text(sale.phoneNumber, style = MaterialTheme.typography.body1)
+        Spacer(Modifier.height(8.dp))
+        if (!isOwner) {
+            Text(stringResource(R.string.deed_detail_seller), style = MaterialTheme.typography.caption)
+            WalletAddress(sale.sellerAddress)
+        }
+    } else {
+        Text("This property is not for sale")
+        if (isOwner) {
+            TextButton(onClick = { onClickSell() }, contentPadding = PaddingValues(8.dp)) {
+                Text(stringResource(R.string.all_sell))
+            }
         }
     }
 }
@@ -157,6 +208,7 @@ private fun DeedImagePreviewDialog(
     }
 }
 
+@ExperimentalMaterialApi
 @ExperimentalComposeUiApi
 @Preview
 @Composable
@@ -174,6 +226,8 @@ fun DeedDetailScreenPreview() {
             1,
             1
         ),
+        Sale("1", "Sale", "Description", "0123456789", emptyList(), "abcdef", "100000", true),
+        isOwner = true,
         onClickTransferOwnership = {}
     ) {
 

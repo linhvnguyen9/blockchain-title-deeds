@@ -28,6 +28,8 @@
     <string name="deed_detail_notes">Notes: </string>
     <string name="deed_detail_shared">Shared</string>
     <string name="deed_detail_private">Private</string>
+    <string name="deed_detail_seller">Seller: </string>
+    <string name="deed_detail_sale_contact_phone">Contact phone number: </string>
     <string name="all_deed">Deed</string>
     <string name="all_transfer">Transfer ownership</string>
     <string name="all_sell">Sell</string>
@@ -65,4 +67,5 @@
     <string name="sell_phone_number">Phone Number</string>
     <string name="all_title">Title</string>
     <string name="all_description">Description</string>
+    <string name="all_wei" translatable="false">Wei</string>
 </resources>

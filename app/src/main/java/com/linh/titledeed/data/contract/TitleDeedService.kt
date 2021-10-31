@@ -1,9 +1,7 @@
 package com.linh.titledeed.data.contract
 
-import com.linh.titledeed.domain.entity.CreateSaleTransaction
-import com.linh.titledeed.domain.entity.Deed
-import com.linh.titledeed.domain.entity.TransferOwnershipTransaction
-import com.linh.titledeed.domain.entity.Wallet
+import com.linh.titledeed.data.entity.GetSaleDetailResponse
+import com.linh.titledeed.domain.entity.*
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -58,6 +56,11 @@ class TitleDeedService @Inject constructor(private val web3j: Web3j) {
     suspend fun getBalance(owner: String): BigInteger =
         withContext(Dispatchers.IO) {
             return@withContext smartContract.balanceOf(owner).send()
+        }
+
+    suspend fun getTokenOwner(tokenId: String): String =
+        withContext(Dispatchers.IO) {
+            return@withContext smartContract.ownerOf(tokenId.toBigInteger()).send()
         }
 
     suspend fun getTokensOfOwner(ownerAddress: String, index: BigInteger): BigInteger =
@@ -121,6 +124,19 @@ class TitleDeedService @Inject constructor(private val web3j: Web3j) {
             }
         }
     }
+
+    suspend fun getSaleDetail(tokenId: String): GetSaleDetailResponse =
+        withContext(Dispatchers.IO) {
+            val response = smartContract.deedsOfferedForSale(tokenId.toBigInteger()).send()
+            val (seller, itemId, price, isForSale, metadataUri) = response
+            return@withContext GetSaleDetailResponse(
+                seller,
+                itemId.toString(10),
+                price.toString(10),
+                isForSale,
+                metadataUri
+            )
+        }
 
     companion object {
         private val ETH_DECIMALS = BigInteger("1000000000000000000")
