@@ -121,6 +121,8 @@ fun MainScreen(
                         it.arguments?.getString(NavigationDirections.DeedDetailNavigation.KEY_TOKEN_ID)
                             ?: ""
                     val deed = deedDetailViewModel.deed.collectAsState()
+                    val sale = deedDetailViewModel.sale.collectAsState()
+                    val isOwner = deedDetailViewModel.isOwner.collectAsState()
 
                     LaunchedEffect(key1 = token) {
                         deedDetailViewModel.getDeed(token)
@@ -128,6 +130,8 @@ fun MainScreen(
 
                     DeedDetailScreen(
                         deed.value,
+                        sale.value,
+                        isOwner.value,
                         onClickSell = {
                             deedDetailViewModel.onClickSell()
                         },

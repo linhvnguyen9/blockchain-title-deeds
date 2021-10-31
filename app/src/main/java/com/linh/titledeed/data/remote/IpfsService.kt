@@ -1,8 +1,6 @@
 package com.linh.titledeed.data.remote
 
-import com.linh.titledeed.data.entity.DeedMetadataResponse
-import com.linh.titledeed.data.entity.PinFileToIpfsResponse
-import com.linh.titledeed.domain.entity.Sale
+import com.linh.titledeed.data.entity.*
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -10,8 +8,11 @@ import retrofit2.http.Url
 
 interface IpfsService {
     @GET
-    suspend fun getMetadataFile(@Url url: String): DeedMetadataResponse
+    suspend fun getDeedMetadata(@Url url: String): DeedMetadataResponse
+
+    @GET
+    suspend fun getSaleMetadata(@Url url: String): GetSaleMetadataResponse
 
     @POST("pinning/pinJSONToIPFS")
-    suspend fun pinSaleMetadataToIpfs(@Body metadata: Sale): PinFileToIpfsResponse
+    suspend fun pinSaleMetadataToIpfs(@Body metadata: UploadSaleMetadataRequest): PinFileToIpfsResponse
 }

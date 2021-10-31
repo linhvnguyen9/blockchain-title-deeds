@@ -26,4 +26,17 @@
     <string name="transaction_info_transaction_name">Tên giao dịch:</string>
     <string name="transaction_info_receiver_address">Địa chỉ nhận:</string>
     <string name="transaction_info_gas_cost">Phí giao dịch:</string>
+    <string name="deed_detail_seller">Người bán:</string>
+    <string name="all_sell">Bán</string>
+    <string name="sell_deed_screen_title">Bán ô đất</string>
+    <string name="wallet_password">Mật khẩu</string>
+    <string name="wallet_screen_title">Nhập hoặc tạo ví</string>
+    <string name="all_submit">Nhập</string>
+    <string name="all_wallet">Ví</string>
+    <string name="all_title">Tiêu đề</string>
+    <string name="all_description">Nội dung</string>
+    <string name="sell_phone_number">Số điện thoại</string>
+    <string name="sell_deed_price">Giá (wei)</string>
+    <string name="transaction_info_loading">Đang thực hiện giao dịch...</string>
+    <string name="transaction_info_success">Giao dịch thành công</string>
 </resources>

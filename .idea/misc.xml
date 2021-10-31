@@ -97,13 +97,17 @@
         <entry key="../../../../layout/compose-model-1635565243507.xml" value="0.2204391891891892" />
         <entry key="../../../../layout/compose-model-1635565310149.xml" value="0.33" />
         <entry key="../../../../layout/compose-model-1635581498614.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1635591062707.xml" value="0.22086148648648649" />
+        <entry key="../../../../layout/compose-model-1635654105002.xml" value="0.3108108108108108" />
+        <entry key="../../../../layout/compose-model-1635654338499.xml" value="0.25" />
+        <entry key="../../../../layout/compose-model-1635665517338.xml" value="0.33" />
         <entry key="app/src/main/res/drawable/ic_baseline_account_balance_wallet_24.xml" value="0.35555555555555557" />
         <entry key="app/src/main/res/drawable/ic_baseline_content_copy_24.xml" value="0.18385416666666668" />
         <entry key="app/src/main/res/drawable/ic_bnb.xml" value="0.18385416666666668" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
