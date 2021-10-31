@@ -6,10 +6,7 @@ import androidx.navigation.NamedNavArgument
 import com.linh.titledeed.NavigationDirection
 import com.linh.titledeed.NavigationDirections
 import com.linh.titledeed.R
-import com.linh.titledeed.domain.entity.CreateSaleTransaction
-import com.linh.titledeed.domain.entity.Transaction
-import com.linh.titledeed.domain.entity.TransactionType
-import com.linh.titledeed.domain.entity.TransferOwnershipTransaction
+import com.linh.titledeed.domain.entity.*
 import com.linh.titledeed.domain.usecase.EstimateTransactionGasUseCase
 import com.linh.titledeed.domain.usecase.GetWalletInfoUseCase
 import com.linh.titledeed.domain.usecase.MakeTransactionUseCase
@@ -68,6 +65,12 @@ class TransactionInfoViewModel @Inject constructor(
                         metadataUri = metadataUri
                     )
                 }
+                TransactionType.CANCEL_SALE -> {
+                    CancelSaleTransaction(
+                        senderAddress = wallet.address,
+                        tokenId = tokenId,
+                    )
+                }
             }
             val transactionInfoWithGasEstimate = estimateTransactionGasUseCase(transaction)
             _transaction.value = transactionInfoWithGasEstimate
@@ -80,16 +83,10 @@ class TransactionInfoViewModel @Inject constructor(
 
             val transaction = transaction.value
 
-            val response = when (transaction?.data) {
-                is TransferOwnershipTransaction -> {
-                    makeTransactionUseCase(transaction.data)
-                }
-                is CreateSaleTransaction -> {
-                    makeTransactionUseCase(transaction.data)
-                }
-                null -> null
+            transaction?.data?.let {
+                val response = makeTransactionUseCase(it)
+                _transactionResponse.value = response
             }
-            _transactionResponse.value = response
         }
     }
 

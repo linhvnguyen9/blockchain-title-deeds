@@ -125,6 +125,25 @@ class TitleDeedService @Inject constructor(private val web3j: Web3j) {
         }
     }
 
+    suspend fun estimateGasCancelSale(transaction: CancelSaleTransaction): String =
+        withContext(Dispatchers.IO) {
+            transaction.run {
+                return@withContext smartContract.estimateGasCancelSale(
+                    tokenId.toBigInteger(),
+                ).send().amountUsed.toString(10)
+            }
+        }
+
+    suspend fun cancelSale(transaction: CancelSaleTransaction)  {
+        withContext(Dispatchers.IO) {
+            transaction.run {
+                smartContract.closeSaleOffer(
+                    tokenId.toBigInteger(),
+                ).send()
+            }
+        }
+    }
+
     suspend fun getSaleDetail(tokenId: String): GetSaleDetailResponse =
         withContext(Dispatchers.IO) {
             val response = smartContract.deedsOfferedForSale(tokenId.toBigInteger()).send()

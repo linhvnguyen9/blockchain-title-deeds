@@ -39,4 +39,5 @@
     <string name="sell_deed_price">Giá (wei)</string>
     <string name="transaction_info_loading">Đang thực hiện giao dịch...</string>
     <string name="transaction_info_success">Giao dịch thành công</string>
+    <string name="all_cancel_sell">Hủy bán</string>
 </resources>

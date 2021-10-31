@@ -54,6 +54,7 @@ class TitleDeedRepositoryImpl @Inject constructor(private val ipfsService: IpfsS
                 Resource.success(response.cid)
             }
         } catch (e: Exception) {
+            Timber.e(e)
             Resource.error(e)
         }
     }
@@ -66,6 +67,7 @@ class TitleDeedRepositoryImpl @Inject constructor(private val ipfsService: IpfsS
                 return Resource.success(TransferOwnershipTransaction(gasPrice, senderAddress, receiverAddress, tokenId))
             }
         } catch (e: Exception) {
+            Timber.e(e)
             return Resource.error(e)
         }
     }
@@ -75,6 +77,7 @@ class TitleDeedRepositoryImpl @Inject constructor(private val ipfsService: IpfsS
             titleDeedService.transferOwnership(transaction)
             Resource.success("")
         } catch (e: Exception) {
+            Timber.e(e)
             Resource.error(e)
         }
     }
@@ -87,6 +90,7 @@ class TitleDeedRepositoryImpl @Inject constructor(private val ipfsService: IpfsS
                 return Resource.success(CreateSaleTransaction(gasPrice, senderAddress, tokenId, priceInWei, metadataUri))
             }
         } catch (e: Exception) {
+            Timber.e(e)
             return Resource.error(e)
         }
     }
@@ -96,6 +100,30 @@ class TitleDeedRepositoryImpl @Inject constructor(private val ipfsService: IpfsS
             titleDeedService.createSale(transaction)
             Resource.success("")
         } catch (e: Exception) {
+            Timber.e(e)
+            Resource.error(e)
+        }
+    }
+
+    override suspend fun estimateGasCancelSale(transaction: CancelSaleTransaction): Resource<CancelSaleTransaction> {
+        try {
+            val gasPrice = titleDeedService.estimateGasCancelSale(transaction)
+
+            transaction.run {
+                return Resource.success(CancelSaleTransaction(gasPrice, senderAddress, tokenId))
+            }
+        } catch (e: Exception) {
+            Timber.e(e)
+            return Resource.error(e)
+        }
+    }
+
+    override suspend fun cancelSale(transaction: CancelSaleTransaction): Resource<Any> {
+        return try {
+            titleDeedService.cancelSale(transaction)
+            Resource.success("")
+        } catch (e: Exception) {
+            Timber.e(e)
             Resource.error(e)
         }
     }

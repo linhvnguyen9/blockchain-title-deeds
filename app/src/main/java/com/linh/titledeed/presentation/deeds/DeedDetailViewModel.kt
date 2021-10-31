@@ -6,6 +6,7 @@ import com.linh.titledeed.NavigationDirections
 import com.linh.titledeed.domain.entity.Deed
 import com.linh.titledeed.domain.entity.LandPurpose
 import com.linh.titledeed.domain.entity.Sale
+import com.linh.titledeed.domain.entity.TransactionType
 import com.linh.titledeed.domain.usecase.GetDeedDetailUseCase
 import com.linh.titledeed.domain.usecase.GetSaleInfoUseCase
 import com.linh.titledeed.domain.usecase.GetTokenOwnerUseCase
@@ -54,5 +55,9 @@ class DeedDetailViewModel @Inject constructor(private val getDeedDetailUseCase: 
 
     fun onClickSell() {
         navigationManager.navigate(NavigationDirections.SellDeedNavigation.sellDeed(deed.value.id))
+    }
+
+    fun onClickCancelSell() {
+        navigationManager.navigate(NavigationDirections.TransactionInfoNavigation.transactionInfo(TransactionType.CANCEL_SALE, "0x0", sale.value.tokenId, navigateBackDestination = NavigationDirections.DeedDetailNavigation.route, popInclusive = false))
     }
 }

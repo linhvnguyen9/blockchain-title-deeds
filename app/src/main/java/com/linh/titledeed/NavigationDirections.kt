@@ -215,7 +215,7 @@ object NavigationDirections {
             override val arguments = args
 
             override val destination: String
-                get() = "sell_deed/tokenId=$tokenId"
+                get() = "sell_deed/$tokenId"
 
             override val isBottomNavigationItem: Boolean = true
 
@@ -271,7 +271,7 @@ object NavigationDirections {
 
             override val destination: String
                 get(){
-                    val value = "transaction_info/$transactionType?$KEY_RECEIVER_ADDRESS=$receiverAddress&$tokenId&$KEY_NAVIGATE_BACK_DESTINATION=$navigateBackDestination&$KEY_NAVIGATE_BACK_POP_INCLUSIVE=$popInclusive&$KEY_PRICE=$price&$KEY_URI=$uri"
+                    val value = "transaction_info/$transactionType?$KEY_RECEIVER_ADDRESS=$receiverAddress&$KEY_TOKEN_ID=$tokenId&$KEY_NAVIGATE_BACK_DESTINATION=$navigateBackDestination&$KEY_NAVIGATE_BACK_POP_INCLUSIVE=$popInclusive&$KEY_PRICE=$price&$KEY_URI=$uri"
                     Timber.d("transactionInfo $value")
                     return value
                 }
