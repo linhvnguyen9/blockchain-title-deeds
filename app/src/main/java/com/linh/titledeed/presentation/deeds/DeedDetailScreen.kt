@@ -22,6 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import coil.compose.rememberImagePainter
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.linh.titledeed.R
 import com.linh.titledeed.data.utils.DateFormatUtil
 import com.linh.titledeed.domain.entity.Deed
@@ -41,75 +43,80 @@ fun DeedDetailScreen(
     deed: Deed,
     sale: Sale,
     isOwner: Boolean,
+    isRefreshing: Boolean,
     onClickTransferOwnership: () -> Unit,
-    onClickSell: () -> Unit
+    onClickSell: () -> Unit,
+    onRefresh: () -> Unit
 ) {
     val isPreview = remember { mutableStateOf(false) }
-    Column(screenModifier.verticalScroll(rememberScrollState())) {
-        ScreenTitle(stringResource(R.string.all_deed))
-        Text(stringResource(R.string.deed_detail_land_no, deed.landNo))
-        Text(stringResource(R.string.deed_detail_map_no, deed.mapNo))
-        Text(stringResource(R.string.deed_detail_address, deed.address))
-        Text(buildAnnotatedString {
-            append(deed.areaInSquareMeters.toString() + " m")
-            withStyle(superscript) {
-                append("2")
+    
+    SwipeRefresh(rememberSwipeRefreshState(isRefreshing), onRefresh, Modifier.fillMaxSize()) {
+        Column(screenModifier.verticalScroll(rememberScrollState())) {
+            ScreenTitle(stringResource(R.string.all_deed))
+            Text(stringResource(R.string.deed_detail_land_no, deed.landNo))
+            Text(stringResource(R.string.deed_detail_map_no, deed.mapNo))
+            Text(stringResource(R.string.deed_detail_address, deed.address))
+            Text(buildAnnotatedString {
+                append(deed.areaInSquareMeters.toString() + " m")
+                withStyle(superscript) {
+                    append("2")
+                }
+            })
+            Text(
+                stringResource(
+                    R.string.deed_detail_issue_date,
+                    DateFormatUtil.formatDate(
+                        Calendar.getInstance().apply { timeInMillis = deed.issueDate })
+                )
+            )
+            val ownership =
+                if (deed.isShared) stringResource(R.string.deed_detail_shared) else stringResource(R.string.deed_detail_private)
+            Text(
+                stringResource(
+                    R.string.deed_detail_ownership,
+                    ownership
+                )
+            )
+            val purpose = when (deed.purpose) {
+                LandPurpose.RESIDENTIAL -> stringResource(R.string.land_purpose_residential)
+                LandPurpose.AGRICULTURAL -> stringResource(R.string.land_purpose_agricultural)
+                LandPurpose.NON_AGRICULTURAL -> stringResource(R.string.land_purpose_non_agricultural)
             }
-        })
-        Text(
-            stringResource(
-                R.string.deed_detail_issue_date,
-                DateFormatUtil.formatDate(
-                    Calendar.getInstance().apply { timeInMillis = deed.issueDate })
+            Text(
+                stringResource(
+                    R.string.deed_detail_purpose,
+                    purpose
+                )
             )
-        )
-        val ownership =
-            if (deed.isShared) stringResource(R.string.deed_detail_shared) else stringResource(R.string.deed_detail_private)
-        Text(
-            stringResource(
-                R.string.deed_detail_ownership,
-                ownership
+            Text(stringResource(R.string.deed_detail_notes))
+            Text(deed.note)
+            Spacer(Modifier.height(4.dp))
+            Divider()
+            Spacer(Modifier.height(16.dp))
+            Image(
+                painter = rememberImagePainter(deed.imageUri, builder = {
+                    crossfade(true)
+                    placeholder(R.drawable.ic_baseline_image_24)
+                }),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(300.dp)
+                    .align(Alignment.CenterHorizontally)
+                    .clickable { isPreview.value = true }
             )
-        )
-        val purpose = when (deed.purpose) {
-            LandPurpose.RESIDENTIAL -> stringResource(R.string.land_purpose_residential)
-            LandPurpose.AGRICULTURAL -> stringResource(R.string.land_purpose_agricultural)
-            LandPurpose.NON_AGRICULTURAL -> stringResource(R.string.land_purpose_non_agricultural)
+            Spacer(Modifier.height(32.dp))
+            TextButton(onClick = { onClickTransferOwnership() }) {
+                Text(stringResource(R.string.all_transfer))
+            }
+            Spacer(Modifier.height(8.dp))
+            Divider()
+            Spacer(Modifier.height(16.dp))
+            SaleInfo(sale, isOwner, onClickSell)
         }
-        Text(
-            stringResource(
-                R.string.deed_detail_purpose,
-                purpose
-            )
-        )
-        Text(stringResource(R.string.deed_detail_notes))
-        Text(deed.note)
-        Spacer(Modifier.height(4.dp))
-        Divider()
-        Spacer(Modifier.height(16.dp))
-        Image(
-            painter = rememberImagePainter(deed.imageUri, builder = {
-                crossfade(true)
-                placeholder(R.drawable.ic_baseline_image_24)
-            }),
-            contentDescription = null,
-            modifier = Modifier
-                .size(300.dp)
-                .align(Alignment.CenterHorizontally)
-                .clickable { isPreview.value = true }
-        )
-        Spacer(Modifier.height(32.dp))
-        TextButton(onClick = { onClickTransferOwnership() }) {
-            Text(stringResource(R.string.all_transfer))
-        }
-        Spacer(Modifier.height(8.dp))
-        Divider()
-        Spacer(Modifier.height(16.dp))
-        SaleInfo(sale, isOwner, onClickSell)
-    }
-    if (isPreview.value) {
-        DeedImagePreviewDialog(deed.imageUri) {
-            isPreview.value = false
+        if (isPreview.value) {
+            DeedImagePreviewDialog(deed.imageUri) {
+                isPreview.value = false
+            }
         }
     }
 }
@@ -227,8 +234,10 @@ fun DeedDetailScreenPreview() {
             1
         ),
         Sale("1", "Sale", "Description", "0123456789", emptyList(), "abcdef", "100000", true),
+        isRefreshing = false,
         isOwner = true,
-        onClickTransferOwnership = {}
+        onClickTransferOwnership = {},
+        onClickSell = {},
     ) {
 
     }

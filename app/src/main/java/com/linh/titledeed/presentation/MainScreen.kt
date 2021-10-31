@@ -123,6 +123,7 @@ fun MainScreen(
                     val deed = deedDetailViewModel.deed.collectAsState()
                     val sale = deedDetailViewModel.sale.collectAsState()
                     val isOwner = deedDetailViewModel.isOwner.collectAsState()
+                    val isRefreshing = deedDetailViewModel.isRefreshing.collectAsState()
 
                     LaunchedEffect(key1 = token) {
                         deedDetailViewModel.getDeed(token)
@@ -132,11 +133,15 @@ fun MainScreen(
                         deed.value,
                         sale.value,
                         isOwner.value,
+                        isRefreshing.value,
                         onClickSell = {
                             deedDetailViewModel.onClickSell()
                         },
                         onClickTransferOwnership = {
                             deedDetailViewModel.onClickTransfer()
+                        },
+                        onRefresh = {
+                            deedDetailViewModel.getDeed(token)
                         }
                     )
                 }
