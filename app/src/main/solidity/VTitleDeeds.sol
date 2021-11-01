@@ -50,9 +50,10 @@ contract VTitleDeeds is ERC721, ERC721Enumerable, Pausable, Ownable, ERC721Burna
     }
 
     function closeSaleOffer(uint itemId) public {
-        require(ownerOf(itemId) == msg.sender, "You're not the owner of this token");
+        //Allows the contract to close sale offer on behalf of user when user transfer token
+        require(ownerOf(itemId) == msg.sender || address(this) == msg.sender, "You're not the owner of this token");
         Offer memory oldOffer = deedsOfferedForSale[itemId];
-        deedsOfferedForSale[itemId] = Offer(msg.sender, itemId, 0, false, oldOffer.metadataUri);
+        deedsOfferedForSale[itemId] = Offer(oldOffer.seller, itemId, 0, false, oldOffer.metadataUri);
         emit DeedNoLongerForSale(itemId);
     }
 
@@ -117,14 +118,14 @@ contract VTitleDeeds is ERC721, ERC721Enumerable, Pausable, Ownable, ERC721Burna
     }
 
     // Override transfer, cancel trade when transfer deed
-    function _transfer(address from,
+    function safeTransferFrom(address from,
         address to,
         uint256 tokenId
-    ) override internal virtual {
-        super._transfer(from, to, tokenId);
-
+    ) override public virtual {
         if (deedsOfferedForSale[tokenId].isForSale) {
             closeSaleOffer(tokenId);
         }
+
+        super.safeTransferFrom(from, to, tokenId);
     }
 }
