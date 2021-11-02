@@ -44,6 +44,7 @@ contract VTitleDeeds is ERC721, ERC721Enumerable, Pausable, Ownable, ERC721Burna
     }
 
     function offerForSale(uint itemId, uint salePriceInWei, string memory _metadataUri) public {
+        //May be used to modify sale info
         require(ownerOf(itemId) == msg.sender, "You're not the owner of this token");
         deedsOfferedForSale[itemId] = Offer(msg.sender, itemId, salePriceInWei, true, _metadataUri);
         emit DeedOffered(itemId, salePriceInWei);
@@ -52,6 +53,7 @@ contract VTitleDeeds is ERC721, ERC721Enumerable, Pausable, Ownable, ERC721Burna
     function closeSaleOffer(uint itemId) public {
         //Allows the contract to close sale offer on behalf of user when user transfer token
         require(ownerOf(itemId) == msg.sender || address(this) == msg.sender, "You're not the owner of this token");
+        //TODO: Require sale currently not closed to not waste user's gas
         Offer memory oldOffer = deedsOfferedForSale[itemId];
         deedsOfferedForSale[itemId] = Offer(oldOffer.seller, itemId, 0, false, oldOffer.metadataUri);
         emit DeedNoLongerForSale(itemId);

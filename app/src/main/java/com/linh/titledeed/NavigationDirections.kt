@@ -192,7 +192,7 @@ object NavigationDirections {
             override val arguments = args
 
             override val destination: String
-                get() = "transfer_ownership/tokenId=$tokenId"
+                get() = "transfer_ownership/$tokenId"
 
             override val isBottomNavigationItem: Boolean = true
 

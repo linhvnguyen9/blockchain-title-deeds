@@ -15,15 +15,20 @@ class ContractCallErrorInterceptor(private val gson: Gson): Interceptor {
         val originalResponse = chain.proceed(chain.request())
         try {
             val response = gson.fromJson(originalResponse.peekBody(2048).string(), ContractCallErrorResponse::class.java)
-            Timber.d("ContractCallErrorInterceptor Got error response from contract")
             response.error?.let {
+                Timber.d("ContractCallErrorInterceptor Got error response from contract ${response.error}")
                 when (response.error.code) {
                     -32000 -> {
-                        if (response.error.message.contains("transfer caller is not owner nor approved")) {
+                        if (response.error.message.contains("transfer caller is not owner nor approved")
+                            || response.error.message.contains("You're not the owner of this token")
+                        ) {
                             Timber.d("ContractCallErrorInterceptor got owner exception")
                             throw TokenOwnerException(response.error.message, response.error.code)
                         } else if (response.error.message.contains("sender doesn't have enough funds to send tx")) {
-                            throw InsufficientGasException(response.error.message, response.error.code)
+                            throw InsufficientGasException(
+                                response.error.message,
+                                response.error.code
+                            )
                         }
                     }
                 }

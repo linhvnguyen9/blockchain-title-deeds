@@ -27,6 +27,7 @@ fun TransactionInfoDialog(transaction: Resource<Transaction>?, response: Resourc
                     val errorMessage = if (response?.isError() == true) {
                         when (response.error) {
                             is InsufficientGasException -> stringResource(R.string.error_not_enough_gas)
+                            is TokenOwnerException -> stringResource(R.string.error_no_longer_owner)
                             else -> ""
                         }
                     } else {
