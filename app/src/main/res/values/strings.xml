@@ -69,4 +69,7 @@
     <string name="all_title">Title</string>
     <string name="all_description">Description</string>
     <string name="all_wei" translatable="false">Wei</string>
+    <string name="your_wallet_screen_title">Your wallet</string>
+    <string name="wallet_owned_deeds">Owned deeds</string>
+    <string name="all_balance">Balance</string>
 </resources>
