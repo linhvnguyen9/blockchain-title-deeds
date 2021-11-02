@@ -13,7 +13,7 @@ fun getErrorStringResource(@StringRes id: Int) = if (id != 0) stringResource(id)
 
 fun BigInteger.convertToBalanceString(): String {
     val integerPart = this.divide(ETH_DECIMALS)
-    val fractionalPart = this.mod(ETH_DECIMALS)
+    val fractionalPart = this.mod(ETH_DECIMALS).toString(10).replace("0*\$".toRegex(), "")
     return "$integerPart.$fractionalPart"
 }
 

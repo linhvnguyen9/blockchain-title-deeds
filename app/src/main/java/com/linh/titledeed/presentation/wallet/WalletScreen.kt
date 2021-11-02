@@ -33,13 +33,13 @@ fun WalletScreen(wallet: Wallet, ethBalance: String, onClickLogout: () -> Unit, 
         screenModifier
             .then(Modifier.verticalScroll(rememberScrollState()))
     ) {
-        ScreenTitle(title = "Your wallet")
+        ScreenTitle(title = stringResource(R.string.your_wallet_screen_title))
 
         WalletInfo(ethBalance, wallet)
 
         Spacer(Modifier.height(16.dp))
         TextButton(onClick = { onClickViewOwnedDeeds() }) {
-            Text("Owned deeds")
+            Text(stringResource(R.string.wallet_owned_deeds))
         }
         TextButton(onClick = { onClickLogout() }) {
             Text(stringResource(R.string.all_logout))
@@ -55,7 +55,7 @@ private fun WalletInfo(ethBalance: String, wallet: Wallet) {
             Modifier
                 .fillMaxWidth()
                 .padding(16.dp)) {
-            Text("Balance", style = MaterialTheme.typography.subtitle1)
+            Text(stringResource(R.string.all_balance), style = MaterialTheme.typography.subtitle1)
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(ethBalance, style = MaterialTheme.typography.h3)
                 Spacer(Modifier.width(8.dp))
