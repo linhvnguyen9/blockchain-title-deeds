@@ -8,14 +8,14 @@
     <string name="land_purpose_agricultural">Đất nông nghiệp</string>
     <string name="land_purpose_non_agricultural">Đất phi nông nghiệp</string>
     <string name="all_deed">Giấy chứng nhận</string>
-    <string name="deed_detail_land_no">Thửa đất số: %1$s</string>
-    <string name="deed_detail_map_no">Tờ bản đồ số: %1$s</string>
-    <string name="deed_detail_address">Địa chỉ: %1$s</string>
-    <string name="deed_detail_area">Diện tích: %1$s</string>
-    <string name="deed_detail_ownership">Hình thức sử dụng: %1$s</string>
-    <string name="deed_detail_purpose">Mục đích sử dụng: %1$s</string>
-    <string name="deed_detail_issue_date">Ngày cấp: %1$s</string>
-    <string name="deed_detail_notes">Ghi chú:</string>
+    <string name="deed_detail_land_no">Thửa đất số</string>
+    <string name="deed_detail_map_no">Tờ bản đồ số</string>
+    <string name="deed_detail_address">Địa chỉ</string>
+    <string name="deed_detail_area">Diện tích</string>
+    <string name="deed_detail_ownership">Hình thức sử dụng</string>
+    <string name="deed_detail_purpose">Mục đích sử dụng</string>
+    <string name="deed_detail_issue_date">Ngày cấp</string>
+    <string name="deed_detail_notes">Ghi chú</string>
     <string name="deed_detail_private">Sử dụng riêng</string>
     <string name="deed_detail_shared">Sử dụng chung</string>
     <string name="all_transfer">Chuyển nhượng</string>
@@ -37,7 +37,9 @@
     <string name="all_description">Nội dung</string>
     <string name="sell_phone_number">Số điện thoại</string>
     <string name="sell_deed_price">Giá (wei)</string>
-    <string name="transaction_info_loading">Đang thực hiện giao dịch...</string>
+    <string name="transaction_info_loading">Đang thực hiện giao dịch…</string>
     <string name="transaction_info_success">Giao dịch thành công</string>
     <string name="all_cancel_sell">Hủy bán</string>
+    <string name="deed_detail_token_id">Mã số token</string>
+    <string name="home_screen_title">Ô đất đăng bán</string>
 </resources>

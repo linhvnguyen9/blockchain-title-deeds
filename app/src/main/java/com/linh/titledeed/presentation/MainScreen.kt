@@ -83,8 +83,16 @@ fun MainScreen(
                     val homeViewModel: HomeViewModel = hiltViewModel()
 
                     val wallet = homeViewModel.wallet.collectAsState()
+                    val sales = homeViewModel.sales.collectAsState()
 
-                    HomeScreen(wallet.value)
+                    Timber.d("MainScreen sales $sales")
+
+                    HomeScreen(
+                        sales.value,
+                        onClickSale = {
+                            homeViewModel.onClickSale(it)
+                        }
+                    )
                 }
                 composable(NavigationDirections.wallet.destination) {
                     val walletViewModel: WalletViewModel = hiltViewModel()

@@ -9,4 +9,5 @@ data class Sale(
     val sellerAddress: String = "",
     val price: String = "",
     val isForSale: Boolean = true,
+    val deed: Deed? = null
 )

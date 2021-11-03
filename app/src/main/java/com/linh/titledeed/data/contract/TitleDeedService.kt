@@ -53,6 +53,14 @@ class TitleDeedService @Inject constructor(private val web3j: Web3j) {
         return VTitleDeedsExtensions(credentials, web3j, contractGasProvider)
     }
 
+    suspend fun getTotalSupply(): BigInteger = withContext(Dispatchers.IO) {
+        return@withContext smartContract.totalSupply().send()
+    }
+
+    suspend fun getTokenIdByIndex(index: BigInteger): BigInteger = withContext(Dispatchers.IO) {
+        return@withContext smartContract.tokenByIndex(index).send()
+    }
+
     suspend fun getBalance(owner: String): BigInteger =
         withContext(Dispatchers.IO) {
             return@withContext smartContract.balanceOf(owner).send()
@@ -70,14 +78,6 @@ class TitleDeedService @Inject constructor(private val web3j: Web3j) {
 
     suspend fun getMetadataUri(tokenId: BigInteger): String = withContext(Dispatchers.IO) {
         return@withContext smartContract.tokenURI(tokenId).send()
-    }
-
-    fun getAllOwnedDeeds(): List<Deed> {
-        web3j.replayPastTransactionsFlowable(DefaultBlockParameterName.EARLIEST)
-            .subscribeOn(Schedulers.io())
-            .subscribe()
-
-        return emptyList()
     }
 
     suspend fun estimateGasTransferOwnership(transaction: TransferOwnershipTransaction): String =

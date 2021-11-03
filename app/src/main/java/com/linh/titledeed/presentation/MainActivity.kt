@@ -83,13 +83,6 @@ class MainActivity : ComponentActivity() {
                             inputWalletViewModel.onClickSubmit()
                         }
                     }
-                    composable(NavigationDirections.home.destination) {
-                        val homeViewModel: HomeViewModel = hiltViewModel()
-
-                        val wallet = homeViewModel.wallet.collectAsState()
-
-                        HomeScreen(wallet.value)
-                    }
                     composable(NavigationDirections.main.destination) {
                         val mainViewModel: MainViewModel = hiltViewModel()
 
