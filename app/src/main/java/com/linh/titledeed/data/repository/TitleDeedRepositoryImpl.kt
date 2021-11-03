@@ -128,13 +128,39 @@ class TitleDeedRepositoryImpl @Inject constructor(private val ipfsService: IpfsS
         }
     }
 
+    override suspend fun getAllSales(): List<Sale> {
+        val sales = mutableListOf<Sale>()
+
+        val totalSupply = titleDeedService.getTotalSupply().toLong()
+        Timber.d("getAllSales count $totalSupply")
+
+        for (i in 1 until totalSupply) {
+            val tokenId = titleDeedService.getTokenIdByIndex(i.toBigInteger())
+            Timber.d("getAllSales tokenId $tokenId")
+
+            val sale = getSaleInfo(tokenId.toString(10))
+            val deed = getDeedDetail(tokenId.toString(10))
+
+            Timber.d("getAllSales sale $sale")
+
+//            if (sale.isForSale) {
+                sales.add(sale.copy(deed = deed))
+//            }
+        }
+
+        return sales
+    }
+
     override suspend fun getSaleInfo(tokenId: String): Sale {
         val saleDetail = titleDeedService.getSaleDetail(tokenId)
+        Timber.d("getSaleInfo tokenId $tokenId saleDetail $saleDetail")
         val (sellerAddress, itemId, price, isForSale, metadataUri) = saleDetail
         return if (metadataUri.isNotBlank()) {
             val metadataUrl = getHttpLinkFromIpfsUri(metadataUri)
             val saleMetadata = ipfsService.getSaleMetadata(metadataUrl)
             val (_, title, description, phoneNumber, imageUrls) = saleMetadata
+
+            Timber.d("getSaleInfo tokenId $tokenId saleMetadata $saleMetadata")
 
             Sale(itemId, title, description, phoneNumber, imageUrls, sellerAddress, price, isForSale)
         } else {

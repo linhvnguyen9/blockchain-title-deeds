@@ -54,44 +54,56 @@ fun DeedDetailScreen(
     SwipeRefresh(rememberSwipeRefreshState(isRefreshing), onRefresh, Modifier.fillMaxSize()) {
         Column(screenModifier.verticalScroll(rememberScrollState())) {
             ScreenTitle(stringResource(R.string.all_deed))
-            Text(stringResource(R.string.deed_detail_land_no, deed.landNo))
-            Text(stringResource(R.string.deed_detail_map_no, deed.mapNo))
-            Text(stringResource(R.string.deed_detail_address, deed.address))
+
+            Text(
+                stringResource(R.string.deed_detail_address),
+                style = MaterialTheme.typography.caption
+            )
+            Text(deed.address, style = MaterialTheme.typography.h6)
+            Spacer(Modifier.height(16.dp))
+            Text(
+                stringResource(R.string.deed_detail_area),
+                style = MaterialTheme.typography.caption
+            )
             Text(buildAnnotatedString {
                 append(deed.areaInSquareMeters.toString() + " m")
                 withStyle(superscript) {
                     append("2")
                 }
-            })
-            Text(
-                stringResource(
-                    R.string.deed_detail_issue_date,
-                    DateFormatUtil.formatDate(
-                        Calendar.getInstance().apply { timeInMillis = deed.issueDate })
-                )
-            )
-            val ownership =
-                if (deed.isShared) stringResource(R.string.deed_detail_shared) else stringResource(R.string.deed_detail_private)
-            Text(
-                stringResource(
-                    R.string.deed_detail_ownership,
-                    ownership
-                )
-            )
+            }, style = MaterialTheme.typography.h6)
+            Spacer(Modifier.height(16.dp))
             val purpose = when (deed.purpose) {
                 LandPurpose.RESIDENTIAL -> stringResource(R.string.land_purpose_residential)
                 LandPurpose.AGRICULTURAL -> stringResource(R.string.land_purpose_agricultural)
                 LandPurpose.NON_AGRICULTURAL -> stringResource(R.string.land_purpose_non_agricultural)
             }
-            Text(
-                stringResource(
-                    R.string.deed_detail_purpose,
-                    purpose
-                )
+            MinorInfoText(stringResource(R.string.deed_detail_purpose), purpose)
+            Spacer(Modifier.height(16.dp))
+            val ownership =
+                if (deed.isShared) stringResource(R.string.deed_detail_shared) else stringResource(R.string.deed_detail_private)
+            MinorInfoText(stringResource(R.string.deed_detail_ownership), ownership)
+            Spacer(Modifier.height(16.dp))
+            val issueDate = DateFormatUtil.formatDate(
+                Calendar.getInstance().apply { timeInMillis = deed.issueDate },
             )
-            Text(stringResource(R.string.deed_detail_notes))
-            Text(deed.note)
-            Spacer(Modifier.height(4.dp))
+            MinorInfoText(stringResource(R.string.deed_detail_issue_date), issueDate)
+            Spacer(Modifier.height(16.dp))
+            Text(
+                stringResource(R.string.deed_detail_land_no),
+                style = MaterialTheme.typography.caption
+            )
+            Text(deed.landNo.toString(), style = MaterialTheme.typography.body1)
+            Spacer(Modifier.height(16.dp))
+            Text(
+                stringResource(R.string.deed_detail_map_no),
+                style = MaterialTheme.typography.caption
+            )
+            Text(deed.mapNo.toString(), style = MaterialTheme.typography.body1)
+            Spacer(Modifier.height(16.dp))
+            MinorInfoText(stringResource(R.string.deed_detail_token_id), deed.id)
+            Spacer(Modifier.height(16.dp))
+            MinorInfoText(stringResource(R.string.deed_detail_notes), deed.note)
+            Spacer(Modifier.height(8.dp))
             Divider()
             Spacer(Modifier.height(16.dp))
             Image(
@@ -246,5 +258,18 @@ fun DeedDetailScreenPreview() {
         onClickCancelSell = {},
     ) {
 
+    }
+}
+
+@Composable
+fun InfoText(caption: String, content: @Composable () -> Unit) {
+    Text(caption, style = MaterialTheme.typography.caption)
+    content()
+}
+
+@Composable
+fun MinorInfoText(caption: String, content: String) {
+    InfoText(caption) {
+        Text(content, style = MaterialTheme.typography.body1)
     }
 }
