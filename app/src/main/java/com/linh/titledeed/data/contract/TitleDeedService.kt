@@ -157,6 +157,26 @@ class TitleDeedService @Inject constructor(private val web3j: Web3j) {
             )
         }
 
+    suspend fun estimateGasBuy(transaction: BuyTransaction): String = withContext(Dispatchers.IO) {
+        transaction.run {
+            return@withContext smartContract.estimateGasBuyDeed(
+                tokenId.toBigInteger(),
+                valueWei.toBigInteger()
+            ).send().amountUsed.toString(10)
+        }
+    }
+
+    suspend fun buy(transaction: BuyTransaction)  {
+        withContext(Dispatchers.IO) {
+            transaction.run {
+                smartContract.buyDeed(
+                    tokenId.toBigInteger(),
+                    valueWei.toBigInteger()
+                ).send()
+            }
+        }
+    }
+
     companion object {
         private val ETH_DECIMALS = BigInteger("1000000000000000000")
     }

@@ -19,15 +19,23 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DeedDetailViewModel @Inject constructor(private val getDeedDetailUseCase: GetDeedDetailUseCase, private val getSaleInfoUseCase: GetSaleInfoUseCase, private val getWalletInfoUseCase: GetWalletInfoUseCase, private val getTokenOwnerUseCase: GetTokenOwnerUseCase, private val navigationManager: NavigationManager): ViewModel() {
-    private val _deed = MutableStateFlow(Deed("", "", "", "", 0.0, 0, false, LandPurpose.NON_AGRICULTURAL, 0, 0))
-    val deed : StateFlow<Deed> get() = _deed
+class DeedDetailViewModel @Inject constructor(
+    private val getDeedDetailUseCase: GetDeedDetailUseCase,
+    private val getSaleInfoUseCase: GetSaleInfoUseCase,
+    private val getWalletInfoUseCase: GetWalletInfoUseCase,
+    private val getTokenOwnerUseCase: GetTokenOwnerUseCase,
+    private val navigationManager: NavigationManager
+) : ViewModel() {
+    private val _deed =
+        MutableStateFlow(Deed("", "", "", "", 0.0, 0, false, LandPurpose.NON_AGRICULTURAL, 0, 0))
+    val deed: StateFlow<Deed> get() = _deed
 
     private val _sale = MutableStateFlow(Sale("", "", "", "", emptyList(), "", "", false))
-    val sale : StateFlow<Sale> get() = _sale
+    val sale: StateFlow<Sale> get() = _sale
 
     private val _tokenOwner = MutableStateFlow("")
     val tokenOwner: StateFlow<String> get() = _tokenOwner
+
     private val _isOwner = MutableStateFlow(false)
     val isOwner: StateFlow<Boolean> get() = _isOwner
 
@@ -50,7 +58,11 @@ class DeedDetailViewModel @Inject constructor(private val getDeedDetailUseCase: 
     }
 
     fun onClickTransfer() {
-        navigationManager.navigate(NavigationDirections.TransferOwnershipNavigation.transferOwnership(deed.value.id))
+        navigationManager.navigate(
+            NavigationDirections.TransferOwnershipNavigation.transferOwnership(
+                deed.value.id
+            )
+        )
     }
 
     fun onClickSell() {
@@ -58,6 +70,27 @@ class DeedDetailViewModel @Inject constructor(private val getDeedDetailUseCase: 
     }
 
     fun onClickCancelSell() {
-        navigationManager.navigate(NavigationDirections.TransactionInfoNavigation.transactionInfo(TransactionType.CANCEL_SALE, "0x0", sale.value.tokenId, navigateBackDestination = NavigationDirections.DeedDetailNavigation.route, popInclusive = false))
+        navigationManager.navigate(
+            NavigationDirections.TransactionInfoNavigation.transactionInfo(
+                TransactionType.CANCEL_SALE,
+                "0x0",
+                sale.value.tokenId,
+                navigateBackDestination = NavigationDirections.DeedDetailNavigation.route,
+                popInclusive = false
+            )
+        )
+    }
+
+    fun onClickBuy() {
+        navigationManager.navigate(
+            NavigationDirections.TransactionInfoNavigation.transactionInfo(
+                TransactionType.BUY,
+                "",
+                deed.value.id,
+                sale.value.price,
+                navigateBackDestination = NavigationDirections.DeedDetailNavigation.route,
+                popInclusive = false
+            )
+        )
     }
 }

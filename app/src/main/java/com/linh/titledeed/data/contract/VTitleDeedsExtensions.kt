@@ -7,9 +7,11 @@ import org.web3j.abi.datatypes.Utf8String
 import org.web3j.abi.datatypes.generated.Uint256
 import org.web3j.crypto.Credentials
 import org.web3j.protocol.Web3j
+import org.web3j.protocol.core.RemoteFunctionCall
 import org.web3j.protocol.core.Request
 import org.web3j.protocol.core.methods.request.Transaction
 import org.web3j.protocol.core.methods.response.EthEstimateGas
+import org.web3j.protocol.core.methods.response.TransactionReceipt
 import org.web3j.tx.gas.ContractGasProvider
 import java.math.BigInteger
 import java.util.*
@@ -73,6 +75,32 @@ class VTitleDeedsExtensions(credentials: Credentials, web3j: Web3j, contractGasP
                 executeRemoteCallTransaction(function).encodeFunctionCall()
             )
         )
+    }
+
+    fun estimateGasBuyDeed(itemId: BigInteger, value: BigInteger): Request<*, EthEstimateGas> {
+        val function = Function(
+            FUNC_BUYDEED,
+            listOf<Type<*>>(Uint256(itemId)), emptyList()
+        )
+
+        return web3j.ethEstimateGas(
+            Transaction.createFunctionCallTransaction(
+                transactionManager.fromAddress,
+                BigInteger("1"),
+                gasProvider.getGasPrice(FUNC_BUYDEED),
+                gasProvider.getGasLimit(FUNC_BUYDEED),
+                contractAddress,
+                executeRemoteCallTransaction(function, value).encodeFunctionCall()
+            )
+        )
+    }
+
+    fun buyDeed(itemId: BigInteger?, value: BigInteger): RemoteFunctionCall<TransactionReceipt> {
+        val function = Function(
+            FUNC_BUYDEED,
+            listOf<Type<*>>(Uint256(itemId)), emptyList()
+        )
+        return executeRemoteCallTransaction(function, value)
     }
 
     companion object {

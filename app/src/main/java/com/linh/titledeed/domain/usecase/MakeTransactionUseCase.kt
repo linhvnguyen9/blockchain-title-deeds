@@ -1,9 +1,6 @@
 package com.linh.titledeed.domain.usecase
 
-import com.linh.titledeed.domain.entity.CancelSaleTransaction
-import com.linh.titledeed.domain.entity.CreateSaleTransaction
-import com.linh.titledeed.domain.entity.Transaction
-import com.linh.titledeed.domain.entity.TransferOwnershipTransaction
+import com.linh.titledeed.domain.entity.*
 import com.linh.titledeed.domain.repository.TitleDeedRepository
 import com.linh.titledeed.domain.utils.Resource
 import javax.inject.Inject
@@ -19,6 +16,9 @@ class MakeTransactionUseCase @Inject constructor (private val titleDeedRepositor
             }
             is CancelSaleTransaction -> {
                 titleDeedRepository.cancelSale(transaction)
+            }
+            is BuyTransaction -> {
+                titleDeedRepository.buy(transaction)
             }
         }
     }

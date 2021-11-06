@@ -42,4 +42,6 @@
     <string name="all_cancel_sell">Hủy bán</string>
     <string name="deed_detail_token_id">Mã số token</string>
     <string name="home_screen_title">Ô đất đăng bán</string>
+    <string name="deed_detail_owner_address">" Địa chỉ chủ ô đất "</string>
+    <string name="all_buy">Mua</string>
 </resources>

@@ -128,6 +128,29 @@ class TitleDeedRepositoryImpl @Inject constructor(private val ipfsService: IpfsS
         }
     }
 
+    override suspend fun estimateGasBuy(transaction: BuyTransaction): Resource<BuyTransaction> {
+        try {
+            val gasPrice = titleDeedService.estimateGasBuy(transaction)
+
+            transaction.run {
+                return Resource.success(BuyTransaction(gasPrice, senderAddress, tokenId, valueWei))
+            }
+        } catch (e: Exception) {
+            Timber.e(e)
+            return Resource.error(e)
+        }
+    }
+
+    override suspend fun buy(transaction: BuyTransaction): Resource<Any> {
+        return try {
+            titleDeedService.buy(transaction)
+            Resource.success("")
+        } catch (e: Exception) {
+            Timber.e(e)
+            Resource.error(e)
+        }
+    }
+
     override suspend fun getAllSales(): List<Sale> {
         val sales = mutableListOf<Sale>()
 

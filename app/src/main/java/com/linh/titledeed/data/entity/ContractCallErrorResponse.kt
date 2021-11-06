@@ -13,3 +13,4 @@ data class ContractCallError(
 
 class TokenOwnerException(message: String, val code: Int): Exception(message)
 class InsufficientGasException(message: String, val code: Int): Exception(message)
+class InsufficientFundSentException(message: String, val code: Int): Exception(message)
