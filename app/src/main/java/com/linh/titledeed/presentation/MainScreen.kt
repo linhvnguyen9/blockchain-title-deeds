@@ -131,6 +131,7 @@ fun MainScreen(
 
                     val deed = deedDetailViewModel.deed.collectAsState()
                     val sale = deedDetailViewModel.sale.collectAsState()
+                    val ownerAddress = deedDetailViewModel.tokenOwner.collectAsState()
                     val isOwner = deedDetailViewModel.isOwner.collectAsState()
                     val isRefreshing = deedDetailViewModel.isRefreshing.collectAsState()
 
@@ -141,6 +142,7 @@ fun MainScreen(
                     DeedDetailScreen(
                         deed.value,
                         sale.value,
+                        ownerAddress.value,
                         isOwner.value,
                         isRefreshing.value,
                         onClickSell = {
@@ -151,6 +153,9 @@ fun MainScreen(
                         },
                         onClickTransferOwnership = {
                             deedDetailViewModel.onClickTransfer()
+                        },
+                        onClickBuy = {
+                            deedDetailViewModel.onClickBuy()
                         },
                         onRefresh = {
                             deedDetailViewModel.getDeed(token)
@@ -223,8 +228,14 @@ fun MainScreen(
                     NavigationDirections.TransactionInfoNavigation.route,
                     NavigationDirections.TransactionInfoNavigation.args,
                 ) {
-                    val ownedDeedsViewModel: OwnedDeedsViewModel =
+                    val ownedDeedsViewModel : OwnedDeedsViewModel? = if (navController.backQueue.lastOrNull { entry ->
+                            entry.destination.route == NavigationDirections.ownedDeeds.destination
+                        } != null) {
                         parentViewModel(navController, NavigationDirections.ownedDeeds.destination)
+                    } else {
+                        null
+                    }
+
                     val deedDetailViewModel: DeedDetailViewModel =
                         parentViewModel(navController, NavigationDirections.DeedDetailNavigation.route)
 
@@ -272,7 +283,7 @@ fun MainScreen(
                         onConfirm = { transactionInfoViewModel.onConfirm() },
                         onDismiss = {
                             deedDetailViewModel.getDeed(tokenId)
-                            ownedDeedsViewModel.onRefresh()
+                            ownedDeedsViewModel?.onRefresh()
                             transactionInfoViewModel.onDismiss(it)
                         }
                     )

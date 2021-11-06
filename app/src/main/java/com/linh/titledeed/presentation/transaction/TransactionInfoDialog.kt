@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.linh.titledeed.R
+import com.linh.titledeed.data.entity.InsufficientFundSentException
 import com.linh.titledeed.data.entity.InsufficientGasException
 import com.linh.titledeed.data.entity.TokenOwnerException
 import com.linh.titledeed.domain.entity.Transaction
@@ -28,11 +29,14 @@ fun TransactionInfoDialog(transaction: Resource<Transaction>?, response: Resourc
                         when (response.error) {
                             is InsufficientGasException -> stringResource(R.string.error_not_enough_gas)
                             is TokenOwnerException -> stringResource(R.string.error_no_longer_owner)
+                            is InsufficientFundSentException -> stringResource(R.string.error_insufficient_fund_sent)
                             else -> ""
                         }
                     } else {
                         when (transaction?.error) {
                             is TokenOwnerException -> stringResource(R.string.error_no_longer_owner)
+                            is InsufficientGasException -> stringResource(R.string.error_no_longer_owner)
+                            is InsufficientFundSentException -> stringResource(R.string.error_insufficient_fund_sent)
                             else -> ""
                         }
                     }
@@ -55,6 +59,7 @@ fun TransactionInfoDialog(transaction: Resource<Transaction>?, response: Resourc
                         TransactionType.TRANSFER_OWNERSHIP -> stringResource(R.string.all_transfer)
                         TransactionType.CREATE_SALE -> stringResource(R.string.sell_deed_screen_title)
                         TransactionType.CANCEL_SALE -> stringResource(R.string.all_cancel_sell)
+                        TransactionType.BUY -> stringResource(R.string.all_buy)
                         null -> ""
                     }
                     Text(stringResource(R.string.transaction_info_transaction_name), style = MaterialTheme.typography.subtitle2)

@@ -17,6 +17,9 @@ class EstimateTransactionGasUseCase @Inject constructor(private val titleDeedRep
             is CancelSaleTransaction -> {
                 titleDeedRepository.estimateGasCancelSale(transaction)
             }
+            is BuyTransaction -> {
+                titleDeedRepository.estimateGasBuy(transaction)
+            }
         }
     }
 }

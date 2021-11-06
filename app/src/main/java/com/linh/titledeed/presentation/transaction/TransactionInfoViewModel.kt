@@ -71,6 +71,13 @@ class TransactionInfoViewModel @Inject constructor(
                         tokenId = tokenId,
                     )
                 }
+                TransactionType.BUY -> {
+                    BuyTransaction(
+                        senderAddress = wallet.address,
+                        tokenId = tokenId,
+                        valueWei = priceInWei
+                    )
+                }
             }
             val transactionInfoWithGasEstimate = estimateTransactionGasUseCase(transaction)
             _transaction.value = transactionInfoWithGasEstimate

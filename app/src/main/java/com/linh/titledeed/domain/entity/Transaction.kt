@@ -8,8 +8,11 @@ class CreateSaleTransaction(gasPriceInWei: String = "", senderAddress: String = 
 
 class CancelSaleTransaction(gasPriceInWei: String = "", senderAddress: String = "", val tokenId: String) : Transaction(TransactionType.CANCEL_SALE, gasPriceInWei, senderAddress)
 
+class BuyTransaction(gasPriceInWei: String = "", senderAddress: String = "", val tokenId: String, val valueWei: String) : Transaction(TransactionType.BUY, gasPriceInWei, senderAddress)
+
 enum class TransactionType {
     TRANSFER_OWNERSHIP,
     CREATE_SALE,
-    CANCEL_SALE
+    CANCEL_SALE,
+    BUY
 }

@@ -42,11 +42,13 @@ import kotlin.math.roundToInt
 fun DeedDetailScreen(
     deed: Deed,
     sale: Sale,
+    ownerAddress: String,
     isOwner: Boolean,
     isRefreshing: Boolean,
     onClickTransferOwnership: () -> Unit,
     onClickSell: () -> Unit,
     onClickCancelSell: () -> Unit,
+    onClickBuy: () -> Unit,
     onRefresh: () -> Unit
 ) {
     val isPreview = remember { mutableStateOf(false) }
@@ -102,6 +104,10 @@ fun DeedDetailScreen(
             Spacer(Modifier.height(16.dp))
             MinorInfoText(stringResource(R.string.deed_detail_token_id), deed.id)
             Spacer(Modifier.height(16.dp))
+            if (!isOwner) {
+                MinorInfoText(stringResource(R.string.deed_detail_owner_address), ownerAddress)
+                Spacer(Modifier.height(16.dp))
+            }
             MinorInfoText(stringResource(R.string.deed_detail_notes), deed.note)
             Spacer(Modifier.height(8.dp))
             Divider()
@@ -118,13 +124,15 @@ fun DeedDetailScreen(
                     .clickable { isPreview.value = true }
             )
             Spacer(Modifier.height(32.dp))
-            TextButton(onClick = { onClickTransferOwnership() }) {
-                Text(stringResource(R.string.all_transfer))
+            if (isOwner) {
+                TextButton(onClick = { onClickTransferOwnership() }) {
+                    Text(stringResource(R.string.all_transfer))
+                }
             }
             Spacer(Modifier.height(8.dp))
             Divider()
             Spacer(Modifier.height(16.dp))
-            SaleInfo(sale, isOwner, onClickSell, onClickCancelSell)
+            SaleInfo(sale, isOwner, onClickSell, onClickCancelSell, onClickBuy)
         }
         if (isPreview.value) {
             DeedImagePreviewDialog(deed.imageUri) {
@@ -136,7 +144,7 @@ fun DeedDetailScreen(
 
 @ExperimentalMaterialApi
 @Composable
-private fun SaleInfo(sale: Sale, isOwner: Boolean, onClickSell: () -> Unit, onClickCancelSell: () -> Unit) {
+private fun SaleInfo(sale: Sale, isOwner: Boolean, onClickSell: () -> Unit, onClickCancelSell: () -> Unit, onClickBuy: () -> Unit) {
     Text("Current sale", style = MaterialTheme.typography.caption)
     Spacer(Modifier.height(8.dp))
     if (sale.isForSale) {
@@ -161,6 +169,10 @@ private fun SaleInfo(sale: Sale, isOwner: Boolean, onClickSell: () -> Unit, onCl
         if (!isOwner) {
             Text(stringResource(R.string.deed_detail_seller), style = MaterialTheme.typography.caption)
             WalletAddress(sale.sellerAddress)
+            Spacer(Modifier.height(16.dp))
+            TextButton(onClick = { onClickBuy() }, contentPadding = PaddingValues(8.dp)) {
+                Text(stringResource(R.string.all_buy))
+            }
         } else {
             TextButton(onClick = { onClickCancelSell() }, contentPadding = PaddingValues(8.dp)) {
                 Text(stringResource(R.string.all_cancel_sell))
@@ -251,11 +263,13 @@ fun DeedDetailScreenPreview() {
             1
         ),
         Sale("1", "Sale", "Description", "0123456789", emptyList(), "abcdef", "100000", true),
+        "0x34acdb3342abeeedf3342345",
         isRefreshing = false,
         isOwner = true,
         onClickTransferOwnership = {},
         onClickSell = {},
         onClickCancelSell = {},
+        onClickBuy = {}
     ) {
 
     }

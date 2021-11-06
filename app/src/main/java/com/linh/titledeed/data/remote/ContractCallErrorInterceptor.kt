@@ -3,6 +3,7 @@ package com.linh.titledeed.data.remote
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.linh.titledeed.data.entity.ContractCallErrorResponse
+import com.linh.titledeed.data.entity.InsufficientFundSentException
 import com.linh.titledeed.data.entity.InsufficientGasException
 import com.linh.titledeed.data.entity.TokenOwnerException
 import okhttp3.Interceptor
@@ -26,6 +27,11 @@ class ContractCallErrorInterceptor(private val gson: Gson): Interceptor {
                             throw TokenOwnerException(response.error.message, response.error.code)
                         } else if (response.error.message.contains("sender doesn't have enough funds to send tx")) {
                             throw InsufficientGasException(
+                                response.error.message,
+                                response.error.code
+                            )
+                        } else if (response.error.message.contains("Didn't send enough ETH")) {
+                            throw InsufficientFundSentException(
                                 response.error.message,
                                 response.error.code
                             )

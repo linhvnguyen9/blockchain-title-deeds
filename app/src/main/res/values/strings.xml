@@ -34,6 +34,7 @@
     <string name="all_deed">Deed</string>
     <string name="all_transfer">Transfer ownership</string>
     <string name="all_sell">Sell</string>
+    <string name="all_buy">Buy</string>
     <string name="all_cancel_sell">Cancel sell</string>
     <string name="sell_deed_screen_title">Sell property</string>
 
@@ -45,6 +46,7 @@
     <string name="error_confirm_password_mismatch">Passwords does not match</string>
     <string name="error_mnemonic_mismatch">Secret Recovery Phrase does not match</string>
     <string name="error_no_longer_owner">You\'re no longer the owner of the token</string>
+    <string name="error_insufficient_fund_sent">You didn\'t send enough ETH, try again later</string>
     <string name="error_not_enough_gas">You don\'t have enough funds to make transaction!</string>
     <string name="error_receiver_address_blank">Receiver address must not be blank</string>
     <string name="error_receiver_address_is_self">Cannot transfer ownership to self</string>
@@ -75,4 +77,5 @@
     <string name="all_balance">Balance</string>
     <string name="home_screen_title">Properties on sale</string>
     <string name="home_screen_sale_no_description">No description</string>
+    <string name="deed_detail_owner_address">Owner\'s address</string>
 </resources>
