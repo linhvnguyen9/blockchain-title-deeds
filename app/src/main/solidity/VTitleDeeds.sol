@@ -44,14 +44,13 @@ contract VTitleDeeds is ERC721, ERC721Enumerable, Pausable, Ownable, ERC721Burna
     }
 
     function offerForSale(uint itemId, uint salePriceInWei, string memory _metadataUri) public {
-        _transfer(msg.sender, address(this), itemId);
+        _approve(address(this), itemId);
         deedsOfferedForSale[itemId] = Offer(msg.sender, itemId, salePriceInWei, true, _metadataUri);
         emit DeedOffered(itemId, salePriceInWei);
     }
 
     function closeSaleOffer(uint itemId) public {
         _closeSaleOffer(itemId);
-        _transfer(address(this), msg.sender, itemId);
     }
 
     function _closeSaleOffer(uint itemId) private {
@@ -70,7 +69,7 @@ contract VTitleDeeds is ERC721, ERC721Enumerable, Pausable, Ownable, ERC721Burna
 
         deedsOfferedForSale[itemId] = Offer(offer.seller, itemId, 0, false, offer.metadataUri);
         emit DeedNoLongerForSale(itemId);
-        _transfer(address(this), msg.sender, itemId);
+        _transfer(offer.seller, msg.sender, itemId);
 
         pendingWithdrawals[seller] += msg.value;
         emit DeedBought(itemId, msg.value, seller, msg.sender);
