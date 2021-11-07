@@ -105,7 +105,7 @@ fun DeedDetailScreen(
             MinorInfoText(stringResource(R.string.deed_detail_token_id), deed.id)
             Spacer(Modifier.height(16.dp))
             if (!isOwner) {
-                MinorInfoText(stringResource(R.string.deed_detail_owner_address), ownerAddress)
+                MinorInfoText(stringResource(R.string.deed_detail_owner_address), sale.sellerAddress)
                 Spacer(Modifier.height(16.dp))
             }
             MinorInfoText(stringResource(R.string.deed_detail_notes), deed.note)

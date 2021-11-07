@@ -13,6 +13,7 @@ import org.web3j.protocol.core.methods.request.Transaction
 import org.web3j.protocol.core.methods.response.EthEstimateGas
 import org.web3j.protocol.core.methods.response.TransactionReceipt
 import org.web3j.tx.gas.ContractGasProvider
+import timber.log.Timber
 import java.math.BigInteger
 import java.util.*
 
@@ -90,6 +91,7 @@ class VTitleDeedsExtensions(credentials: Credentials, web3j: Web3j, contractGasP
                 gasProvider.getGasPrice(FUNC_BUYDEED),
                 gasProvider.getGasLimit(FUNC_BUYDEED),
                 contractAddress,
+                value,
                 executeRemoteCallTransaction(function, value).encodeFunctionCall()
             )
         )
@@ -98,8 +100,9 @@ class VTitleDeedsExtensions(credentials: Credentials, web3j: Web3j, contractGasP
     fun buyDeed(itemId: BigInteger?, value: BigInteger): RemoteFunctionCall<TransactionReceipt> {
         val function = Function(
             FUNC_BUYDEED,
-            listOf<Type<*>>(Uint256(itemId)), emptyList()
+            Arrays.asList<Type<*>>(Uint256(itemId)), emptyList()
         )
+        Timber.d("buyDeed itemId ${itemId?.toString(10)} value ${value.toString(10)}")
         return executeRemoteCallTransaction(function, value)
     }
 
