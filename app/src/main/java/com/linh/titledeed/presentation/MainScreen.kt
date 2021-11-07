@@ -82,16 +82,18 @@ fun MainScreen(
                 composable(NavigationDirections.home.destination) {
                     val homeViewModel: HomeViewModel = hiltViewModel()
 
-                    val wallet = homeViewModel.wallet.collectAsState()
                     val sales = homeViewModel.sales.collectAsState()
-
-                    Timber.d("MainScreen sales $sales")
+                    val isRefreshing = homeViewModel.isRefreshing.collectAsState()
 
                     HomeScreen(
                         sales.value,
+                        isRefreshing.value,
+                        onRefresh = {
+                            homeViewModel.onRefresh()
+                        },
                         onClickSale = {
                             homeViewModel.onClickSale(it)
-                        }
+                        },
                     )
                 }
                 composable(NavigationDirections.wallet.destination) {
@@ -236,6 +238,14 @@ fun MainScreen(
                         null
                     }
 
+                    val homeViewModel : HomeViewModel? = if (navController.backQueue.lastOrNull { entry ->
+                            entry.destination.route == NavigationDirections.home.destination
+                        } != null) {
+                        parentViewModel(navController, NavigationDirections.home.destination)
+                    } else {
+                        null
+                    }
+
                     val deedDetailViewModel: DeedDetailViewModel =
                         parentViewModel(navController, NavigationDirections.DeedDetailNavigation.route)
 
@@ -284,6 +294,7 @@ fun MainScreen(
                         onDismiss = {
                             deedDetailViewModel.getDeed(tokenId)
                             ownedDeedsViewModel?.onRefresh()
+                            homeViewModel?.onRefresh()
                             transactionInfoViewModel.onDismiss(it)
                         }
                     )

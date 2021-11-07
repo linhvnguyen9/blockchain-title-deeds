@@ -18,17 +18,15 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getAllSalesUseCase: GetAllSalesUseCase,
-    private val getWalletInfoUseCase: GetWalletInfoUseCase,
     private val navigationManager: NavigationManager
 ) : ViewModel() {
-    private val _wallet = MutableStateFlow(Wallet("", "", "", ""))
-    val wallet: StateFlow<Wallet> get() = _wallet
-
     private val _sales = MutableStateFlow<List<Sale>>(emptyList())
     val sales: StateFlow<List<Sale>> get() = _sales
 
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing: StateFlow<Boolean> get() = _isRefreshing
+
     init {
-        getWallet()
         getSales()
     }
 
@@ -36,15 +34,17 @@ class HomeViewModel @Inject constructor(
         navigationManager.navigate(NavigationDirections.DeedDetailNavigation.detail(sale.tokenId))
     }
 
-    private fun getWallet() {
-        _wallet.value = getWalletInfoUseCase()
+    fun onRefresh() {
+        getSales()
     }
 
     private fun getSales() {
         viewModelScope.launch {
+            _isRefreshing.value = true
             val response = getAllSalesUseCase()
             Timber.d("HomeViewModel response $response")
             _sales.value = response
+            _isRefreshing.value = false
         }
     }
 }
