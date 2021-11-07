@@ -157,7 +157,7 @@ class TitleDeedRepositoryImpl @Inject constructor(private val ipfsService: IpfsS
         val totalSupply = titleDeedService.getTotalSupply().toLong()
         Timber.d("getAllSales count $totalSupply")
 
-        for (i in 1 until totalSupply) {
+        for (i in 0 until totalSupply) {
             val tokenId = titleDeedService.getTokenIdByIndex(i.toBigInteger())
             Timber.d("getAllSales tokenId $tokenId")
 
@@ -166,9 +166,9 @@ class TitleDeedRepositoryImpl @Inject constructor(private val ipfsService: IpfsS
 
             Timber.d("getAllSales sale $sale")
 
-//            if (sale.isForSale) {
+            if (sale.isForSale) {
                 sales.add(sale.copy(deed = deed))
-//            }
+            }
         }
 
         return sales
