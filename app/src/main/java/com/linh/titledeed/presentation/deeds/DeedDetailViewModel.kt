@@ -51,7 +51,11 @@ class DeedDetailViewModel @Inject constructor(
             _deed.value = getDeedDetailUseCase(tokenId)
             _sale.value = getSaleInfoUseCase(tokenId)
             _tokenOwner.value = getTokenOwnerUseCase(tokenId)
-            _isOwner.value = wallet.address == tokenOwner.value
+            _isOwner.value = if (sale.value.isForSale) {
+                wallet.address == sale.value.sellerAddress
+            } else {
+                wallet.address == tokenOwner.value
+            }
 
             _isRefreshing.value = false
         }
