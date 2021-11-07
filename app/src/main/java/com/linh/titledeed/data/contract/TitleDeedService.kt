@@ -177,6 +177,10 @@ class TitleDeedService @Inject constructor(private val web3j: Web3j) {
         }
     }
 
+    fun getContractAddress(): String {
+        return VTitleDeedsExtensions.ERC721_SMART_CONTRACT_ADDRESS
+    }
+
     companion object {
         private val ETH_DECIMALS = BigInteger("1000000000000000000")
     }

@@ -15,6 +15,8 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
 import com.google.accompanist.placeholder.material.shimmer
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.linh.titledeed.R
 import com.linh.titledeed.domain.entity.LandPurpose
 import com.linh.titledeed.domain.entity.Sale
@@ -25,19 +27,21 @@ import timber.log.Timber
 
 @ExperimentalMaterialApi
 @Composable
-fun HomeScreen(sales: List<Sale>, onClickSale: (Sale) -> Unit) {
-    Column(screenModifier) {
-        Timber.d("HomeScreen sales $sales")
-        LazyColumn {
-            item {
-                ScreenTitle(stringResource(R.string.home_screen_title))
-                Spacer(Modifier.height(16.dp))
-            }
-            itemsIndexed(sales) { _: Int, item: Sale ->
-                SaleItem(item) {
-                    onClickSale(item)
+fun HomeScreen(sales: List<Sale>, isRefreshing: Boolean, onClickSale: (Sale) -> Unit, onRefresh: () -> Unit) {
+    SwipeRefresh(rememberSwipeRefreshState(isRefreshing), onRefresh = onRefresh) {
+        Column(screenModifier) {
+            Timber.d("HomeScreen sales $sales")
+            LazyColumn {
+                item {
+                    ScreenTitle(stringResource(R.string.home_screen_title))
+                    Spacer(Modifier.height(16.dp))
                 }
-                Spacer(Modifier.height(12.dp))
+                itemsIndexed(sales) { _: Int, item: Sale ->
+                    SaleItem(item) {
+                        onClickSale(item)
+                    }
+                    Spacer(Modifier.height(12.dp))
+                }
             }
         }
     }
@@ -124,7 +128,7 @@ fun SaleItem(sale: Sale?, onClick: () -> Unit) {
 @Preview
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen(sales = emptyList()) {
+    HomeScreen(sales = emptyList(), isRefreshing = false, onClickSale = {}) {
 
     }
 }
