@@ -44,17 +44,19 @@ contract VTitleDeeds is ERC721, ERC721Enumerable, Pausable, Ownable, ERC721Burna
     }
 
     function offerForSale(uint itemId, uint salePriceInWei, string memory _metadataUri) public {
-        //May be used to modify sale info
-        require(ownerOf(itemId) == msg.sender, "You're not the owner of this token");
+        _transfer(msg.sender, address(this), itemId);
         deedsOfferedForSale[itemId] = Offer(msg.sender, itemId, salePriceInWei, true, _metadataUri);
         emit DeedOffered(itemId, salePriceInWei);
     }
 
     function closeSaleOffer(uint itemId) public {
-        //Allows the contract to close sale offer on behalf of user when user transfer token
-        require(ownerOf(itemId) == msg.sender || address(this) == msg.sender, "You're not the owner of this token");
-        //TODO: Require sale currently not closed to not waste user's gas
+        _closeSaleOffer(itemId);
+        _transfer(address(this), msg.sender, itemId);
+    }
+
+    function _closeSaleOffer(uint itemId) private {
         Offer memory oldOffer = deedsOfferedForSale[itemId];
+        require(oldOffer.seller == msg.sender || address(this) == msg.sender, "You're not the owner of this token");
         deedsOfferedForSale[itemId] = Offer(oldOffer.seller, itemId, 0, false, oldOffer.metadataUri);
         emit DeedNoLongerForSale(itemId);
     }
@@ -63,13 +65,13 @@ contract VTitleDeeds is ERC721, ERC721Enumerable, Pausable, Ownable, ERC721Burna
         Offer memory offer = deedsOfferedForSale[itemId];
         require(offer.isForSale, "This token is not offered for sale");
         require(msg.value >= offer.price, "Didn't send enough ETH");
-        require(offer.seller == ownerOf(itemId), "Seller no longer owner of token");
 
         address seller = offer.seller;
 
-        safeTransferFrom(seller, msg.sender, itemId);
+        deedsOfferedForSale[itemId] = Offer(offer.seller, itemId, 0, false, offer.metadataUri);
+        emit DeedNoLongerForSale(itemId);
+        _transfer(address(this), msg.sender, itemId);
 
-        closeSaleOffer(itemId);
         pendingWithdrawals[seller] += msg.value;
         emit DeedBought(itemId, msg.value, seller, msg.sender);
 
