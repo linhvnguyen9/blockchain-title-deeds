@@ -9,8 +9,8 @@ import com.linh.titledeed.domain.usecase.GetAllSalesUseCase
 import com.linh.titledeed.domain.usecase.GetWalletInfoUseCase
 import com.linh.titledeed.presentation.NavigationManager
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -20,11 +20,17 @@ class HomeViewModel @Inject constructor(
     private val getAllSalesUseCase: GetAllSalesUseCase,
     private val navigationManager: NavigationManager
 ) : ViewModel() {
-    private val _sales = MutableStateFlow<List<Sale>>(emptyList())
-    val sales: StateFlow<List<Sale>> get() = _sales
-
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing: StateFlow<Boolean> get() = _isRefreshing
+
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery: StateFlow<String> get() = _searchQuery
+
+    private val _sales = MutableStateFlow<List<Sale>>(emptyList())
+    val sales = _searchQuery.debounce(500).distinctUntilChanged().flatMapLatest { query ->
+        //TODO: Fix not initially searching
+        flowOf(_sales.value.filter { it.title.contains(query) })
+    }.flowOn(Dispatchers.Default)
 
     init {
         getSales()
@@ -36,6 +42,10 @@ class HomeViewModel @Inject constructor(
 
     fun onRefresh() {
         getSales()
+    }
+
+    fun onSearchQueryChange(query: String) {
+        _searchQuery.value = query
     }
 
     private fun getSales() {

@@ -82,12 +82,17 @@ fun MainScreen(
                 composable(NavigationDirections.home.destination) {
                     val homeViewModel: HomeViewModel = hiltViewModel()
 
-                    val sales = homeViewModel.sales.collectAsState()
+                    val sales = homeViewModel.sales.collectAsState(emptyList())
                     val isRefreshing = homeViewModel.isRefreshing.collectAsState()
+                    val searchQuery = homeViewModel.searchQuery.collectAsState()
 
                     HomeScreen(
                         sales.value,
                         isRefreshing.value,
+                        searchQuery.value,
+                        onQueryChange = {
+                            homeViewModel.onSearchQueryChange(it)
+                        },
                         onRefresh = {
                             homeViewModel.onRefresh()
                         },

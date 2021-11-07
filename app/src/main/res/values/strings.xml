@@ -78,4 +78,5 @@
     <string name="home_screen_title">Properties on sale</string>
     <string name="home_screen_sale_no_description">No description</string>
     <string name="deed_detail_owner_address">Owner\'s address</string>
+    <string name="home_search_hint">Search by address</string>
 </resources>
