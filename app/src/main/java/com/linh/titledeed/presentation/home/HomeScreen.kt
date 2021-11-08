@@ -47,7 +47,7 @@ fun HomeScreen(
                         onQueryChange,
                         Modifier.fillMaxWidth(),
                         trailingIcon = {
-                            Icon(painterResource(R.drawable.ic_baseline_search_24), null),
+                            Icon(painterResource(R.drawable.ic_baseline_search_24), null)
                         },
                         placeholder = {
                             Text(stringResource(R.string.home_search_hint))
