@@ -27,9 +27,15 @@ class HomeViewModel @Inject constructor(
     val searchQuery: StateFlow<String> get() = _searchQuery
 
     private val _sales = MutableStateFlow<List<Sale>>(emptyList())
-    val sales = _searchQuery.debounce(500).distinctUntilChanged().flatMapLatest { query ->
-        //TODO: Fix not initially searching
-        flowOf(_sales.value.filter { it.title.contains(query) })
+    val sales = searchQuery.debounce(300).flatMapLatest { query ->
+        flowOf(_sales.value.filter {
+            Timber.d("HomeViewModel it $it")
+            if (query.isEmpty()) {
+                true
+            } else {
+                it.title.contains(query, true)
+            }
+        })
     }.flowOn(Dispatchers.Default)
 
     init {
@@ -54,6 +60,7 @@ class HomeViewModel @Inject constructor(
             val response = getAllSalesUseCase()
             Timber.d("HomeViewModel response $response")
             _sales.value = response
+            _searchQuery.value = " "
             _isRefreshing.value = false
         }
     }
