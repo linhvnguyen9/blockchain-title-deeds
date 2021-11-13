@@ -3,6 +3,7 @@ package com.linh.titledeed.presentation.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.linh.titledeed.NavigationDirections
+import com.linh.titledeed.domain.entity.LandPurpose
 import com.linh.titledeed.domain.entity.Sale
 import com.linh.titledeed.domain.entity.Wallet
 import com.linh.titledeed.domain.usecase.GetAllSalesUseCase
@@ -26,17 +27,22 @@ class HomeViewModel @Inject constructor(
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> get() = _searchQuery
 
+    private val _residentialFilter = MutableStateFlow(true)
+    val residentialFilter: StateFlow<Boolean> get() = _residentialFilter
+
+    private val _nonResidentialFilter = MutableStateFlow(true)
+    val nonResidentialFilter: StateFlow<Boolean> get() = _nonResidentialFilter
+
+    private val _agriculturalFilter = MutableStateFlow(true)
+    val agriculturalFilter: StateFlow<Boolean> get() = _agriculturalFilter
+
     private val _sales = MutableStateFlow<List<Sale>>(emptyList())
-    val sales = searchQuery.debounce(300).flatMapLatest { query ->
-        flowOf(_sales.value.filter {
-            Timber.d("HomeViewModel it $it")
-            if (query.isEmpty()) {
-                true
-            } else {
-                it.title.contains(query, true)
-            }
-        })
-    }.flowOn(Dispatchers.Default)
+    val sales = _sales.combine(searchQuery) { sales, query ->
+        sales.filter { it.deed != null && it.deed.address.contains(query) }
+    }.combine(residentialFilter) {
+        sales, residential ->
+        sales.filter { it.deed != null && residential && it.deed.purpose == LandPurpose.RESIDENTIAL }
+    }
 
     init {
         getSales()
@@ -52,6 +58,18 @@ class HomeViewModel @Inject constructor(
 
     fun onSearchQueryChange(query: String) {
         _searchQuery.value = query
+    }
+
+    fun onSetResidentialFilter(set: Boolean) {
+        _residentialFilter.value = set
+    }
+
+    fun onSetNonResidentialFilter(set: Boolean) {
+        _nonResidentialFilter.value = set
+    }
+
+    fun onSetAgriculturalFilter(set: Boolean) {
+        _agriculturalFilter.value = set
     }
 
     private fun getSales() {

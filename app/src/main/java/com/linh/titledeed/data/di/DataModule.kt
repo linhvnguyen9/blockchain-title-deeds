@@ -26,6 +26,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import java.math.BigInteger
 import java.net.URI
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -56,6 +57,9 @@ object DataModule {
             .addInterceptor(loggingInterceptor)
             .addInterceptor(authInterceptor)
             .addInterceptor(contractCallErrorInterceptor)
+            .connectTimeout(1, TimeUnit.MINUTES)
+            .writeTimeout(1, TimeUnit.MINUTES)
+            .readTimeout(1, TimeUnit.MINUTES)
             .build()
     }
 

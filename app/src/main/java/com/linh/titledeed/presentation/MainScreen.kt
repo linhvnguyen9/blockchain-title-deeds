@@ -86,10 +86,17 @@ fun MainScreen(
                     val isRefreshing = homeViewModel.isRefreshing.collectAsState()
                     val searchQuery = homeViewModel.searchQuery.collectAsState()
 
+                    val nonResidentialFilter = homeViewModel.nonResidentialFilter.collectAsState()
+                    val residentialFilter = homeViewModel.residentialFilter.collectAsState()
+                    val agriculturalFilter = homeViewModel.agriculturalFilter.collectAsState()
+
                     HomeScreen(
                         sales.value,
                         isRefreshing.value,
                         searchQuery.value,
+                        residentialFilter.value,
+                        agriculturalFilter.value,
+                        nonResidentialFilter.value,
                         onQueryChange = {
                             homeViewModel.onSearchQueryChange(it)
                         },
@@ -99,6 +106,15 @@ fun MainScreen(
                         onClickSale = {
                             homeViewModel.onClickSale(it)
                         },
+                        onResidentialFilterChanged = {
+                            homeViewModel.onSetResidentialFilter(it)
+                        },
+                        onNonResidentialFilterChanged = {
+                            homeViewModel.onSetNonResidentialFilter(it)
+                        },
+                        onAgriculturalFilterChanged = {
+                            homeViewModel.onSetAgriculturalFilter(it)
+                        }
                     )
                 }
                 composable(NavigationDirections.wallet.destination) {

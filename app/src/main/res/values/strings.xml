@@ -37,6 +37,9 @@
     <string name="all_buy">Buy</string>
     <string name="all_cancel_sell">Cancel sell</string>
     <string name="sell_deed_screen_title">Sell property</string>
+    <string name="home_filter_residential">Residential</string>
+    <string name="home_filter_non_residential">Non-residential</string>
+    <string name="home_filter_agricultural">Agricultural</string>
 
     <!--    Errors-->
     <string name="error_password_blank">Password must not be blank</string>
