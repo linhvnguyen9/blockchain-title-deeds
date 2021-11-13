@@ -71,12 +71,8 @@ contract VTitleDeeds is ERC721, ERC721Enumerable, Pausable, Ownable, ERC721Burna
         emit DeedNoLongerForSale(itemId);
         _transfer(offer.seller, msg.sender, itemId);
 
-        pendingWithdrawals[seller] += msg.value;
+        (bool sent, bytes memory data) = payable(offer.seller).call{value: msg.value}("");
         emit DeedBought(itemId, msg.value, seller, msg.sender);
-
-        if (msg.value > offer.price) {
-            pendingWithdrawals[msg.sender] += msg.value - offer.price;
-        }
     }
 
     function withdraw() public {
