@@ -47,11 +47,17 @@ fun MainScreen(
     Scaffold(
         bottomBar = {
             BottomNavigation {
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentDestination = navBackStackEntry?.destination
+                var currentDestination = ""
+                for (i in navController.backQueue.size - 1 downTo 0) {
+                    val backStackEntry = navController.backQueue[i]
+                    val searchResult = bottomNavigationItems.find { it.destination == backStackEntry.destination.route }
+                    if (searchResult != null) {
+                        currentDestination = searchResult.destination
+                        break
+                    }
+                }
 
                 bottomNavigationItems.forEach { screen ->
-                    Timber.d("Bottom navigation item $screen")
                     BottomNavigationItem(
                         icon = {
                             val icon = when (screen) {
@@ -62,7 +68,7 @@ fun MainScreen(
                             Icon(icon, null)
                         },
                         label = { Text(stringResource(screen.screenNameRes)) },
-                        selected = currentDestination?.hierarchy?.any { it.route == screen.destination } == true,
+                        selected = currentDestination == screen.destination,
                         onClick = {
                             when (screen) {
                                 NavigationDirections.home -> onNavigateHome()
