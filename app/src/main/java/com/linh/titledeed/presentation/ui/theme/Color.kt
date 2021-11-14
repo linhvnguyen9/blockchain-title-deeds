@@ -2,6 +2,17 @@ package com.linh.titledeed.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+val DarkBlueAlt50 = Color(0xFFe6f2fb)
+val DarkBlueAlt100 = Color(0xFFc2dff5)
+val DarkBlueAlt200 = Color(0xFF9ecdef)
+val DarkBlueAlt300 = Color(0xFF7eb8e8)
+val DarkBlueAlt400 = Color(0xFF68a9e3)
+val DarkBlueAlt500 = Color(0xFF599bde)
+val DarkBlueAlt600 = Color(0xFF518ed1)
+val DarkBlueAlt700 = Color(0xFF477cbe)
+val DarkBlueAlt800 = Color(0xFF406bac)
+val DarkBlueAlt900 = Color(0xFF334e8c)
+
 val Blue10 = Color(0xFF000F5E)
 val Blue20 = Color(0xFF001E92)
 val Blue30 = Color(0xFF002ECC)

@@ -6,6 +6,5 @@
         <item name="colorPrimaryDark">@color/blue400</item>
         <item name="colorAccent">@color/yellow400</item>
         <item name="android:statusBarColor">@color/black30</item>
-        <!-- Customize your theme here. -->
     </style>
 </resources>
