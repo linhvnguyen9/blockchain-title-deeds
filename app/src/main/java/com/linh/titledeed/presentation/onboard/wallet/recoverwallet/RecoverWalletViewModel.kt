@@ -1,5 +1,6 @@
-package com.linh.titledeed.presentation.onboard.wallet
+package com.linh.titledeed.presentation.onboard.wallet.recoverwallet
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.linh.titledeed.NavigationDirections
@@ -16,12 +17,12 @@ import javax.inject.Inject
 class RecoverWalletViewModel @Inject constructor(private val restoreWalletUseCase: RestoreWalletUseCase, private val navigationManager: NavigationManager) : ViewModel() {
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> get() = _password
-    private val _passwordError = MutableStateFlow<@androidx.annotation.StringRes Int>(0)
+    private val _passwordError = MutableStateFlow<@StringRes Int>(0)
     val passwordError: StateFlow<Int> get() = _passwordError
 
     private val _mnemonic = MutableStateFlow("")
     val mnemonic: StateFlow<String> get() = _mnemonic
-    private val _mnemonicError = MutableStateFlow<@androidx.annotation.StringRes Int>(0)
+    private val _mnemonicError = MutableStateFlow<@StringRes Int>(0)
     val mnemonicError: StateFlow<Int> get() = _mnemonicError
 
     fun onPasswordChange(password: String) {

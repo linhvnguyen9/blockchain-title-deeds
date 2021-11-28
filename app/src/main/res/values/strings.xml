@@ -1,13 +1,13 @@
 <resources>
-    <string name="app_name">VTD</string>
+    <string name="app_name" translatable="false">VTD</string>
     <string name="all_welcome">Welcome</string>
     <string name="all_wallet">Wallet</string>
     <string name="all_home">Home</string>
     <string name="all_continue">Continue</string>
     <string name="wallet_input">Input</string>
     <string name="wallet_create">Create</string>
-    <string name="wallet_screen_title">Input or Create Wallet</string>
-    <string name="wallet_screen_description">To use the app, you must input or create a wallet</string>
+    <string name="wallet_screen_title">Welcome</string>
+    <string name="wallet_screen_description">Start off by inputting or creating a wallet</string>
     <string name="wallet_password">Password</string>
     <string name="wallet_mnemonic">Mnemonic</string>
     <string name="all_submit">Submit</string>
@@ -79,4 +79,16 @@
     <string name="home_screen_sale_no_description">No description</string>
     <string name="deed_detail_owner_address">Owner\'s address</string>
     <string name="home_search_hint">Search by address</string>
+    <string name="recover_wallet_screen_title">Recover wallet</string>
+    <string name="recover_wallet_screen_subtitle">Use existing wallet</string>
+    <string name="mnemonic_description">Mnemonic is a set of words generated when you create a wallet (e.g: ripple scissors kick mammal…)</string>
+    <string name="passwords_requirement">Passwords must contain at least 8 characters</string>
+    <string name="create_wallet_screen_title">Create wallet</string>
+    <string name="mnemonic_screen_title">Secret Recovery Phrase</string>
+    <string name="mnemonic_screen_subtitle">Your Secret Recovery Phrase makes it easy to back up and restore your account.</string>
+    <string name="confirm_mnemonic_screen_title">Confirm Secret Recovery Phrase</string>
+    <string name="confirm_mnemonic_screen_subtitle">Reenter your mnemonic</string>
+    <string name="deed_detail_current_sale">Current sale</string>
+    <string name="deed_detail_not_on_sale">This property is not for sale</string>
+    <string name="owned_deeds_screen_title">Owned deeds</string>
 </resources>

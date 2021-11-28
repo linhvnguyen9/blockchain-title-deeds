@@ -145,7 +145,7 @@ fun DeedDetailScreen(
 @ExperimentalMaterialApi
 @Composable
 private fun SaleInfo(sale: Sale, isOwner: Boolean, onClickSell: () -> Unit, onClickCancelSell: () -> Unit, onClickBuy: () -> Unit) {
-    Text("Current sale", style = MaterialTheme.typography.caption)
+    Text(stringResource(R.string.deed_detail_current_sale), style = MaterialTheme.typography.caption)
     Spacer(Modifier.height(8.dp))
     if (sale.isForSale) {
         Text(sale.title, style = MaterialTheme.typography.h5)
@@ -179,7 +179,7 @@ private fun SaleInfo(sale: Sale, isOwner: Boolean, onClickSell: () -> Unit, onCl
             }
         }
     } else {
-        Text("This property is not for sale")
+        Text(stringResource(R.string.deed_detail_not_on_sale))
         if (isOwner) {
             TextButton(onClick = { onClickSell() }, contentPadding = PaddingValues(8.dp)) {
                 Text(stringResource(R.string.all_sell))

@@ -41,7 +41,7 @@ import timber.log.Timber
 fun OwnedDeedsScreen(deeds: List<Deed>?, isRefreshing: Boolean, onClickDeed: (Deed) -> Unit, onRefresh: () -> Unit) {
     SwipeRefresh(rememberSwipeRefreshState(isRefreshing), onRefresh = onRefresh) {
         Column(Modifier.then(screenModifier)) {
-            ScreenTitle("Owned deeds")
+            ScreenTitle(stringResource(R.string.owned_deeds_screen_title))
             OwnedDeedsList(deeds, onClickDeed)
         }
     }

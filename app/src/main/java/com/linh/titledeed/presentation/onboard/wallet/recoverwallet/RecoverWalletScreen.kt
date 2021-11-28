@@ -1,4 +1,4 @@
-package com.linh.titledeed.presentation.onboard.wallet
+package com.linh.titledeed.presentation.onboard.wallet.recoverwallet
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -28,8 +28,8 @@ fun InputWalletScreen(
 ) {
     Column(Modifier.fillMaxSize().padding(screenPadding)) {
         ScreenTitle(
-            title = "Recover wallet",
-            subtitle = stringResource(R.string.wallet_screen_description)
+            title = stringResource(R.string.recover_wallet_screen_title),
+            subtitle = stringResource(R.string.recover_wallet_screen_subtitle)
         )
 
         Text(stringResource(R.string.wallet_mnemonic))
@@ -37,9 +37,10 @@ fun InputWalletScreen(
         if (mnemonicError.isNotBlank()) {
             Text(mnemonicError, color = MaterialTheme.colors.error)
         }
-        Text("Mnemonic is a set of words generated when you create a wallet (e.g: ripple scissors kick mammal...)")
-
         Spacer(Modifier.height(8.dp))
+        Text(stringResource(R.string.mnemonic_description))
+
+        Spacer(Modifier.height(16.dp))
 
         Text(stringResource(R.string.wallet_password))
         PasswordTextField(value = password, onValueChange = onPasswordChange, Modifier.fillMaxWidth(), errorText = passwordError)

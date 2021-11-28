@@ -1,5 +1,6 @@
-package com.linh.titledeed.presentation.deeds
+package com.linh.titledeed.presentation.deeds.sell
 
+import android.widget.Button
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
@@ -10,9 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -21,6 +20,7 @@ import com.linh.titledeed.R
 import com.linh.titledeed.domain.utils.Resource
 import com.linh.titledeed.presentation.ui.composable.ScreenTitle
 import com.linh.titledeed.presentation.ui.theme.screenModifier
+import org.w3c.dom.Text
 
 @Composable
 fun SellDeedScreen(
