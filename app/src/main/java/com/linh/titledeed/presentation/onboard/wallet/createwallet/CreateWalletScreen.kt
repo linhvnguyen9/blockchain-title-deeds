@@ -26,7 +26,7 @@ fun CreateWalletScreen(
     onClickSubmit: () -> Unit
 ) {
     Column(screenModifier) {
-        ScreenTitle(title = "Create wallet", subtitle = "")
+        ScreenTitle(title = stringResource(R.string.create_wallet_screen_title), subtitle = "")
 
         PasswordTextField(
             value = password,
@@ -37,7 +37,7 @@ fun CreateWalletScreen(
                 Text(stringResource(R.string.all_password))
             },
         )
-        Text("Passwords must contain at least 8 characters")
+        Text(stringResource(R.string.passwords_requirement))
 
         Spacer(Modifier.height(16.dp))
 

@@ -23,6 +23,8 @@ class WelcomeScreenViewModel @Inject constructor(
             val wallet = getWalletInfoUseCase()
             if (wallet.address.isNotBlank()) {
                 navigationManager.navigate(NavigationCommand(NavigationDirections.main, NavigationDirections.default, true))
+            } else {
+                navigationManager.navigate(NavigationCommand(NavigationDirections.onboardWallet, NavigationDirections.default, true))
             }
         }
     }

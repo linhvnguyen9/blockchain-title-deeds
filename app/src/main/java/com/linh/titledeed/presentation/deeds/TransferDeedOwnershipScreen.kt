@@ -9,6 +9,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -37,7 +38,7 @@ fun TransferDeedOwnershipScreen(
             Text(receiverAddressError, color = MaterialTheme.colors.error)
         }
         Spacer(Modifier.height(16.dp))
-        Button(onClick = { onClickSubmit() }) {
+        Button(onClick = { onClickSubmit() }, Modifier.align(Alignment.CenterHorizontally)) {
             Text(stringResource(R.string.all_submit))
         }
     }

@@ -29,7 +29,10 @@ fun ConfirmMnemonicScreen(
     onClickSubmit: () -> Unit
 ) {
     Column(screenModifier) {
-        ScreenTitle(title = "Confirm Secret Recovery Phrase", "Reenter your mnemonic")
+        ScreenTitle(
+            title = stringResource(R.string.confirm_mnemonic_screen_title),
+            stringResource(R.string.confirm_mnemonic_screen_subtitle)
+        )
         MnemonicList(Modifier.fillMaxWidth(), selectedMnemonicWords, onSelect = {
             onRemoveWord(it)
         })

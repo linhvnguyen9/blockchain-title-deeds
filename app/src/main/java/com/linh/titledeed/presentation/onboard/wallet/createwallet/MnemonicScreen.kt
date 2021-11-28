@@ -22,7 +22,10 @@ import com.linh.titledeed.presentation.ui.theme.screenModifier
 @Composable
 fun MnemonicScreen(mnemonicWords: List<String>, onClickConfirm: () -> Unit) {
     Column(screenModifier) {
-        ScreenTitle("Secret Recovery Phrase", "Your Secret Recovery Phrase makes it easy to back up and restore your account.")
+        ScreenTitle(
+            stringResource(R.string.mnemonic_screen_title),
+            stringResource(R.string.mnemonic_screen_subtitle)
+        )
         MnemonicList(Modifier.fillMaxWidth(), mnemonicWords, onSelect = {
 
         })
