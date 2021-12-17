@@ -113,7 +113,7 @@ object DataModule {
     @Provides
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://api.pinata.cloud/")
+            .baseUrl("http://192.168.1.109:5001/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
