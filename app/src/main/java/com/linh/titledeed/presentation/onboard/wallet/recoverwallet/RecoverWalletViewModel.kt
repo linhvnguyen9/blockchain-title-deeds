@@ -28,6 +28,14 @@ class RecoverWalletViewModel @Inject constructor(
     private val _mnemonicError = MutableStateFlow<@StringRes Int>(0)
     val mnemonicError: StateFlow<Int> get() = _mnemonicError
 
+    private val _isRecoverFromMnemonic = MutableStateFlow(true)
+    val isRecoverFromMnemonic: StateFlow<Boolean> get() = _isRecoverFromMnemonic
+
+    private val _privateKey = MutableStateFlow("")
+    val privateKey: StateFlow<String> get() = _privateKey
+    private val _privateKeyError = MutableStateFlow<@StringRes Int>(0)
+    val privateKeyError: StateFlow<Int> get() = _privateKeyError
+
     fun onPasswordChange(password: String) {
         _password.value = password
     }
@@ -36,18 +44,38 @@ class RecoverWalletViewModel @Inject constructor(
         _mnemonic.value = mnemonic
     }
 
+    fun onRecoverFromMnemonicChange(value: Boolean) {
+        _isRecoverFromMnemonic.value = value
+    }
+
+    fun onPrivateKeyChange(privateKey: String) {
+        _privateKey.value = privateKey
+    }
+
     fun onClickSubmit() {
         viewModelScope.launch {
             var hasError = false
 
-            if (mnemonic.value.isBlank()) {
-                _mnemonicError.value = R.string.error_mnemonic_blank
-                hasError = true
-            }
+            if (isRecoverFromMnemonic.value) {
+                if (mnemonic.value.isBlank()) {
+                    _mnemonicError.value = R.string.error_mnemonic_blank
+                    hasError = true
+                }
 
-            if (!hasError) {
-                restoreWalletUseCase(password.value, mnemonic.value)
-                navigationManager.navigate(NavigationDirections.main)
+                if (!hasError) {
+                    restoreWalletUseCase(password.value, mnemonic.value)
+                    navigationManager.navigate(NavigationDirections.main)
+                }
+            } else {
+                if (privateKey.value.isBlank()) {
+                    _privateKeyError.value = R.string.error_private_key_blank
+                    hasError = true
+                }
+
+                if (!hasError) {
+                    restoreWalletUseCase(privateKey.value)
+                    navigationManager.navigate(NavigationDirections.main)
+                }
             }
         }
     }

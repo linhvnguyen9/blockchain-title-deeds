@@ -6,6 +6,7 @@ import androidx.navigation.Navigation
 import com.linh.titledeed.NavigationDirection
 import com.linh.titledeed.NavigationDirections
 import com.linh.titledeed.domain.entity.Wallet
+import com.linh.titledeed.domain.usecase.CheckContractOwnerUseCase
 import com.linh.titledeed.domain.usecase.GetEthBalanceUseCase
 import com.linh.titledeed.domain.usecase.GetWalletInfoUseCase
 import com.linh.titledeed.domain.usecase.LogoutWalletUseCase
@@ -25,6 +26,7 @@ class WalletViewModel @Inject constructor(
     private val getWalletInfoUseCase: GetWalletInfoUseCase,
     private val getEthBalanceUseCase: GetEthBalanceUseCase,
     private val logoutWalletUseCase: LogoutWalletUseCase,
+    private val checkContractOwnerUseCase: CheckContractOwnerUseCase,
     private val navigationManager: NavigationManager
 ) : ViewModel() {
     private val _wallet = MutableStateFlow(Wallet("", "", "", ""))

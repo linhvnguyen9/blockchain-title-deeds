@@ -1,6 +1,5 @@
 package com.linh.titledeed.data.repository
 
-import com.linh.titledeed.NavigationDirections.wallet
 import com.linh.titledeed.data.contract.WalletService
 import com.linh.titledeed.data.local.EncryptedSharedPreference
 import com.linh.titledeed.domain.entity.Wallet
@@ -16,9 +15,11 @@ class WalletRepositoryImpl @Inject constructor(private val walletService: Wallet
     }
 
     override suspend fun restoreWallet(newPassword: String, mnemonic: String): Wallet = withContext(Dispatchers.IO) {
-        val wallet =  walletService.restoreWalletFromMnemonic(newPassword, mnemonic)
-        saveWallet(wallet)
-        return@withContext wallet
+        return@withContext walletService.restoreWalletFromMnemonic(newPassword, mnemonic)
+    }
+
+    override suspend fun restoreWallet(privateKey: String): Wallet = withContext(Dispatchers.IO) {
+        return@withContext walletService.restoreWalletFromPrivateKey(privateKey)
     }
 
     override suspend fun saveWallet(wallet: Wallet) = withContext(Dispatchers.IO) {

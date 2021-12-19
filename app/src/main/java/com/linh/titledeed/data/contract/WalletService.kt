@@ -4,8 +4,7 @@ import android.app.Application
 import com.linh.titledeed.domain.entity.Wallet
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.web3j.crypto.Bip39Wallet
-import org.web3j.crypto.WalletUtils
+import org.web3j.crypto.*
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.core.DefaultBlockParameterName
 import timber.log.Timber
@@ -23,6 +22,10 @@ class WalletService @Inject constructor(private val web3j: Web3j, private val ap
         return generateWallet(password, rawWallet)
     }
 
+    fun restoreWalletFromPrivateKey(privateKey: String): Wallet {
+        return generateWallet(privateKey)
+    }
+
     suspend fun getEthBalance(address: String): BigInteger = withContext(Dispatchers.IO) {
         return@withContext web3j.ethGetBalance(address, DefaultBlockParameterName.LATEST)
             .send()
@@ -38,5 +41,15 @@ class WalletService @Inject constructor(private val web3j: Web3j, private val ap
         Timber.d("generateWallet address: $address")
 
         return Wallet(password, rawWallet.mnemonic, privateKey, address)
+    }
+
+    private fun generateWallet(privateKey: String): Wallet {
+        val privateKeyBigInteger = BigInteger(privateKey, 16)
+        val keyPair = ECKeyPair.create(privateKeyBigInteger)
+        val credential = Credentials.create(keyPair)
+
+        val address = credential.address
+
+        return Wallet("", "", privateKey, address)
     }
 }
