@@ -16,6 +16,8 @@ import com.linh.titledeed.NavigationDirections
 import com.linh.titledeed.R
 import com.linh.titledeed.domain.entity.TransactionType
 import com.linh.titledeed.presentation.deeds.*
+import com.linh.titledeed.presentation.deeds.createdeed.CreateDeedScreen
+import com.linh.titledeed.presentation.deeds.createdeed.CreateDeedViewModel
 import com.linh.titledeed.presentation.deeds.sell.SellDeedScreen
 import com.linh.titledeed.presentation.deeds.sell.SellDeedViewModel
 import com.linh.titledeed.presentation.home.HomeScreen
@@ -112,12 +114,15 @@ fun MainScreen(
 
                     val wallet = walletViewModel.wallet.collectAsState().value
                     val ethBalance = wallet.balance.convertToBalanceString()
+                    val isOwner = walletViewModel.isContractOwner.value
 
                     WalletScreen(
+                        isOwner,
                         wallet,
                         ethBalance,
                         onClickLogout = { walletViewModel.onClickLogout() },
-                        onClickViewOwnedDeeds = { walletViewModel.onClickViewOwnedDeeds() }
+                        onClickViewOwnedDeeds = { walletViewModel.onClickViewOwnedDeeds() },
+                        onClickCreateDeed = { walletViewModel.onClickCreateDeed() }
                     )
                 }
                 composable(NavigationDirections.ownedDeeds.destination) {
@@ -131,6 +136,11 @@ fun MainScreen(
                         isRefreshing = isRefreshing.value,
                         onClickDeed = { ownedDeedsViewModel.onClickDeed(it) },
                         onRefresh = { ownedDeedsViewModel.onRefresh() })
+                }
+                composable(NavigationDirections.createDeed.destination) {
+                    val createDeedViewModel: CreateDeedViewModel = hiltViewModel()
+
+                    CreateDeedScreen()
                 }
                 composable(
                     NavigationDirections.DeedDetailNavigation.route,
@@ -314,6 +324,7 @@ fun MainScreen(
         }
 
         navigationManager.commands.collectAsState().value.also { command ->
+            Timber.d("Navigation command received $command")
             if (command?.direction == NavigationDirections.back) {
                 if (command.popUpTo?.destination != null) {
                     navController.popBackStack(command.popUpTo.destination, command.inclusive)
