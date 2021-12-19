@@ -45,22 +45,11 @@ class CreateWalletViewModel @Inject constructor(
     }
 
     fun onSubmitPassword() {
-        var hasError = false
-        if (password.value.isBlank()) {
-            _passwordError.value = R.string.error_password_blank
-            hasError = true
-        } else if (password.value.length < 8) {
-            _passwordError.value = R.string.error_password_too_short
-            hasError = true
-        }
+        viewModelScope.launch {
+            val wallet = createWalletUseCase(password.value)
+            _mnemonic.value = wallet.mnemonic.split(" ")
 
-        if (!hasError) {
-            viewModelScope.launch {
-                val wallet = createWalletUseCase(password.value)
-                _mnemonic.value = wallet.mnemonic.split(" ")
-
-                navigationManager.navigate(NavigationDirections.walletMnemonic)
-            }
+            navigationManager.navigate(NavigationDirections.walletMnemonic)
         }
     }
 
