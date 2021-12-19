@@ -10,5 +10,5 @@ interface FileRepository {
      * @returns CID of uploaded file
      */
     suspend fun uploadFileIpfs(path: String): Resource<String>
-//    suspend fun pinFileIpfs(cid: String): Resource<Any>
+    suspend fun pinFileIpfs(cid: String): Resource<Any>
 }

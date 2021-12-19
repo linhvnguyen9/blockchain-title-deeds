@@ -3,6 +3,7 @@ package com.linh.titledeed.data.repository
 import com.linh.titledeed.data.entity.uploadfileipfs.UploadFileIpfsResponse
 import com.linh.titledeed.data.local.JsonService
 import com.linh.titledeed.data.local.LocalFileService
+import com.linh.titledeed.data.remote.IpfsApiService
 import com.linh.titledeed.data.remote.UploadService
 import com.linh.titledeed.domain.repository.FileRepository
 import com.linh.titledeed.domain.utils.Resource
@@ -12,7 +13,8 @@ import javax.inject.Inject
 class FileRepositoryImpl @Inject constructor(
     private val fileService: LocalFileService,
     private val jsonService: JsonService,
-    private val uploadService: UploadService
+    private val uploadService: UploadService,
+    private val ipfsApiService: IpfsApiService,
 ) : FileRepository {
     override fun createTempFile(content: String): String {
         return fileService.createTempFile(content)
@@ -33,7 +35,7 @@ class FileRepositoryImpl @Inject constructor(
         }
     }
 
-//    override suspend fun pinFileIpfs(cid: String): Resource<Any> {
-//
-//    }
+    override suspend fun pinFileIpfs(cid: String): Resource<Any> {
+        return Resource.success(ipfsApiService.pinFile(cid))
+    }
 }

@@ -2,9 +2,11 @@ package com.linh.titledeed.data.di
 
 import android.app.Application
 import com.google.gson.Gson
+import com.linh.titledeed.BuildConfig
 import com.linh.titledeed.data.contract.WalletService
 import com.linh.titledeed.data.remote.AuthInterceptor
 import com.linh.titledeed.data.remote.ContractCallErrorInterceptor
+import com.linh.titledeed.data.remote.IpfsApiService
 import com.linh.titledeed.data.remote.IpfsGatewayService
 import dagger.Module
 import dagger.Provides
@@ -104,10 +106,11 @@ object DataModule {
     }
 
     @Singleton
+    @IpfsGatewayRetrofit
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    fun provideIpfsGatewayRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://192.168.1.109:5001/")
+            .baseUrl(BuildConfig.IPFS_GATEWAY_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
@@ -115,7 +118,24 @@ object DataModule {
 
     @Singleton
     @Provides
-    fun provideIpfsService(retrofit: Retrofit): IpfsGatewayService {
+    fun provideIpfsGatewayService(@IpfsGatewayRetrofit retrofit: Retrofit): IpfsGatewayService {
         return retrofit.create(IpfsGatewayService::class.java)
+    }
+
+    @Singleton
+    @IpfsApiRetrofit
+    @Provides
+    fun provideIpfsApiRetrofit(okHttpClient: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(BuildConfig.IPFS_API_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
+            .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideIpfsApiService(@IpfsApiRetrofit retrofit: Retrofit): IpfsApiService {
+        return retrofit.create(IpfsApiService::class.java)
     }
 }
