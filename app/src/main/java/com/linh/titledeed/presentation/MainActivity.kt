@@ -73,14 +73,22 @@ class MainActivity : ComponentActivity() {
                         val passwordError = inputWalletViewModel.passwordError.collectAsState()
                         val mnemonic = inputWalletViewModel.mnemonic.collectAsState()
                         val mnemonicError = inputWalletViewModel.mnemonicError.collectAsState()
+                        val isRecoverFromMnemonic = inputWalletViewModel.isRecoverFromMnemonic.collectAsState()
+                        val privateKey = inputWalletViewModel.privateKey.collectAsState()
+                        val privateKeyError = inputWalletViewModel.privateKeyError.collectAsState()
 
                         InputWalletScreen(
+                            isRecoverFromMnemonic.value,
+                            onIsRecoverFromMnemonicChange = { inputWalletViewModel.onRecoverFromMnemonicChange(it) },
                             password.value,
                             getErrorStringResource(passwordError.value),
                             onPasswordChange = { inputWalletViewModel.onPasswordChange(it) },
                             mnemonic.value,
                             getErrorStringResource(mnemonicError.value),
-                            onMnemonicChange = { inputWalletViewModel.onMnemonicChange(it) }
+                            onMnemonicChange = { inputWalletViewModel.onMnemonicChange(it) },
+                            privateKey.value,
+                            getErrorStringResource(privateKeyError.value),
+                            onPrivateKeyChange = { inputWalletViewModel.onPrivateKeyChange(it) }
                         ) {
                             inputWalletViewModel.onClickSubmit()
                         }

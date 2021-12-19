@@ -178,6 +178,10 @@ class TitleDeedRepositoryImpl @Inject constructor(private val ipfsGatewayService
         }
     }
 
+    override suspend fun getContractOwnerAddress(): String {
+        TODO("Not yet implemented")
+    }
+
     private suspend fun getTokenMetadata(tokenId: BigInteger): DeedMetadataResponse {
         val metadataIpfsUri = titleDeedService.getMetadataUri(tokenId)
         val gatewayUrl = getHttpLinkFromIpfsUri(metadataIpfsUri)

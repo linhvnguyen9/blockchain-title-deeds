@@ -10,6 +10,7 @@
     <string name="wallet_screen_description">Start off by inputting or creating a wallet</string>
     <string name="wallet_password">Password</string>
     <string name="wallet_mnemonic">Mnemonic</string>
+    <string name="wallet_private_key">Private key</string>
     <string name="all_submit">Submit</string>
     <string name="all_password">Password</string>
     <string name="all_confirm_password">Confirm password</string>
@@ -41,6 +42,7 @@
     <!--    Errors-->
     <string name="error_password_blank">Password must not be blank</string>
     <string name="error_mnemonic_blank">Secret Recovery Phrase must not be blank</string>
+    <string name="error_private_key_blank">Private Key must not be blank</string>
     <string name="error_password_too_short">Password must contains at least 8 characters</string>
     <string name="error_confirm_password_blank">Confirm password must not be blank</string>
     <string name="error_confirm_password_mismatch">Passwords does not match</string>

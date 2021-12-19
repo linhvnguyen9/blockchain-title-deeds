@@ -6,6 +6,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.web3j.crypto.Credentials
+import org.web3j.crypto.ECKeyPair
 import org.web3j.crypto.WalletUtils
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.core.DefaultBlockParameterName
@@ -23,7 +24,13 @@ class TitleDeedService @Inject constructor(private val web3j: Web3j) {
     }
 
     private fun initCredentials(wallet: Wallet): Credentials {
-        val credentials = WalletUtils.loadBip39Credentials(wallet.password, wallet.mnemonic)
+        val credentials = if (wallet.mnemonic.isNotEmpty()) {
+            WalletUtils.loadBip39Credentials(wallet.password, wallet.mnemonic)
+        } else {
+            val privateKeyBigInteger = BigInteger(wallet.privateKey, 16)
+            val keyPair = ECKeyPair.create(privateKeyBigInteger)
+            Credentials.create(keyPair)
+        }
         Timber.d("Wallet private key ${credentials.ecKeyPair.privateKey.toString(16)}")
         return credentials
     }
@@ -78,6 +85,10 @@ class TitleDeedService @Inject constructor(private val web3j: Web3j) {
 
     suspend fun getMetadataUri(tokenId: BigInteger): String = withContext(Dispatchers.IO) {
         return@withContext smartContract.tokenURI(tokenId).send()
+    }
+
+    suspend fun getContractOwnerAddress(): String = withContext(Dispatchers.IO) {
+        return@withContext smartContract.owner().send()
     }
 
     suspend fun estimateGasTransferOwnership(transaction: TransferOwnershipTransaction): String =
