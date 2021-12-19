@@ -88,4 +88,5 @@
     <string name="wallet_private_key">Khóa bí mật</string>
     <string name="error_private_key_blank">Khóa bí mật không được trống</string>
     <string name="wallet_create_deed">Cấp giấy</string>
+    <string name="all_issue_deed_button">Cấp giấy</string>
 </resources>

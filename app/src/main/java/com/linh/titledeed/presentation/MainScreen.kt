@@ -140,7 +140,25 @@ fun MainScreen(
                 composable(NavigationDirections.createDeed.destination) {
                     val createDeedViewModel: CreateDeedViewModel = hiltViewModel()
 
-                    CreateDeedScreen()
+                    val address = createDeedViewModel.address.collectAsState()
+                    val area = createDeedViewModel.area.collectAsState()
+                    val landNo = createDeedViewModel.landNo.collectAsState()
+                    val mapNo = createDeedViewModel.mapNo.collectAsState()
+                    val notes = createDeedViewModel.notes.collectAsState()
+
+                    CreateDeedScreen(
+                        address.value,
+                        onAddressChange = { createDeedViewModel.onAddressChange(it) },
+                        area.value,
+                        onAreaChange = { createDeedViewModel.onAreaChange(it) },
+                        landNo.value,
+                        onLandNoChange = { createDeedViewModel.onLandNoChange(it) },
+                        mapNo.value,
+                        onMapNoChange = { createDeedViewModel.onMapNoChange(it) },
+                        notes.value,
+                        onNotesChange = { createDeedViewModel.onNotesChange(it) },
+                        onClickSubmit = { createDeedViewModel.onClickSubmit() }
+                    )
                 }
                 composable(
                     NavigationDirections.DeedDetailNavigation.route,
