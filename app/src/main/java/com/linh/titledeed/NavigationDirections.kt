@@ -178,6 +178,19 @@ object NavigationDirections {
             get() = R.string.all_wallet
     }
 
+    val createDeed = object : NavigationDirection() {
+        override val arguments: List<NamedNavArgument>
+            get() = emptyList()
+
+        override val destination: String
+            get() = "create_deed"
+
+        override val isBottomNavigationItem: Boolean = true
+
+        override val screenNameRes: Int
+            get() = R.string.all_wallet
+    }
+
     object TransferOwnershipNavigation {
         const val KEY_TOKEN_ID = "tokenId"
 

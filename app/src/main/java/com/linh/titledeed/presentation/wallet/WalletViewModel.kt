@@ -32,8 +32,12 @@ class WalletViewModel @Inject constructor(
     private val _wallet = MutableStateFlow(Wallet("", "", "", ""))
     val wallet: StateFlow<Wallet> get() = _wallet
 
+    private val _isContractOwner = MutableStateFlow(false)
+    val isContractOwner: StateFlow<Boolean> get() = _isContractOwner
+
     init {
         getWallet()
+        checkContractOwner()
     }
 
     private fun getWallet() {
@@ -44,6 +48,12 @@ class WalletViewModel @Inject constructor(
         }
     }
 
+    private fun checkContractOwner() {
+        viewModelScope.launch {
+            _isContractOwner.value = checkContractOwnerUseCase()
+        }
+    }
+
     fun onClickLogout() {
         logoutWalletUseCase()
         navigationManager.navigate(NavigationCommand(NavigationDirections.onboardWallet, NavigationDirections.main, true))
@@ -51,5 +61,9 @@ class WalletViewModel @Inject constructor(
 
     fun onClickViewOwnedDeeds() {
         navigationManager.navigate(NavigationDirections.ownedDeeds)
+    }
+
+    fun onClickCreateDeed() {
+        navigationManager.navigate(NavigationDirections.createDeed)
     }
 }
