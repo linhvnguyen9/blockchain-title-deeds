@@ -17,5 +17,4 @@ interface TitleDeedRepository {
     suspend fun buy(transaction: BuyTransaction): Resource<Any>
     suspend fun getAllSales(): List<Sale>
     suspend fun getSaleInfo(tokenId: String): Sale
-    suspend fun uploadSaleMetadata(sale: Sale): Resource<String>
 }

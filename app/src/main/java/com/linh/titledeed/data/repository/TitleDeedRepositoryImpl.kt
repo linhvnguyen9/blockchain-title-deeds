@@ -2,9 +2,8 @@ package com.linh.titledeed.data.repository
 
 import com.linh.titledeed.data.contract.TitleDeedService
 import com.linh.titledeed.data.entity.DeedMetadataResponse
-import com.linh.titledeed.data.entity.UploadSaleMetadataRequest
 import com.linh.titledeed.data.local.EncryptedSharedPreference
-import com.linh.titledeed.data.remote.IpfsService
+import com.linh.titledeed.data.remote.IpfsGatewayService
 import com.linh.titledeed.data.utils.getHttpLinkFromIpfsUri
 import com.linh.titledeed.domain.entity.*
 import com.linh.titledeed.domain.repository.TitleDeedRepository
@@ -14,7 +13,7 @@ import java.lang.Exception
 import java.math.BigInteger
 import javax.inject.Inject
 
-class TitleDeedRepositoryImpl @Inject constructor(private val ipfsService: IpfsService, private val titleDeedService: TitleDeedService): TitleDeedRepository {
+class TitleDeedRepositoryImpl @Inject constructor(private val ipfsGatewayService: IpfsGatewayService, private val titleDeedService: TitleDeedService): TitleDeedRepository {
     init {
         val wallet = loadWalletInfo()
         titleDeedService.initService(wallet)
@@ -45,18 +44,6 @@ class TitleDeedRepositoryImpl @Inject constructor(private val ipfsService: IpfsS
 
     override suspend fun getTokenOwner(tokenId: String): String {
         return titleDeedService.getTokenOwner(tokenId)
-    }
-
-    override suspend fun uploadSaleMetadata(sale: Sale): Resource<String> {
-        return try {
-            sale.run {
-                val response = ipfsService.pinSaleMetadataToIpfs(UploadSaleMetadataRequest(tokenId, title, description, phoneNumber, imageUrls))
-                Resource.success(response.cid)
-            }
-        } catch (e: Exception) {
-            Timber.e(e)
-            Resource.error(e)
-        }
     }
 
     override suspend fun estimateGasTransferOwnership(transaction: TransferOwnershipTransaction): Resource<TransferOwnershipTransaction> {
@@ -180,7 +167,7 @@ class TitleDeedRepositoryImpl @Inject constructor(private val ipfsService: IpfsS
         val (sellerAddress, itemId, price, isForSale, metadataUri) = saleDetail
         return if (metadataUri.isNotBlank()) {
             val metadataUrl = getHttpLinkFromIpfsUri(metadataUri)
-            val saleMetadata = ipfsService.getSaleMetadata(metadataUrl)
+            val saleMetadata = ipfsGatewayService.getSaleMetadata(metadataUrl)
             val (_, title, description, phoneNumber, imageUrls) = saleMetadata
 
             Timber.d("getSaleInfo tokenId $tokenId saleMetadata $saleMetadata")
@@ -194,7 +181,7 @@ class TitleDeedRepositoryImpl @Inject constructor(private val ipfsService: IpfsS
     private suspend fun getTokenMetadata(tokenId: BigInteger): DeedMetadataResponse {
         val metadataIpfsUri = titleDeedService.getMetadataUri(tokenId)
         val gatewayUrl = getHttpLinkFromIpfsUri(metadataIpfsUri)
-        return ipfsService.getDeedMetadata(gatewayUrl)
+        return ipfsGatewayService.getDeedMetadata(gatewayUrl)
     }
 
     private fun loadWalletInfo(): Wallet {

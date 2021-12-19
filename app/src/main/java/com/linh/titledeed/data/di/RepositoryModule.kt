@@ -1,7 +1,9 @@
 package com.linh.titledeed.data.di
 
+import com.linh.titledeed.data.repository.FileRepositoryImpl
 import com.linh.titledeed.data.repository.TitleDeedRepositoryImpl
 import com.linh.titledeed.data.repository.WalletRepositoryImpl
+import com.linh.titledeed.domain.repository.FileRepository
 import com.linh.titledeed.domain.repository.TitleDeedRepository
 import com.linh.titledeed.domain.repository.WalletRepository
 import dagger.Binds
@@ -18,4 +20,7 @@ interface RepositoryModule {
 
     @Binds
     abstract fun bindTitleDeedRepository(titleDeedRepositoryImpl: TitleDeedRepositoryImpl): TitleDeedRepository
+
+    @Binds
+    abstract fun fileRepository(fileRepository: FileRepositoryImpl): FileRepository
 }
