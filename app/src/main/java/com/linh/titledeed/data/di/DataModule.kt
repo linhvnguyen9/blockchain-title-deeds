@@ -5,27 +5,21 @@ import com.google.gson.Gson
 import com.linh.titledeed.data.contract.WalletService
 import com.linh.titledeed.data.remote.AuthInterceptor
 import com.linh.titledeed.data.remote.ContractCallErrorInterceptor
-import com.linh.titledeed.data.remote.IpfsService
+import com.linh.titledeed.data.remote.IpfsGatewayService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import org.web3j.crypto.Credentials
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.core.DefaultBlockParameterName
 import org.web3j.protocol.http.HttpService
-import org.web3j.protocol.websocket.WebSocketClient
-import org.web3j.protocol.websocket.WebSocketService
 import org.web3j.tx.gas.ContractGasProvider
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import java.math.BigInteger
-import java.net.URI
 import javax.inject.Singleton
 
 @Module
@@ -121,7 +115,7 @@ object DataModule {
 
     @Singleton
     @Provides
-    fun provideIpfsService(retrofit: Retrofit): IpfsService {
-        return retrofit.create(IpfsService::class.java)
+    fun provideIpfsService(retrofit: Retrofit): IpfsGatewayService {
+        return retrofit.create(IpfsGatewayService::class.java)
     }
 }

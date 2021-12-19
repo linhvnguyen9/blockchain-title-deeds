@@ -25,6 +25,8 @@ android {
         apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
 
         buildConfigField("String", "PINATA_JWT", apikeyProperties['PINATA_JWT'])
+        buildConfigField("String", "IPFS_GATEWAY_URL", "\"http://192.168.1.109:8080/\"")
+        buildConfigField("String", "IPFS_API_URL", "\"http://192.168.1.109:5001/\"")
     }
 
     buildTypes {
@@ -116,4 +118,7 @@ dependencies {
 
     //Datastore
     implementation "androidx.datastore:datastore-preferences:1.0.0"
+
+    //Android Upload Service
+    implementation "net.gotev:uploadservice:4.7.0"
 }
