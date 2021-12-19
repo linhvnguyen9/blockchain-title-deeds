@@ -94,4 +94,5 @@
     <string name="deed_detail_current_sale">Current sale</string>
     <string name="deed_detail_not_on_sale">This property is not for sale</string>
     <string name="owned_deeds_screen_title">Owned deeds</string>
+    <string name="all_issue_deed_button">Issue</string>
 </resources>
