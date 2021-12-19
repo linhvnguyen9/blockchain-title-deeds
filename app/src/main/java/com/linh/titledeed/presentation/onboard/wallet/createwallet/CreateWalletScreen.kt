@@ -37,7 +37,6 @@ fun CreateWalletScreen(
                 Text(stringResource(R.string.all_password))
             },
         )
-        Text(stringResource(R.string.passwords_requirement))
 
         Spacer(Modifier.height(16.dp))
 

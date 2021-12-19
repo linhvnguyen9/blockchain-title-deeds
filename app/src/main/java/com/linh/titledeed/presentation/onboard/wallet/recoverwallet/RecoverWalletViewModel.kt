@@ -14,7 +14,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RecoverWalletViewModel @Inject constructor(private val restoreWalletUseCase: RestoreWalletUseCase, private val navigationManager: NavigationManager) : ViewModel() {
+class RecoverWalletViewModel @Inject constructor(
+    private val restoreWalletUseCase: RestoreWalletUseCase,
+    private val navigationManager: NavigationManager
+) : ViewModel() {
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> get() = _password
     private val _passwordError = MutableStateFlow<@StringRes Int>(0)
@@ -36,14 +39,6 @@ class RecoverWalletViewModel @Inject constructor(private val restoreWalletUseCas
     fun onClickSubmit() {
         viewModelScope.launch {
             var hasError = false
-
-            if (password.value.isBlank()) {
-                _passwordError.value = R.string.error_password_blank
-                hasError = true
-            } else if (password.value.length < 8) {
-                _passwordError.value = R.string.error_password_too_short
-                hasError = true
-            }
 
             if (mnemonic.value.isBlank()) {
                 _mnemonicError.value = R.string.error_mnemonic_blank
