@@ -1,5 +1,6 @@
 package com.linh.titledeed.presentation.deeds.sell
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.linh.titledeed.NavigationDirections
@@ -25,12 +26,12 @@ class SellDeedViewModel @Inject constructor(
 ): ViewModel() {
     private val _priceInWei = MutableStateFlow("")
     val priceInWei: StateFlow<String> get() = _priceInWei
-    private val _priceInWeiError = MutableStateFlow<@androidx.annotation.StringRes Int>(0)
+    private val _priceInWeiError = MutableStateFlow<Int>(0)
     val priceInWeiError: StateFlow<Int> get() = _priceInWeiError
 
     private val _saleTitle = MutableStateFlow("")
     val saleTitle: StateFlow<String> get() = _saleTitle
-    private val _saleTitleError = MutableStateFlow<@androidx.annotation.StringRes Int>(0)
+    private val _saleTitleError = MutableStateFlow<Int>(0)
     val saleTitleError: StateFlow<Int> get() = _saleTitleError
 
     private val _saleDescription = MutableStateFlow("")
@@ -38,7 +39,7 @@ class SellDeedViewModel @Inject constructor(
 
     private val _phoneNumber = MutableStateFlow("")
     val phoneNumber: StateFlow<String> get() = _phoneNumber
-    private val _phoneNumberError = MutableStateFlow<@androidx.annotation.StringRes Int>(0)
+    private val _phoneNumberError = MutableStateFlow<Int>(0)
     val phoneNumberError: StateFlow<Int> get() = _phoneNumberError
 
     private val _uploadMetadataResponse = MutableStateFlow<Resource<String>?>(null)

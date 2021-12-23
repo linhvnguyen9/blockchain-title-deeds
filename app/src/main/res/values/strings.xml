@@ -95,4 +95,6 @@
     <string name="deed_detail_not_on_sale">This property is not for sale</string>
     <string name="owned_deeds_screen_title">Owned deeds</string>
     <string name="all_issue_deed_button">Issue</string>
+    <string name="create_deed_pick_photo">Pick</string>
+    <string name="create_deed_document_photo">Photo</string>
 </resources>

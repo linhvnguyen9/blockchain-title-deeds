@@ -1,9 +1,12 @@
 package com.linh.titledeed.presentation.deeds.createdeed
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
+import com.linh.titledeed.domain.entity.LandPurpose
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,12 +26,36 @@ class CreateDeedViewModel @Inject constructor(): ViewModel() {
     private val _notes = MutableStateFlow("")
     val notes: StateFlow<String> get() = _notes
 
+    private val _purpose = MutableStateFlow(LandPurpose.RESIDENTIAL)
+    val purpose: StateFlow<LandPurpose> get() = _purpose
+
+    private val _isPrivate = MutableStateFlow<Boolean>(true)
+    val isPrivate: StateFlow<Boolean> get() = _isPrivate
+
+    private val _issueDate = MutableStateFlow<Calendar>(Calendar.getInstance())
+    val issueDate: StateFlow<Calendar> get() = _issueDate
+
+    private val _photoUri = MutableStateFlow<Uri?>(null)
+    val photoUri: StateFlow<Uri?> get() = _photoUri
+
     fun onAddressChange(address: String) {
         _address.value = address
     }
 
     fun onAreaChange(area: String) {
         _area.value = area.getValidatedNumber()
+    }
+
+    fun onLandPurposeChange(purpose: LandPurpose) {
+        _purpose.value = purpose
+    }
+
+    fun onIsPrivateChange(isPrivate: Boolean) {
+        _isPrivate.value = isPrivate
+    }
+
+    fun onIssueDateChange(date: Calendar) {
+        _issueDate.value = date
     }
 
     fun onLandNoChange(landNo: String) {
@@ -41,6 +68,10 @@ class CreateDeedViewModel @Inject constructor(): ViewModel() {
 
     fun onNotesChange(notes: String) {
         _notes.value = notes
+    }
+
+    fun onPickPhoto(uri: Uri?) {
+        _photoUri.value = uri
     }
 
     fun onClickSubmit() {
