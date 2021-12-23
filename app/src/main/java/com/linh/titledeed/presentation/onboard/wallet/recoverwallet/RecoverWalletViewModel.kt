@@ -20,12 +20,12 @@ class RecoverWalletViewModel @Inject constructor(
 ) : ViewModel() {
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> get() = _password
-    private val _passwordError = MutableStateFlow<@StringRes Int>(0)
+    private val _passwordError = MutableStateFlow<Int>(0)
     val passwordError: StateFlow<Int> get() = _passwordError
 
     private val _mnemonic = MutableStateFlow("")
     val mnemonic: StateFlow<String> get() = _mnemonic
-    private val _mnemonicError = MutableStateFlow<@StringRes Int>(0)
+    private val _mnemonicError = MutableStateFlow<Int>(0)
     val mnemonicError: StateFlow<Int> get() = _mnemonicError
 
     private val _isRecoverFromMnemonic = MutableStateFlow(true)
@@ -33,7 +33,7 @@ class RecoverWalletViewModel @Inject constructor(
 
     private val _privateKey = MutableStateFlow("")
     val privateKey: StateFlow<String> get() = _privateKey
-    private val _privateKeyError = MutableStateFlow<@StringRes Int>(0)
+    private val _privateKeyError = MutableStateFlow<Int>(0)
     val privateKeyError: StateFlow<Int> get() = _privateKeyError
 
     fun onPasswordChange(password: String) {

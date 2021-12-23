@@ -114,7 +114,7 @@ fun MainScreen(
 
                     val wallet = walletViewModel.wallet.collectAsState().value
                     val ethBalance = wallet.balance.convertToBalanceString()
-                    val isOwner = walletViewModel.isContractOwner.value
+                    val isOwner = walletViewModel.isContractOwner.collectAsState().value
 
                     WalletScreen(
                         isOwner,
@@ -142,15 +142,27 @@ fun MainScreen(
 
                     val address = createDeedViewModel.address.collectAsState()
                     val area = createDeedViewModel.area.collectAsState()
+                    val purpose = createDeedViewModel.purpose.collectAsState()
+                    val isPrivate = createDeedViewModel.isPrivate.collectAsState()
+                    val issueDate = createDeedViewModel.issueDate.collectAsState()
                     val landNo = createDeedViewModel.landNo.collectAsState()
                     val mapNo = createDeedViewModel.mapNo.collectAsState()
                     val notes = createDeedViewModel.notes.collectAsState()
+                    val photoUri = createDeedViewModel.photoUri.collectAsState()
 
                     CreateDeedScreen(
                         address.value,
                         onAddressChange = { createDeedViewModel.onAddressChange(it) },
                         area.value,
                         onAreaChange = { createDeedViewModel.onAreaChange(it) },
+                        purpose.value,
+                        onPurposeChange = { createDeedViewModel.onLandPurposeChange(it) },
+                        isPrivate.value,
+                        onIsPrivateChange = { createDeedViewModel.onIsPrivateChange(it) },
+                        issueDate.value,
+                        onIssueDateChange = { createDeedViewModel.onIssueDateChange(it) },
+                        photoUri.value,
+                        onChoosePhoto = { createDeedViewModel.onPickPhoto(it) },
                         landNo.value,
                         onLandNoChange = { createDeedViewModel.onLandNoChange(it) },
                         mapNo.value,

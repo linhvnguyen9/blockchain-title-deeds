@@ -1,5 +1,6 @@
 package com.linh.titledeed.presentation.deeds
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import com.linh.titledeed.NavigationDirections
@@ -25,7 +26,7 @@ class TransferDeedOwnershipViewModel @Inject constructor(
     private val _receiverAddress = MutableStateFlow("")
     val receiverAddress: StateFlow<String> get() = _receiverAddress
 
-    private val _receiverAddressError = MutableStateFlow<@androidx.annotation.StringRes Int>(0)
+    private val _receiverAddressError = MutableStateFlow<Int>(0)
     val receiverAddressError: StateFlow<Int> get() = _receiverAddressError
 
     private lateinit var tokenId: String
