@@ -97,4 +97,9 @@
     <string name="all_issue_deed_button">Issue</string>
     <string name="create_deed_pick_photo">Pick</string>
     <string name="create_deed_document_photo">Photo</string>
+    <string name="error_create_deed_address_blank">Address must not be blank</string>
+    <string name="error_create_deed_area_blank">Area must not be blank</string>
+    <string name="error_create_deed_land_no_blank">Land number must not be blank</string>
+    <string name="error_create_deed_map_no_blank">Map number must not be blank</string>
+    <string name="error_create_deed_no_photo_error">Must pick a photo</string>
 </resources>

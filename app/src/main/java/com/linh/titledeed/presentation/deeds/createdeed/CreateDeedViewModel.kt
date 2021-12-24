@@ -2,7 +2,9 @@ package com.linh.titledeed.presentation.deeds.createdeed
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel
+import com.linh.titledeed.R
 import com.linh.titledeed.domain.entity.LandPurpose
+import com.linh.titledeed.presentation.utils.NO_ERROR_STRING_RES
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,71 +13,112 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateDeedViewModel @Inject constructor(): ViewModel() {
-    private val _address = MutableStateFlow("")
-    val address: StateFlow<String> get() = _address
+    private val _uiState: MutableStateFlow<CreateDeedUiState>
+    val uiState: StateFlow<CreateDeedUiState> get() = _uiState
 
-    private val _area = MutableStateFlow("")
-    val area: StateFlow<String> get() = _area
-
-    private val _landNo = MutableStateFlow("")
-    val landNo: StateFlow<String> get() = _landNo
-
-    private val _mapNo = MutableStateFlow("")
-    val mapNo: StateFlow<String> get() = _mapNo
-
-    private val _notes = MutableStateFlow("")
-    val notes: StateFlow<String> get() = _notes
-
-    private val _purpose = MutableStateFlow(LandPurpose.RESIDENTIAL)
-    val purpose: StateFlow<LandPurpose> get() = _purpose
-
-    private val _isPrivate = MutableStateFlow<Boolean>(true)
-    val isPrivate: StateFlow<Boolean> get() = _isPrivate
-
-    private val _issueDate = MutableStateFlow<Calendar>(Calendar.getInstance())
-    val issueDate: StateFlow<Calendar> get() = _issueDate
-
-    private val _photoUri = MutableStateFlow<Uri?>(null)
-    val photoUri: StateFlow<Uri?> get() = _photoUri
-
-    fun onAddressChange(address: String) {
-        _address.value = address
+    init {
+        val defaultUiState = initDefaultUiState()
+        _uiState = MutableStateFlow(defaultUiState)
     }
 
-    fun onAreaChange(area: String) {
-        _area.value = area.getValidatedNumber()
+    private fun initDefaultUiState(): CreateDeedUiState {
+        return CreateDeedUiState(
+            onAddressChange = ::onAddressChange,
+            onAreaChange = ::onAreaChange,
+            onLandPurposeChange = ::onLandPurposeChange,
+            onIsPrivateChange = ::onIsPrivateChange,
+            onIssueDateChange = ::onIssueDateChange,
+            onLandNoChange = ::onLandNoChange,
+            onMapNoChange = ::onMapNoChange,
+            onNotesChange = ::onNotesChange,
+            onPickPhoto = ::onPickPhoto,
+            onClickSubmit = ::onClickSubmit
+        )
     }
 
-    fun onLandPurposeChange(purpose: LandPurpose) {
-        _purpose.value = purpose
+    private fun onAddressChange(address: String) {
+        _uiState.value = uiState.value.copy(address = address)
     }
 
-    fun onIsPrivateChange(isPrivate: Boolean) {
-        _isPrivate.value = isPrivate
+    private fun onAreaChange(area: String) {
+        _uiState.value = uiState.value.copy(area = area.getValidatedNumber())
     }
 
-    fun onIssueDateChange(date: Calendar) {
-        _issueDate.value = date
+    private fun onLandPurposeChange(purpose: LandPurpose) {
+        _uiState.value = uiState.value.copy(purpose = purpose)
     }
 
-    fun onLandNoChange(landNo: String) {
-        _landNo.value = landNo.replace("[\\.,]".toRegex(), "")
+    private fun onIsPrivateChange(isPrivate: Boolean) {
+        _uiState.value = uiState.value.copy(isPrivate = isPrivate)
     }
 
-    fun onMapNoChange(mapNo: String) {
-        _mapNo.value = mapNo.replace("[\\.,]".toRegex(), "")
+    private fun onIssueDateChange(date: Calendar) {
+        _uiState.value = uiState.value.copy(issueDate = date)
     }
 
-    fun onNotesChange(notes: String) {
-        _notes.value = notes
+    private fun onLandNoChange(landNo: String) {
+        _uiState.value = uiState.value.copy(landNo = landNo.replace("[\\.,]".toRegex(), ""))
     }
 
-    fun onPickPhoto(uri: Uri?) {
-        _photoUri.value = uri
+    private fun onMapNoChange(mapNo: String) {
+        _uiState.value = uiState.value.copy(mapNo = mapNo.replace("[\\.,]".toRegex(), ""))
     }
 
-    fun onClickSubmit() {
-        TODO("Not yet implemented")
+    private fun onNotesChange(notes: String) {
+        _uiState.value = uiState.value.copy(notes = notes)
+    }
+
+    private fun onPickPhoto(uri: Uri?) {
+        _uiState.value = uiState.value.copy(photoUri = uri)
+    }
+
+    private fun onClickSubmit() {
+        val currentUiState = uiState.value
+        with(currentUiState) {
+            var hasError = false
+            var newUiState = currentUiState
+
+            if (address.isBlank()) {
+                hasError = true
+                newUiState = newUiState.copy(addressErrorRes = R.string.error_create_deed_address_blank)
+            } else {
+                newUiState = newUiState.copy(addressErrorRes = NO_ERROR_STRING_RES)
+            }
+
+            if (area.isBlank()) {
+                hasError = true
+                newUiState = newUiState.copy(areaErrorRes = R.string.error_create_deed_area_blank)
+            } else {
+                newUiState = newUiState.copy(areaErrorRes = NO_ERROR_STRING_RES)
+            }
+
+            if (landNo.isBlank()) {
+                hasError = true
+                newUiState = newUiState.copy(landNoErrorRes = R.string.error_create_deed_land_no_blank)
+            } else {
+                newUiState = newUiState.copy(landNoErrorRes = NO_ERROR_STRING_RES)
+            }
+
+            if (mapNo.isBlank()) {
+                hasError = true
+                newUiState = newUiState.copy(mapNoErrorRes = R.string.error_create_deed_map_no_blank)
+            } else {
+                newUiState = newUiState.copy(mapNoErrorRes = NO_ERROR_STRING_RES)
+            }
+
+            if (photoUri == null) {
+                hasError = true
+                newUiState = newUiState.copy(photoUriErrorRes = R.string.error_create_deed_no_photo_error)
+            } else {
+                newUiState = newUiState.copy(photoUriErrorRes = NO_ERROR_STRING_RES)
+            }
+
+            _uiState.value = newUiState
+
+            if (!hasError) {
+                //TODO: Do something here
+            }
+        }
     }
 
     private fun String.getValidatedNumber(): String {
