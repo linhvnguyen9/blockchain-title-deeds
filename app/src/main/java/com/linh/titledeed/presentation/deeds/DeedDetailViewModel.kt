@@ -62,39 +62,47 @@ class DeedDetailViewModel @Inject constructor(
     }
 
     fun onClickTransfer() {
-        navigationManager.navigate(
-            NavigationDirections.TransferOwnershipNavigation.transferOwnership(
-                deed.value.id
+        viewModelScope.launch {
+            navigationManager.navigate(
+                NavigationDirections.TransferOwnershipNavigation.transferOwnership(
+                    deed.value.id
+                )
             )
-        )
+        }
     }
 
     fun onClickSell() {
-        navigationManager.navigate(NavigationDirections.SellDeedNavigation.sellDeed(deed.value.id))
+        viewModelScope.launch {
+            navigationManager.navigate(NavigationDirections.SellDeedNavigation.sellDeed(deed.value.id))
+        }
     }
 
     fun onClickCancelSell() {
-        navigationManager.navigate(
-            NavigationDirections.TransactionInfoNavigation.transactionInfo(
-                TransactionType.CANCEL_SALE,
-                "0x0",
-                sale.value.tokenId,
-                navigateBackDestination = NavigationDirections.DeedDetailNavigation.route,
-                popInclusive = false
+        viewModelScope.launch {
+            navigationManager.navigate(
+                NavigationDirections.TransactionInfoNavigation.transactionInfo(
+                    TransactionType.CANCEL_SALE,
+                    "0x0",
+                    sale.value.tokenId,
+                    navigateBackDestination = NavigationDirections.DeedDetailNavigation.route,
+                    popInclusive = false
+                )
             )
-        )
+        }
     }
 
     fun onClickBuy() {
-        navigationManager.navigate(
-            NavigationDirections.TransactionInfoNavigation.transactionInfo(
-                TransactionType.BUY,
-                "",
-                deed.value.id,
-                sale.value.price,
-                navigateBackDestination = NavigationDirections.DeedDetailNavigation.route,
-                popInclusive = false
+        viewModelScope.launch {
+            navigationManager.navigate(
+                NavigationDirections.TransactionInfoNavigation.transactionInfo(
+                    TransactionType.BUY,
+                    "",
+                    deed.value.id,
+                    sale.value.price,
+                    navigateBackDestination = NavigationDirections.DeedDetailNavigation.route,
+                    popInclusive = false
+                )
             )
-        )
+        }
     }
 }

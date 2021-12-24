@@ -2,17 +2,19 @@ package com.linh.titledeed.presentation
 
 import com.linh.titledeed.NavigationDirection
 import com.linh.titledeed.NavigationDirections
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 
 class NavigationManager {
-    val commands = MutableStateFlow<NavigationCommand?>(null)
+    val commands = MutableSharedFlow<NavigationCommand?>()
 
-    fun navigate(command: NavigationCommand) {
-        commands.value = command
+    suspend fun navigate(command: NavigationCommand) {
+        commands.emit(command)
     }
 
-    fun navigate(direction: NavigationDirection) {
-        commands.value = NavigationCommand(direction)
+    suspend fun navigate(direction: NavigationDirection) {
+        commands.emit(NavigationCommand(direction))
     }
 }
 

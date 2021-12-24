@@ -65,8 +65,10 @@ class CreateWalletViewModel @Inject constructor(
     }
 
     fun onConfirmViewedMnemonic() {
-        navigationManager.navigate(NavigationDirections.confirmMnemonic)
-        shuffleConfirmMnemonicWords()
+        viewModelScope.launch {
+            navigationManager.navigate(NavigationDirections.confirmMnemonic)
+            shuffleConfirmMnemonicWords()
+        }
     }
 
     fun onConfirmMnemonic() {

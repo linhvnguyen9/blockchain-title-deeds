@@ -105,7 +105,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
-            navigationManager.commands.collectAsState().value.also { command ->
+            navigationManager.commands.collectAsState(null).value.also { command ->
                 command?.let {
                     if (command.direction.destination.isNotEmpty() && !command.direction.isBottomNavigationItem) {
                         navController.navigate(command.direction.destination) {

@@ -98,20 +98,28 @@ class TransactionInfoViewModel @Inject constructor(
     }
 
     fun onDismiss(popUpTo: Boolean) {
-        if (popUpTo) {
-            val backDirection = object : NavigationDirection() {
-                override val arguments: List<NamedNavArgument>
-                    get() = emptyList()
-                override val destination: String
-                    get() = popUpToRoute
-                override val isBottomNavigationItem: Boolean
-                    get() = true
-                override val screenNameRes: Int
-                    get() = R.string.app_name
+        viewModelScope.launch {
+            if (popUpTo) {
+                val backDirection = object : NavigationDirection() {
+                    override val arguments: List<NamedNavArgument>
+                        get() = emptyList()
+                    override val destination: String
+                        get() = popUpToRoute
+                    override val isBottomNavigationItem: Boolean
+                        get() = true
+                    override val screenNameRes: Int
+                        get() = R.string.app_name
+                }
+                navigationManager.navigate(
+                    NavigationCommand(
+                        NavigationDirections.back,
+                        backDirection,
+                        popUpToInclusive
+                    )
+                )
+            } else {
+                navigationManager.navigate(NavigationDirections.back)
             }
-            navigationManager.navigate(NavigationCommand(NavigationDirections.back, backDirection, popUpToInclusive))
-        } else {
-            navigationManager.navigate(NavigationDirections.back)
         }
     }
 }

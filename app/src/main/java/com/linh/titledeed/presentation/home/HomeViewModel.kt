@@ -43,7 +43,9 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onClickSale(sale: Sale) {
-        navigationManager.navigate(NavigationDirections.DeedDetailNavigation.detail(sale.tokenId))
+        viewModelScope.launch {
+            navigationManager.navigate(NavigationDirections.DeedDetailNavigation.detail(sale.tokenId))
+        }
     }
 
     fun onRefresh() {
