@@ -30,7 +30,9 @@ class WelcomeScreenViewModel @Inject constructor(
     }
 
     fun onClickContinue() {
-        navigationManager.navigate(NavigationDirections.onboardWallet)
+        viewModelScope.launch {
+            navigationManager.navigate(NavigationDirections.onboardWallet)
+        }
     }
 
     companion object {

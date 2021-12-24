@@ -55,15 +55,21 @@ class WalletViewModel @Inject constructor(
     }
 
     fun onClickLogout() {
-        logoutWalletUseCase()
-        navigationManager.navigate(NavigationCommand(NavigationDirections.onboardWallet, NavigationDirections.main, true))
+        viewModelScope.launch {
+            logoutWalletUseCase()
+            navigationManager.navigate(NavigationCommand(NavigationDirections.onboardWallet, NavigationDirections.main, true))
+        }
     }
 
     fun onClickViewOwnedDeeds() {
-        navigationManager.navigate(NavigationDirections.ownedDeeds)
+        viewModelScope.launch {
+            navigationManager.navigate(NavigationDirections.ownedDeeds)
+        }
     }
 
     fun onClickCreateDeed() {
-        navigationManager.navigate(NavigationDirections.createDeed)
+        viewModelScope.launch {
+            navigationManager.navigate(NavigationDirections.createDeed)
+        }
     }
 }

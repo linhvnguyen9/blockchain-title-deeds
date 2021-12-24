@@ -42,8 +42,10 @@ class OwnedDeedsViewModel @Inject constructor(private val getWalletInfoUseCase: 
     }
 
     fun onClickDeed(deed: Deed) {
-        Timber.d("onClickDeed id ${deed.id}")
-        navigationManager.navigate(NavigationCommand(NavigationDirections.DeedDetailNavigation.detail(deed.id)))
+        viewModelScope.launch {
+            Timber.d("onClickDeed id ${deed.id}")
+            navigationManager.navigate(NavigationCommand(NavigationDirections.DeedDetailNavigation.detail(deed.id)))
+        }
     }
 
     private suspend fun getDeeds() {

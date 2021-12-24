@@ -2,6 +2,7 @@ package com.linh.titledeed.presentation.deeds
 
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import com.linh.titledeed.NavigationDirections
 import com.linh.titledeed.R
@@ -13,6 +14,7 @@ import com.linh.titledeed.presentation.NavigationManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import okhttp3.internal.parseHexDigit
 import timber.log.Timber
 import javax.inject.Inject
@@ -36,28 +38,30 @@ class TransferDeedOwnershipViewModel @Inject constructor(
     }
 
     fun onClickSubmit() {
-        val selfWalletAddress = getWalletInfoUseCase().address
+        viewModelScope.launch {
+            val selfWalletAddress = getWalletInfoUseCase().address
 
-        if (!isValidReceiverAddress(selfWalletAddress, receiverAddress.value)) {
-            return
-        }
+            if (!isValidReceiverAddress(selfWalletAddress, receiverAddress.value)) {
+                return@launch
+            }
 
-        val navDirection = NavigationDirections.TransactionInfoNavigation.transactionInfo(
-            TransactionType.TRANSFER_OWNERSHIP,
-            receiverAddress.value,
-            tokenId,
-            "",
-            "",
-            NavigationDirections.ownedDeeds.destination,
-            false
-        )
-        navigationManager.navigate(
-            NavigationCommand(
-                navDirection,
-                NavigationDirections.ownedDeeds,
-                true
+            val navDirection = NavigationDirections.TransactionInfoNavigation.transactionInfo(
+                TransactionType.TRANSFER_OWNERSHIP,
+                receiverAddress.value,
+                tokenId,
+                "",
+                "",
+                NavigationDirections.ownedDeeds.destination,
+                false
             )
-        )
+            navigationManager.navigate(
+                NavigationCommand(
+                    navDirection,
+                    NavigationDirections.ownedDeeds,
+                    true
+                )
+            )
+        }
     }
 
     fun setTokenId(tokenId: String) {

@@ -31,6 +31,8 @@ import com.linh.titledeed.presentation.wallet.OwnedDeedsScreen
 import com.linh.titledeed.presentation.wallet.OwnedDeedsViewModel
 import com.linh.titledeed.presentation.wallet.WalletScreen
 import com.linh.titledeed.presentation.wallet.WalletViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import timber.log.Timber
 
 @ExperimentalComposeUiApi
@@ -353,18 +355,21 @@ fun MainScreen(
             }
         }
 
-        navigationManager.commands.collectAsState().value.also { command ->
-            Timber.d("Navigation command received $command")
-            if (command?.direction == NavigationDirections.back) {
-                if (command.popUpTo?.destination != null) {
-                    navController.popBackStack(command.popUpTo.destination, command.inclusive)
+        LaunchedEffect(true) {
+            Timber.d("MainScreen collecting navigation events")
+            navigationManager.commands.collect { command ->
+                Timber.d("Navigation command received $command")
+                if (command?.direction == NavigationDirections.back) {
+                    if (command.popUpTo?.destination != null) {
+                        navController.popBackStack(command.popUpTo.destination, command.inclusive)
+                    } else {
+                        navController.popBackStack()
+                    }
                 } else {
-                    navController.popBackStack()
-                }
-            } else {
-                command?.let {
-                    if (it.direction.destination.isNotEmpty() && it.direction.isBottomNavigationItem) {
-                        navController.navigate(it.direction.destination)
+                    command?.let {
+                        if (it.direction.destination.isNotEmpty() && it.direction.isBottomNavigationItem) {
+                            navController.navigate(it.direction.destination)
+                        }
                     }
                 }
             }
