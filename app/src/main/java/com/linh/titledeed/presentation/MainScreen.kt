@@ -263,16 +263,26 @@ fun MainScreen(
                         null
                     }
 
-                    val homeViewModel : HomeViewModel? = if (navController.backQueue.lastOrNull { entry ->
-                            entry.destination.route == NavigationDirections.home.destination
-                        } != null) {
-                        parentViewModel(navController, NavigationDirections.home.destination)
-                    } else {
-                        null
-                    }
+                    val homeViewModel: HomeViewModel? =
+                        if (navController.backQueue.lastOrNull { entry ->
+                                entry.destination.route == NavigationDirections.home.destination
+                            } != null) {
+                            parentViewModel(navController, NavigationDirections.home.destination)
+                        } else {
+                            null
+                        }
 
-                    val deedDetailViewModel: DeedDetailViewModel =
-                        parentViewModel(navController, NavigationDirections.DeedDetailNavigation.route)
+                    val deedDetailViewModel: DeedDetailViewModel? =
+                        if (navController.backQueue.lastOrNull { entry ->
+                                entry.destination.route == NavigationDirections.DeedDetailNavigation.route
+                            } != null) {
+                            parentViewModel(
+                                navController,
+                                NavigationDirections.DeedDetailNavigation.route
+                            )
+                        } else {
+                            null
+                        }
 
                     val transactionInfoViewModel: TransactionInfoViewModel = hiltViewModel()
 
@@ -317,7 +327,7 @@ fun MainScreen(
                         transactionResponse.value,
                         onConfirm = { transactionInfoViewModel.onConfirm() },
                         onDismiss = {
-                            deedDetailViewModel.getDeed(tokenId)
+                            deedDetailViewModel?.getDeed(tokenId)
                             ownedDeedsViewModel?.onRefresh()
                             homeViewModel?.onRefresh()
                             transactionInfoViewModel.onDismiss(it)

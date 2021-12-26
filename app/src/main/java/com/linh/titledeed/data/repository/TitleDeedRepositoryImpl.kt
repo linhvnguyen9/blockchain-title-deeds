@@ -1,7 +1,7 @@
 package com.linh.titledeed.data.repository
 
 import com.linh.titledeed.data.contract.TitleDeedService
-import com.linh.titledeed.data.entity.DeedMetadataResponse
+import com.linh.titledeed.data.entity.deedmetadata.DeedMetadataResponse
 import com.linh.titledeed.data.local.EncryptedSharedPreference
 import com.linh.titledeed.data.remote.IpfsGatewayService
 import com.linh.titledeed.data.utils.getHttpLinkFromIpfsUri
@@ -44,6 +44,29 @@ class TitleDeedRepositoryImpl @Inject constructor(private val ipfsGatewayService
 
     override suspend fun getTokenOwner(tokenId: String): String {
         return titleDeedService.getTokenOwner(tokenId)
+    }
+
+    override suspend fun estimateGasCreateDeed(transaction: CreateDeedTransaction): Resource<CreateDeedTransaction> {
+        try {
+            val gasCost = titleDeedService.estimateGasSafeMint(transaction)
+
+            transaction.apply {
+                return Resource.success(CreateDeedTransaction(gasCost, senderAddress, receiverAddress, tokenId, uri))
+            }
+        } catch (e: Exception) {
+            Timber.e(e)
+            return Resource.error(e)
+        }
+    }
+
+    override suspend fun createDeed(transaction: CreateDeedTransaction): Resource<Any> {
+        return try {
+            titleDeedService.safeMint(transaction)
+            Resource.success("")
+        } catch (e: Exception) {
+            Timber.e(e)
+            Resource.error(e)
+        }
     }
 
     override suspend fun estimateGasTransferOwnership(transaction: TransferOwnershipTransaction): Resource<TransferOwnershipTransaction> {

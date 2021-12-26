@@ -50,6 +50,14 @@ class TransactionInfoViewModel @Inject constructor(
             val wallet = getWalletInfoUseCase()
 
             val transaction = when (transactionType) {
+                TransactionType.CREATE_DEED -> {
+                    CreateDeedTransaction(
+                        senderAddress = wallet.address,
+                        receiverAddress = receiverAddress,
+                        uri = metadataUri,
+                        tokenId = tokenId
+                    )
+                }
                 TransactionType.TRANSFER_OWNERSHIP -> {
                     TransferOwnershipTransaction(
                         senderAddress = wallet.address,

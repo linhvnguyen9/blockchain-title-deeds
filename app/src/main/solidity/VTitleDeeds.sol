@@ -7,8 +7,13 @@ import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract VTitleDeeds is ERC721, ERC721Enumerable, Pausable, Ownable, ERC721Burnable, ERC721URIStorage {
+    using Counters for Counters.Counter;
+
+    Counters.Counter private _tokenIdCounter;
+
     event DeedOffered(uint indexed itemId, uint price);
     event DeedBought(uint indexed itemId, uint value, address indexed fromAddress, address indexed toAddress);
     event DeedNoLongerForSale(uint indexed itemId);
@@ -38,7 +43,9 @@ contract VTitleDeeds is ERC721, ERC721Enumerable, Pausable, Ownable, ERC721Burna
         _unpause();
     }
 
-    function safeMint(address to, uint256 tokenId, string memory _tokenURI) public onlyOwner {
+    function safeMint(address to, string memory _tokenURI) public onlyOwner {
+        uint256 tokenId = _tokenIdCounter.current();
+        _tokenIdCounter.increment();
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, _tokenURI);
     }

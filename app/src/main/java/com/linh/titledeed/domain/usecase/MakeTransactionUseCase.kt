@@ -8,6 +8,9 @@ import javax.inject.Inject
 class MakeTransactionUseCase @Inject constructor (private val titleDeedRepository: TitleDeedRepository) {
     suspend operator fun invoke(transaction: Transaction): Resource<Any> {
         return when (transaction) {
+            is CreateDeedTransaction -> {
+                titleDeedRepository.createDeed(transaction)
+            }
             is TransferOwnershipTransaction -> {
                 titleDeedRepository.transferOwnership(transaction)
             }

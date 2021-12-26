@@ -1,12 +1,10 @@
-package com.linh.titledeed.data.entity
+package com.linh.titledeed.data.entity.deedmetadata
 
-import androidx.compose.ui.text.toUpperCase
 import com.google.gson.annotations.SerializedName
 import com.linh.titledeed.data.utils.DateFormatUtil.timeStringToCalendar
 import com.linh.titledeed.data.utils.getHttpLinkFromIpfsUri
 import com.linh.titledeed.domain.entity.Deed
 import com.linh.titledeed.domain.entity.LandPurpose
-import java.time.LocalDate
 import java.util.*
 
 data class DeedMetadataResponse(

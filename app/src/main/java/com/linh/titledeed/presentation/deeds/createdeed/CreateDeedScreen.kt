@@ -165,6 +165,12 @@ fun CreateDeedScreen(
                 onTextChange = onNotesChange,
             )
             Spacer(Modifier.height(16.dp))
+            CreateDeedTextInputField(
+                labelResource = R.string.create_deed_receiver_address,
+                text = receiverAddress,
+                onTextChange = onReceiveAddressChange,
+            )
+            Spacer(Modifier.height(16.dp))
             InputCaptionText(Modifier.fillMaxWidth(), R.string.create_deed_document_photo)
             if (photoUri != null) {
                 Image(
