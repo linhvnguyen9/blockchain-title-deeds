@@ -91,4 +91,12 @@
     <string name="all_issue_deed_button">Cấp giấy</string>
     <string name="create_deed_pick_photo">Chọn</string>
     <string name="create_deed_document_photo">Ảnh</string>
+    <string name="create_deed_receiver_address">Địa chỉ ví nhận</string>
+    <string name="all_create_deed">Cấp giấy</string>
+    <string name="error_create_deed_address_blank">Địa chỉ không được trống</string>
+    <string name="error_create_deed_area_blank">Diện tích không được trống</string>
+    <string name="error_create_deed_land_no_blank">Số thửa đất không được trống</string>
+    <string name="error_create_deed_map_no_blank">Số bản đồ không được trống</string>
+    <string name="error_create_deed_no_photo_error">"Hãy chọn ảnh "</string>
+    <string name="error_create_deed_receiver_address_blank">Địa chỉ nhận không được trống</string>
 </resources>
