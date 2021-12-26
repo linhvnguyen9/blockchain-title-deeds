@@ -170,6 +170,7 @@ fun CreateDeedScreen(
                 text = receiverAddress,
                 onTextChange = onReceiveAddressChange,
             )
+            ErrorText(errorRes = receiverAddressErrorRes)
             Spacer(Modifier.height(16.dp))
             InputCaptionText(Modifier.fillMaxWidth(), R.string.create_deed_document_photo)
             if (photoUri != null) {
