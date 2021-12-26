@@ -7,6 +7,8 @@ interface TitleDeedRepository {
     suspend fun getAllOwnedDeeds(address: String): List<Deed>
     suspend fun getDeedDetail(tokenId: String): Deed
     suspend fun getTokenOwner(tokenId: String): String
+    suspend fun estimateGasCreateDeed(transaction: CreateDeedTransaction): Resource<CreateDeedTransaction>
+    suspend fun createDeed(transaction: CreateDeedTransaction): Resource<Any>
     suspend fun estimateGasTransferOwnership(transaction: TransferOwnershipTransaction): Resource<TransferOwnershipTransaction>
     suspend fun transferOwnership(transaction: TransferOwnershipTransaction): Resource<Any>
     suspend fun estimateGasCreateSale(transaction: CreateSaleTransaction): Resource<CreateSaleTransaction>

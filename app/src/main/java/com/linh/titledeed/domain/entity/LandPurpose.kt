@@ -1,7 +1,7 @@
 package com.linh.titledeed.domain.entity
 
-enum class LandPurpose {
-    RESIDENTIAL,
-    AGRICULTURAL,
-    NON_AGRICULTURAL
+enum class LandPurpose(text: String) {
+    RESIDENTIAL("residential"),
+    AGRICULTURAL("agricultural"),
+    NON_AGRICULTURAL("non_agricultural")
 }

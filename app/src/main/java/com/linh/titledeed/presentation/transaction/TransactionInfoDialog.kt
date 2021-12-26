@@ -56,6 +56,7 @@ fun TransactionInfoDialog(transaction: Resource<Transaction>?, response: Resourc
                     Spacer(Modifier.height(20.dp))
 
                     val transactionName = when (transaction?.data?.type) {
+                        TransactionType.CREATE_DEED -> stringResource(R.string.all_create_deed)
                         TransactionType.TRANSFER_OWNERSHIP -> stringResource(R.string.all_transfer)
                         TransactionType.CREATE_SALE -> stringResource(R.string.sell_deed_screen_title)
                         TransactionType.CANCEL_SALE -> stringResource(R.string.all_cancel_sell)

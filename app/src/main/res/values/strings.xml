@@ -31,9 +31,11 @@
     <string name="deed_detail_private">Private</string>
     <string name="deed_detail_token_id">Token ID</string>
     <string name="deed_detail_seller">Seller: </string>
+    <string name="create_deed_receiver_address">Receiver address</string>
     <string name="deed_detail_sale_contact_phone">Contact phone number: </string>
     <string name="all_deed">Deed</string>
     <string name="all_transfer">Transfer ownership</string>
+    <string name="all_create_deed">Create deed</string>
     <string name="all_sell">Sell</string>
     <string name="all_buy">Buy</string>
     <string name="all_cancel_sell">Cancel sell</string>
@@ -102,4 +104,5 @@
     <string name="error_create_deed_land_no_blank">Land number must not be blank</string>
     <string name="error_create_deed_map_no_blank">Map number must not be blank</string>
     <string name="error_create_deed_no_photo_error">Must pick a photo</string>
+    <string name="error_create_deed_receiver_address_blank">Receiver address must not be blank</string>
 </resources>

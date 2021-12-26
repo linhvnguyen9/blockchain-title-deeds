@@ -18,7 +18,35 @@ import java.math.BigInteger
 import java.util.*
 
 class VTitleDeedsExtensions(credentials: Credentials, web3j: Web3j, contractGasProvider: ContractGasProvider): VTitleDeeds(ERC721_SMART_CONTRACT_ADDRESS, web3j, credentials, contractGasProvider) {
-    fun estimateGasSafeTransferFrom(from: String, to: String, tokenId: BigInteger): Request<*, EthEstimateGas> {
+    fun estimateGasSafeMint(
+        to: String,
+        _tokenURI: String
+    ): Request<*, EthEstimateGas> {
+        val function = Function(
+            FUNC_SAFEMINT,
+            Arrays.asList<Type<*>>(
+                Address(160, to),
+                Utf8String(_tokenURI)
+            ),
+            emptyList()
+        )
+        return web3j.ethEstimateGas(
+            Transaction.createFunctionCallTransaction(
+                transactionManager.fromAddress,
+                BigInteger("1"),
+                gasProvider.getGasPrice(FUNC_SAFEMINT),
+                gasProvider.getGasLimit(FUNC_SAFEMINT),
+                contractAddress,
+                executeRemoteCallTransaction(function).encodeFunctionCall()
+            )
+        )
+    }
+
+    fun estimateGasSafeTransferFrom(
+        from: String,
+        to: String,
+        tokenId: BigInteger
+    ): Request<*, EthEstimateGas> {
         val function = Function(
             FUNC_safeTransferFrom,
             Arrays.asList<Type<*>>(
@@ -108,6 +136,6 @@ class VTitleDeedsExtensions(credentials: Credentials, web3j: Web3j, contractGasP
 
     companion object {
         const val ERC721_SMART_CONTRACT_ADDRESS =
-            "0xa8F8c924D904d38a30F8Cb3315DA937F2E959A1f"
+            "0x9A06a5f9b0B4c90102189E57b48DB00c2C3e942f"
     }
 }

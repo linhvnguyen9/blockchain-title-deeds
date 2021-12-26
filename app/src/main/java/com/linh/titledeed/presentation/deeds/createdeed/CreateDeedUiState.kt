@@ -35,6 +35,10 @@ data class CreateDeedUiState(
     val issueDate: Calendar = Calendar.getInstance(),
     val onIssueDateChange: (Calendar) -> Unit,
 
+    val receiverAddress: String = "",
+    val onReceiveAddressChange: (String) -> Unit,
+    @StringRes val receiverAddressErrorRes: Int = NO_ERROR_STRING_RES,
+
     val photoUri: Uri? = null,
     val onPickPhoto: (Uri?) -> Unit,
     @StringRes val photoUriErrorRes: Int = NO_ERROR_STRING_RES,

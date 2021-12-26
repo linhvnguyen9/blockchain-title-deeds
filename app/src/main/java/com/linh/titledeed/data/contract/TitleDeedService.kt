@@ -2,7 +2,6 @@ package com.linh.titledeed.data.contract
 
 import com.linh.titledeed.data.entity.GetSaleDetailResponse
 import com.linh.titledeed.domain.entity.*
-import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.web3j.crypto.Credentials
@@ -90,6 +89,22 @@ class TitleDeedService @Inject constructor(private val web3j: Web3j) {
     suspend fun getContractOwnerAddress(): String = withContext(Dispatchers.IO) {
         return@withContext smartContract.owner().send()
     }
+
+    suspend fun estimateGasSafeMint(transaction: CreateDeedTransaction): String =
+        withContext(Dispatchers.IO) {
+            return@withContext smartContract.estimateGasSafeMint(
+                transaction.receiverAddress,
+                transaction.uri
+            ).send().amountUsed.toString(10)
+        }
+
+    suspend fun safeMint(transaction: CreateDeedTransaction) =
+        withContext(Dispatchers.IO) {
+            return@withContext smartContract.safeMint(
+                transaction.receiverAddress,
+                transaction.uri
+            ).send()
+        }
 
     suspend fun estimateGasTransferOwnership(transaction: TransferOwnershipTransaction): String =
         withContext(Dispatchers.IO) {

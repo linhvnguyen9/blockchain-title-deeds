@@ -8,6 +8,9 @@ import javax.inject.Inject
 class EstimateTransactionGasUseCase @Inject constructor(private val titleDeedRepository: TitleDeedRepository) {
     suspend operator fun invoke(transaction: Transaction): Resource<Transaction> {
         return when (transaction) {
+            is CreateDeedTransaction -> {
+                titleDeedRepository.estimateGasCreateDeed(transaction)
+            }
             is TransferOwnershipTransaction -> {
                 titleDeedRepository.estimateGasTransferOwnership(transaction)
             }
