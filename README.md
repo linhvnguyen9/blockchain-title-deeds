@@ -3,6 +3,7 @@
 2. Web3j CLI https://github.com/web3j/web3j-cli#installation
 3. npm https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
 4. OpenZeppelin `npm install @openzeppelin/contracts`
+5. https://trufflesuite.com/ganache/
 
 ### How to run the project
 1. Create file named `pinata.properties` in root folder
