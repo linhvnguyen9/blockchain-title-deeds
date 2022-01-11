@@ -22,6 +22,7 @@ import org.web3j.tx.gas.ContractGasProvider
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.math.BigInteger
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -49,6 +50,9 @@ object DataModule {
     @Provides
     fun provideOkhttp(authInterceptor: AuthInterceptor, loggingInterceptor: HttpLoggingInterceptor, contractCallErrorInterceptor: ContractCallErrorInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
+            .connectTimeout(10, TimeUnit.MINUTES)
+            .writeTimeout(10, TimeUnit.MINUTES)
+            .readTimeout(10, TimeUnit.MINUTES)
             .addInterceptor(loggingInterceptor)
             .addInterceptor(authInterceptor)
             .addInterceptor(contractCallErrorInterceptor)
@@ -58,7 +62,7 @@ object DataModule {
     @Singleton
     @Provides
     fun provideWeb3j(okHttpClient: OkHttpClient) : Web3j {
-        return Web3j.build(HttpService("http://192.168.1.109:8545", okHttpClient))
+        return Web3j.build(HttpService("http://192.168.1.112:8545", okHttpClient))
     }
 
     @Singleton
